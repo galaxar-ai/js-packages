@@ -1,0 +1,30 @@
+{
+    "name": "@galaxar/types",
+    "version": "1.0.0",
+    "description": "Galaxar Semantic Data Types",
+    "main": "index.js",
+    "scripts": {
+        "test": "mocha --recursive ./__test__/*.spec.js",
+        "cover": "nyc --reporter=html --reporter=text mocha --recursive ./__test__/*.spec.js && open ./coverage/index.html",
+        "prettier": "prettier --write .",
+        "lint": "eslint \"**/*.js\"",
+        "lint-fix": "eslint \"**/*.js\" --fix",
+        "clean": "shx rm -rf cjs",
+        "build": "pnpm clean && swc *.js -d ./cjs && swc ./errors/*.js -d ./cjs/errors"
+    },
+    "dependencies": {
+        "@galaxar/utils": "workspace:*",
+        "http-status-codes": "^2.2.0",
+        "luxon": "^3.3.0"
+    },
+    "nyc": {
+        "exclude": [
+            ".*",
+            "cjs",
+            "__test__"
+        ]
+    },
+    "keywords": [],
+    "author": "",
+    "license": "MIT"
+}
