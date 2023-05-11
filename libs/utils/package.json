@@ -26,6 +26,7 @@
         "build": "pnpm clean && swc *.js -d ./cjs"
     },
     "keywords": [
+        "galaxar",
         "javascript",
         "utility"
     ],

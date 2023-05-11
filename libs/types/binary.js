@@ -4,7 +4,7 @@ module.exports = {
     name: 'binary',
     alias: ['blob', 'buffer'],
     defaultValue: null,
-
+    validate: (value) => value instanceof Buffer,
     sanitize: (value, meta, i18n, path) => {
         if (value == null) return null;
         if (meta.rawValue) return value;

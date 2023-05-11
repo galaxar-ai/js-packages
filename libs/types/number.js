@@ -6,7 +6,7 @@ export default {
     name: 'number',
     alias: ['float', 'double'],
     defaultValue: 0,
-
+    validate: value => typeof value === 'number',
     sanitize: (value, meta, i18n, path) => {
         if (value == null) return null;
         if (meta.rawValue) return value;

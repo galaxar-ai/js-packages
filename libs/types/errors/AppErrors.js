@@ -1,4 +1,4 @@
-import { StatusCodes as HttpCode } from 'http-status-codes';
+import HttpCode from './HttpCode';
 
 /**
  * App errors.

@@ -6,7 +6,7 @@ export default {
     name: 'integer',
     alias: ['int'],
     defaultValue: 0,
-
+    validate: value => typeof value === 'number' && Number.isInteger(value),
     sanitize: (value, meta, i18n, path) => {
         if (value == null) return null;
         if (meta.rawValue) return value;

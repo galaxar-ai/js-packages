@@ -2,7 +2,12 @@
     "name": "@galaxar/types",
     "version": "1.0.0",
     "description": "Galaxar Semantic Data Types",
-    "main": "index.js",
+    "main": "csj/index.js",
+    "module": "index.js",
+    "react-native": "index.js",
+    "publishConfig": {
+        "access": "public"
+    },
     "scripts": {
         "test": "mocha --recursive ./__test__/*.spec.js",
         "cover": "nyc --reporter=html --reporter=text mocha --recursive ./__test__/*.spec.js && open ./coverage/index.html",
@@ -12,10 +17,11 @@
         "clean": "shx rm -rf cjs",
         "build": "pnpm clean && swc *.js -d ./cjs && swc ./errors/*.js -d ./cjs/errors"
     },
-    "dependencies": {
-        "@galaxar/utils": "workspace:*",
-        "http-status-codes": "^2.2.0",
+    "devDependencies": {
         "luxon": "^3.3.0"
+    },
+    "dependencies": {
+        "@galaxar/utils": "workspace:*"
     },
     "nyc": {
         "exclude": [
@@ -24,7 +30,9 @@
             "__test__"
         ]
     },
-    "keywords": [],
-    "author": "",
+    "keywords": [
+        "galaxar",
+        "types"
+    ],
     "license": "MIT"
 }

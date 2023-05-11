@@ -5,7 +5,7 @@ export default {
     name: 'text',
     alias: ['string'],
     defaultValue: '',
-
+    validate: value => typeof value === 'string',
     sanitize: (value, meta, i18n, path) => {
         if (value == null) return null;
         if (meta.rawValue) return value;

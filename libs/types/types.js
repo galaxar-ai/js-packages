@@ -63,3 +63,4 @@ export const getStringifier = () => {
 // compatibility
 Types.sanitize = sanitize;
 Types.serialize = serialize;
+Types.primitives = Primitives;

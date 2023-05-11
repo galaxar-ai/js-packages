@@ -1,5 +1,5 @@
 import { ExposableError, ApplicationError } from './AppErrors';
-import { StatusCodes as HttpCode } from 'http-status-codes';
+import HttpCode from './HttpCode';
 
 /**
  * Data errors.

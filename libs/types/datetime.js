@@ -3,10 +3,9 @@ import { ValidationError, ApplicationError } from "./errors";
 
 export default {
     name: 'datetime',
-
     alias: ['date', 'time', 'timestamp'],
-
     defaultValue: new Date(0),
+    validate: value => value instanceof Date,
 
     /**
      * Transform a value into a JavaScript Date object.

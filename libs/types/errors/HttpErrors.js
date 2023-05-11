@@ -1,6 +1,6 @@
 import { GeneralError, ExposableError, ApplicationError } from './AppErrors';
 import { ValidationError } from './DataErrors';
-import { StatusCodes as HttpCode } from 'http-status-codes';
+import HttpCode from './HttpCode';
 
 /**
  * HTTP errors.

@@ -2,6 +2,7 @@ import _each from 'lodash/each';
 import { ValidationError } from './errors';
 import { Types, safeJsonStringify } from './types';
 import { makePath } from '@galaxar/utils/pathUtils';
+import isPlainObject from '@galaxar/utils/isPlainObject';
 
 const jsonStarter = new Set(['"', '[', '{']);
 const jsonEnding = {
@@ -14,7 +15,7 @@ export default {
     name: 'object',
     alias: ['json'],
     defaultValue: {},
-
+    validate: value =>isPlainObject(value),
     sanitize: (value, meta, i18n, path) => {
         if (value == null) return null;
         if (meta.rawValue) return value;

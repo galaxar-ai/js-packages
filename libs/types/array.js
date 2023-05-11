@@ -9,7 +9,7 @@ const T_ARRAY = {
     name: "array",
     alias: ["list"],
     defaultValue: [],
-
+    validate: value => Array.isArray(value),
     sanitize: (value, meta, i18n, path) => {
         if (value == null) return null;
         if (meta.rawValue) return value;
