@@ -1,3 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "default", {
+    enumerable: true,
+    get: function() {
+        return _default;
+    }
+});
 const EQUAL = 'eq';
 const NOT_EQUAL = 'neq';
 const NOT = 'not';
@@ -19,8 +29,7 @@ const HAS_KEYS = 'has';
 const START_WITH = 'start';
 const END_WITH = 'end';
 const SAME_AS = 'same';
-
-export default {
+const _default = {
     EQUAL,
     NOT_EQUAL,
     NOT,
@@ -41,5 +50,5 @@ export default {
     HAS_KEYS,
     START_WITH,
     END_WITH,
-    SAME_AS,
+    SAME_AS
 };

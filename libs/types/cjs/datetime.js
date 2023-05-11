@@ -8,47 +8,8 @@ Object.defineProperty(exports, "default", {
         return _default;
     }
 });
-const _validate = /*#__PURE__*/ _interop_require_wildcard(require("../validate"));
-function _getRequireWildcardCache(nodeInterop) {
-    if (typeof WeakMap !== "function") return null;
-    var cacheBabelInterop = new WeakMap();
-    var cacheNodeInterop = new WeakMap();
-    return (_getRequireWildcardCache = function(nodeInterop) {
-        return nodeInterop ? cacheNodeInterop : cacheBabelInterop;
-    })(nodeInterop);
-}
-function _interop_require_wildcard(obj, nodeInterop) {
-    if (!nodeInterop && obj && obj.__esModule) {
-        return obj;
-    }
-    if (obj === null || typeof obj !== "object" && typeof obj !== "function") {
-        return {
-            default: obj
-        };
-    }
-    var cache = _getRequireWildcardCache(nodeInterop);
-    if (cache && cache.has(obj)) {
-        return cache.get(obj);
-    }
-    var newObj = {};
-    var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
-    for(var key in obj){
-        if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) {
-            var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
-            if (desc && (desc.get || desc.set)) {
-                Object.defineProperty(newObj, key, desc);
-            } else {
-                newObj[key] = obj[key];
-            }
-        }
-    }
-    newObj.default = obj;
-    if (cache) {
-        cache.set(obj, newObj);
-    }
-    return newObj;
-}
-let isDate = (obj)=>Object.prototype.toString.call(obj) === '[object Date]';
+const _types = require("./types");
+const _errors = require("./errors");
 const _default = {
     name: 'datetime',
     alias: [
@@ -56,17 +17,53 @@ const _default = {
         'time',
         'timestamp'
     ],
-    validate: (value, schema, options = {
-        useFieldPath: true,
-        abortEarly: true,
-        throwError: true
-    }, context = {})=>{
-        if (value != null && (!isDate(value) || isNaN(value.getTime()))) {
-            return (0, _validate.invalidType)(value, 'datetime', options, context);
+    defaultValue: new Date(0),
+    validate: (value)=>value instanceof Date,
+    /**
+     * Transform a value into a JavaScript Date object.
+     * @param {*} value 
+     * @param {*} meta 
+     * @param {*} i18n 
+     * @param {string} [path]
+     * @returns {Date|null}
+     */ sanitize: (value, meta, i18n, path)=>{
+        if (value == null) return null;
+        if (meta.rawValue) return value;
+        const raw = value;
+        if (value instanceof Date) {
+            return value;
+        } else {
+            const type = typeof value;
+            if (type === 'string') {
+                if (meta.format) {
+                    const parser = _types.Plugins['datetimeParser'];
+                    if (!parser) {
+                        throw new _errors.ApplicationError('Missing datetime parser plugin.');
+                    }
+                    value = parser(value, {
+                        format: meta.format,
+                        timezone: i18n?.timezone
+                    });
+                } else {
+                    value = new Date(value);
+                }
+            } else if (type === 'number') {
+                value = new Date(value);
+            } else if (value.toJSDate) {
+                value = value.toJSDate();
+            }
+            if (isNaN(value)) {
+                throw new _errors.ValidationError('Invalid datetime value.', {
+                    value: raw,
+                    meta,
+                    i18n,
+                    path
+                });
+            }
         }
-        if (schema) {
-            return (0, _validate.default)(value, schema, options, context);
-        }
-        return true;
+        return value;
+    },
+    serialize: (value)=>{
+        return value?.toISOString();
     }
 };

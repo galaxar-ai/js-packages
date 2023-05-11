@@ -9,12 +9,12 @@
         "access": "public"
     },
     "scripts": {
-        "test": "mocha --recursive lib/**/*.spec.js",
-        "cover": "nyc --reporter=html --reporter=text mocha --recursive lib/**/*.spec.js && open ./coverage/index.html",
+        "test": "mocha --recursive test/**/*.spec.js",
+        "cover": "nyc --reporter=html --reporter=text mocha --recursive test/**/*.spec.js && open ./coverage/index.html",
         "prettier": "prettier --write .",
         "lint": "eslint \"**/*.js\"",
         "lint-fix": "eslint \"**/*.js\" --fix",
-        "clean": "shx rm -rf cjs lib",
+        "clean": "shx rm -rf cjs",
         "build": "pnpm clean && swc lib/*.js -d ./cjs"
     },
     "keywords": [
@@ -31,5 +31,10 @@
         ]
     },
     "devDependencies": {},
+    "dependencies": {
+        "@galaxar/utils": "workspace:*",
+        "@galaxar/types": "workspace:*",
+        "@galaxar/jsonv": "workspace:*"
+    },
     "license": "MIT"
 }

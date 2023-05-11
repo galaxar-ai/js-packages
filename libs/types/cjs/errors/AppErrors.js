@@ -25,7 +25,7 @@ _export(exports, {
         return ExposableError;
     }
 });
-const _httpstatuscodes = /*#__PURE__*/ _interop_require_default(require("http-status-codes"));
+const _HttpCode = /*#__PURE__*/ _interop_require_default(require("./HttpCode"));
 function _define_property(obj, key, value) {
     if (key in obj) {
         Object.defineProperty(obj, key, {
@@ -89,7 +89,7 @@ class ApplicationError extends GeneralError {
      * @param {*} info
      * @param {*} code 
      */ constructor(message, info, code){
-        super(message, info, _httpstatuscodes.default.INTERNAL_SERVER_ERROR, code || 'E_APP');
+        super(message, info, _HttpCode.default.INTERNAL_SERVER_ERROR, code || 'E_APP');
     }
 }
 ;

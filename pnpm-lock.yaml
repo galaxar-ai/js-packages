@@ -33,7 +33,17 @@ importers:
         specifier: workspace:*
         version: link:../utils
 
-  libs/jsonx: {}
+  libs/jsonx:
+    dependencies:
+      '@galaxar/jsonv':
+        specifier: workspace:*
+        version: link:../jsonv
+      '@galaxar/types':
+        specifier: workspace:*
+        version: link:../types
+      '@galaxar/utils':
+        specifier: workspace:*
+        version: link:../utils
 
   libs/types:
     dependencies:

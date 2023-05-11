@@ -7,7 +7,7 @@ import _has from 'lodash/has';
 import _size from 'lodash/size';
 import _castArray from 'lodash/castArray';
 
-import JsvError from './JsvError';
+import JsvError from './JvsError';
 import validate, { test } from './validate';
 
 import config from './config';

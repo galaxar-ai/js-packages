@@ -1,6 +1,6 @@
 // JSON Validation Syntax 
 import { isPlainObject, get as _get } from '@galaxar/utils';
-import JsvError from './JsvError';
+import JsvError from './JvsError';
 import config, { getChildContext } from './config';
 import ops from './validateOperators';
 
@@ -41,44 +41,44 @@ export function test(left, op, right, options, context) {
 /**
  * Validate the given object with JSON Expression Syntax (JES)
  * @param {*} actual - The object to match
- * @param {*} jsv - Expected state in JSON Expression Syntax
+ * @param {*} jvs - Expected state in JSON Expression Syntax
  * @param {*} options - Validation options
  * @param {*} context - Validation context
  * @returns {array} - [ {boolean} matched, {string} unmatchedReason ]
  */
-function validate(actual, jsv, options = { throwError: true, abortEarly: true }, context = {}) {
-    const type = typeof jsv;
+function validate(actual, jvs, options = { throwError: true, abortEarly: true }, context = {}) {
+    const type = typeof jvs;
 
     if (type === 'string') {
-        if (jsv.length === 0 || jsv[0] !== '$') {
-            throw new Error(MSG.SYNTAX_INVALID_EXPR(jsv));
+        if (jvs.length === 0 || jvs[0] !== '$') {
+            throw new Error(MSG.SYNTAX_INVALID_EXPR(jvs));
         }
 
-        if (jsv.startsWith('$$')) {
-            return validate(actual, { $equal: jsv }, options, context); 
+        if (jvs.startsWith('$$')) {
+            return validate(actual, { $equal: jvs }, options, context); 
         }
 
-        return validate(actual, { [jsv]: null }, options, context);
+        return validate(actual, { [jvs]: null }, options, context);
     }
 
     const { throwError, abortEarly, asPredicate, plainError } = options;
 
-    if (jsv == null) {
+    if (jvs == null) {
         return true;
     }
 
     if (type !== 'object') {
-        throw new Error(MSG.SYNTAX_INVALID_EXPR(jsv));
+        throw new Error(MSG.SYNTAX_INVALID_EXPR(jvs));
     }
 
     let { path } = context;
     const errors = [];
     const _options = !abortEarly && throwError ? { ...options, throwError: false } : options;
 
-    for (let operator in jsv) {
+    for (let operator in jvs) {
         let op, left, _context; 
 
-        const opValue = jsv[operator];
+        const opValue = jvs[operator];
 
         if (
             // $match

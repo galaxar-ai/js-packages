@@ -1,10 +1,10 @@
 // JSON Expression Syntax (JES)
+import { get as _get, set as _set } from '@galaxar/utils';
+
 import _isEmpty from 'lodash/isEmpty';
 import _reduce from 'lodash/reduce';
 import _map from 'lodash/map';
 import _mapValues from 'lodash/mapValues';
-
-import { get as _get, set as _set } from '@genx/july';
 
 import config, { getChildContext } from './config';
 import ops from './transformerOperators';
@@ -58,10 +58,7 @@ function applyUnaryOperator(value, tag, context) {
  * @returns {*}
  */
 function applyOperator(currentValue, rightValue, [op, isUnary], context) {
-    if (isUnary) {
-        if (config.dev && !_isEmpty(rightValue)) {
-            throw new Error(MSG.RIGHT_OPERAND_NOT_EMPTY(op));
-        }
+    if (isUnary) {        
         return applyUnaryOperator(currentValue, op, context);
     }
 

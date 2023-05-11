@@ -39,7 +39,7 @@ _export(exports, {
 });
 const _AppErrors = require("./AppErrors");
 const _DataErrors = require("./DataErrors");
-const _httpstatuscodes = /*#__PURE__*/ _interop_require_default(require("http-status-codes"));
+const _HttpCode = /*#__PURE__*/ _interop_require_default(require("./HttpCode"));
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
@@ -53,27 +53,27 @@ class BadRequest extends _DataErrors.ValidationError {
 }
 class NotFound extends _AppErrors.ExposableError {
     constructor(message, info){
-        super(message, info, _httpstatuscodes.default.NOT_FOUND, 'E_NOT_FOUND');
+        super(message, info, _HttpCode.default.NOT_FOUND, 'E_NOT_FOUND');
     }
 }
 class Unauthorized extends _AppErrors.ExposableError {
     constructor(message, info){
-        super(message, info, _httpstatuscodes.default.UNAUTHORIZED, 'E_UNAUTHENTICATED');
+        super(message, info, _HttpCode.default.UNAUTHORIZED, 'E_UNAUTHENTICATED');
     }
 }
 class Forbidden extends _AppErrors.ExposableError {
     constructor(message, info){
-        super(message, info, _httpstatuscodes.default.FORBIDDEN, 'E_FORBIDDEN');
+        super(message, info, _HttpCode.default.FORBIDDEN, 'E_FORBIDDEN');
     }
 }
 class ServiceUnavailable extends _AppErrors.GeneralError {
     constructor(message, info){
-        super(message, info, _httpstatuscodes.default.SERVICE_UNAVAILABLE, 'E_UNAVAILABLE');
+        super(message, info, _HttpCode.default.SERVICE_UNAVAILABLE, 'E_UNAVAILABLE');
     }
 }
 class ExternalServiceError extends _AppErrors.GeneralError {
     constructor(message, info){
-        super(message, info, _httpstatuscodes.default.SERVICE_UNAVAILABLE, 'E_EXTERNAL');
+        super(message, info, _HttpCode.default.SERVICE_UNAVAILABLE, 'E_EXTERNAL');
     }
 }
 class ServerError extends _AppErrors.ApplicationError {

@@ -2,7 +2,7 @@
     "name": "@galaxar/types",
     "version": "1.0.0",
     "description": "Galaxar Semantic Data Types",
-    "main": "csj/index.js",
+    "main": "cjs/index.js",
     "module": "index.js",
     "react-native": "index.js",
     "publishConfig": {

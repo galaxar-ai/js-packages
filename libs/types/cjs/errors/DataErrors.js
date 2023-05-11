@@ -26,7 +26,7 @@ _export(exports, {
     }
 });
 const _AppErrors = require("./AppErrors");
-const _httpstatuscodes = /*#__PURE__*/ _interop_require_default(require("http-status-codes"));
+const _HttpCode = /*#__PURE__*/ _interop_require_default(require("./HttpCode"));
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
@@ -34,20 +34,20 @@ function _interop_require_default(obj) {
 }
 class ValidationError extends _AppErrors.ExposableError {
     constructor(message, info, inner){
-        super(message, info, _httpstatuscodes.default.BAD_REQUEST, 'E_INVALID_DATA');
+        super(message, info, _HttpCode.default.BAD_REQUEST, 'E_INVALID_DATA');
         this.inner = inner;
     }
 }
 ;
 class ReferencedNotExist extends _AppErrors.ExposableError {
     constructor(message, info){
-        super(message, info, _httpstatuscodes.default.BAD_REQUEST, 'E_REFERENCED_NOT_EXIST');
+        super(message, info, _HttpCode.default.BAD_REQUEST, 'E_REFERENCED_NOT_EXIST');
     }
 }
 ;
 class DuplicateError extends _AppErrors.ExposableError {
     constructor(message, info){
-        super(message, info, _httpstatuscodes.default.BAD_REQUEST, 'E_DUPLICATE');
+        super(message, info, _HttpCode.default.BAD_REQUEST, 'E_DUPLICATE');
     }
 }
 ;

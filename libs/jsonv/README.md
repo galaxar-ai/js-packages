@@ -1,9 +1,9 @@
-# @galaxar/jsonx
+# @galaxar/jsonv
 
-JSON Expression 
+JSON Validation Syntax 
 
 ## Installation
 
 ```sh
-pnpm install @galaxar/jsonx
+pnpm install @galaxar/jsonv
 ```

@@ -1,54 +1,54 @@
 //Query & aggregate operators (pure)
-const SIZE = 'Size Of';
-const SUM = 'Sum Of';
-const GET_TYPE = 'Type Of';
-const MATCH = 'Validate';
-const GET_BY_INDEX = 'Get Value By Index';
-const GET_BY_KEY = 'Get Value By Key';
-const FIND = 'Get Index Or Key Of';
-const IF = 'If Else';
+const SIZE = 'size';
+const SUM = 'sum';
+const GET_TYPE = 'typeof';
+const MATCH = 'validate';
+const GET_BY_INDEX = 'byIndex';
+const GET_BY_KEY = 'byKey';
+const FIND = 'find';
+const IF = 'if';
 
 //Type casting operators (pure)
-const CAST_ARRAY = 'Cast To Array';
+const CAST_ARRAY = 'toArray';
 
 //Math operators (pure)
-const ADD = 'Add';
-const SUB = 'Subtract';
-const MUL = 'Multiply';
-const DIV = 'Divide';
-const MOD = 'Remainder';
+const ADD = 'add';
+const SUB = 'sub';
+const MUL = 'mul';
+const DIV = 'div';
+const MOD = 'mod';
 
 //Collection operators (pure)
-const KEYS = 'Keys Of';
-const VALUES = 'Values Of';
-const ENTRIES = 'Entries Of';
-const OBJ_TO_ARRAY = 'Object To Array'; // like $objectToArray of mongodb
-const FILTER_NULL = 'Filter Null Values';
-const PICK = 'Pick By'; // filter by key
-const OMIT = 'Omit By';
-const SLICE = 'Slice'; // limit offset, count
-const GROUP = 'Group By';
-const SORT = 'Order By';
-const REVERSE = 'Reverse';
-const JOIN = 'Join';
-const MERGE = 'Merge';
-const FILTER = 'Filter By'; // filter by value
-const REMAP = 'Map Keys'; // map a key to another name
-const TO_JSON = 'JSON Stringfy';
-const TO_OBJ = 'JSON Parse';
+const KEYS = 'keys';
+const VALUES = 'values';
+const ENTRIES = 'pairs';
+const OBJ_TO_ARRAY = 'objToArray'; // like $objectToArray of mongodb
+const FILTER_NULL = 'xNull';
+const PICK = 'pick'; // filter by key
+const OMIT = 'omit';
+const SLICE = 'slice'; // limit offset, count
+const GROUP = 'groupBy';
+const SORT = 'orderBy';
+const REVERSE = 'reverse';
+const JOIN = 'join';
+const MERGE = 'merge';
+const FILTER = 'filterBy'; // filter by value
+const REMAP = 'remap'; // map a key to another name
+const TO_JSON = 'stringfy';
+const TO_OBJ = 'parse';
 
 //Value updater (pure, copy on write)
-const SET = 'Set Value';
-const ADD_ITEM = 'Add K-V Entry';
-const ASSIGN = 'Assign';
-const APPLY = 'Apply Transformation';
+const SET = 'set';
+const ADD_ITEM = 'addItem';
+const ASSIGN = 'assign';
+const APPLY = 'apply';
 
-const SPLIT = 'Split';
-const INTERPOLATE = 'Interpolate';
+const SPLIT = 'split';
+const INTERPOLATE = 'interpolate';
 
 //Colllection modifier
-const MAP = 'Map';
-const REDUCE = 'Reduce';
+const MAP = 'map';
+const REDUCE = 'reduce';
 
 export default {
     SIZE,

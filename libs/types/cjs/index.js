@@ -10,6 +10,8 @@ const _integer = /*#__PURE__*/ _interop_require_default(require("./integer"));
 const _number = /*#__PURE__*/ _interop_require_default(require("./number"));
 const _object = /*#__PURE__*/ _interop_require_default(require("./object"));
 const _text = /*#__PURE__*/ _interop_require_default(require("./text"));
+const _binary = /*#__PURE__*/ _interop_require_default(require("./binary"));
+const _bigint = /*#__PURE__*/ _interop_require_default(require("./bigint"));
 _export_star(require("./errors"), exports);
 _export_star(require("./functions"), exports);
 function _export_star(from, to) {
@@ -37,3 +39,5 @@ function _interop_require_default(obj) {
 (0, _types.addType)('NUMBER', _number.default);
 (0, _types.addType)('OBJECT', _object.default);
 (0, _types.addType)('TEXT', _text.default);
+(0, _types.addType)('BINARY', _binary.default);
+(0, _types.addType)('BIGINT', _bigint.default);
