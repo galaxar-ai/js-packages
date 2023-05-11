@@ -1,0 +1,41 @@
+{
+    "name": "@galaxar/utils",
+    "version": "1.0.0",
+    "description": "Galaxar JavaScript Utility Library for both Node.js and browser",
+    "main": "cjs/index",
+    "module": "index.js",
+    "react-native": "index.js",
+    "publishConfig": {
+        "access": "public"
+    },
+    "nyc": {
+        "exclude": [
+            ".*",
+            "cjs",
+            "__test__"
+        ]
+    },
+    "scripts": {
+        "test": "mocha --recursive ./__test__/*.spec.js",
+        "benchmark": "mocha --recursive test/*.spec.js",
+        "cover": "nyc --reporter=html --reporter=text mocha --recursive ./__test__/*.spec.js && open ./coverage/index.html",
+        "prettier": "prettier --write .",
+        "lint": "eslint \"**/*.js\"",
+        "lint-fix": "eslint \"**/*.js\" --fix",
+        "clean": "shx rm -rf cjs",
+        "build": "pnpm clean && swc *.js -d ./cjs"
+    },
+    "keywords": [
+        "javascript",
+        "utility"
+    ],
+    "license": "MIT",
+    "devDependencies": {
+        "@genx/test": "^2.1.5",
+        "csv-parse": "^5.0.4"
+    },
+    "dependencies": {
+        "lodash": "^4.17.21",
+        "mobx": "^6.9.0"
+    }
+}
