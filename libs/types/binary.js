@@ -1,4 +1,5 @@
 import { ValidationError } from './errors';
+import { beginSanitize } from './types';
 
 module.exports = {
     name: 'binary',
@@ -6,8 +7,8 @@ module.exports = {
     defaultValue: null,
     validate: (value) => value instanceof Buffer,
     sanitize: (value, meta, i18n, path) => {
-        if (value == null) return null;
-        if (meta.rawValue) return value;
+        const [ isDone, sanitized ] = beginSanitize(value, meta, i18n, path);
+        if (isDone) return sanitized;
 
         if (value instanceof Buffer) {
             return value;

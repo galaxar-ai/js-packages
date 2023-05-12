@@ -7,13 +7,13 @@ import validate from './validators';
  */
 class Jvs {
     static config = config;
-    static match = (value, jvs, options, jsonx) => {
+    static match = (value, jvs, options, context) => {
         const reason = validate(value, jvs, {
             throwError: false,
             abortEarly: true,
             plainError: true,
             ...options
-        }, jsonx && { jsonx });
+        }, context);
         if (reason === true) {
             return [true];
         }

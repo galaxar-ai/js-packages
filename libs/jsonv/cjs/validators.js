@@ -17,7 +17,7 @@ const _size = /*#__PURE__*/ _interop_require_default(require("lodash/size"));
 const _castArray = /*#__PURE__*/ _interop_require_default(require("lodash/castArray"));
 const _JvsError = /*#__PURE__*/ _interop_require_default(require("./JvsError"));
 const _validate = /*#__PURE__*/ _interop_require_wildcard(require("./validate"));
-const _config = /*#__PURE__*/ _interop_require_default(require("./config"));
+const _config = /*#__PURE__*/ _interop_require_wildcard(require("./config"));
 const _validateOperators = /*#__PURE__*/ _interop_require_default(require("./validateOperators"));
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
@@ -64,7 +64,41 @@ function _interop_require_wildcard(obj, nodeInterop) {
     return newObj;
 }
 const MSG = _config.default.messages;
-const processRightValue = (right, context)=>context.jsonx && (typeof right === 'string' && right[0] === '$' || (0, _utils.isPlainObject)(right)) ? context.jsonx(undefined, right, context, true) : right;
+function evaluateWithContext(jxs, context) {
+    if (jxs == null) {
+        return null;
+    }
+    if (context == null) {
+        context = {};
+    }
+    const type = typeof jxs;
+    if (type === 'string') {
+        if (jxs.startsWith('$$')) {
+            //get from context
+            const pos = jxs.indexOf('.');
+            if (pos === -1) {
+                if (!_config.contextVarKeys.has(jxs)) {
+                    throw new Error(MSG.SYNTAX_INVALID_CONTEXT(jxs));
+                }
+                return context[jxs];
+            }
+            const key = jxs.substring(0, pos);
+            if (!_config.contextVarKeys.has(key)) {
+                throw new Error(MSG.SYNTAX_INVALID_CONTEXT(key));
+            }
+            return (0, _utils.get)(context, jxs);
+        }
+        return jxs;
+    }
+    if (Array.isArray(jxs)) {
+        return jxs.map((item)=>evaluateWithContext(item, context));
+    }
+    if (type === 'object') {
+        return _mapValues(jxs, (item)=>evaluateWithContext(item, context));
+    }
+    return jxs;
+}
+const processRightValue = (right, context)=>context.jsonx && (typeof right === 'string' && right[0] === '$' || (0, _utils.isPlainObject)(right)) ? context.jsonx(undefined, right, context, true) : evaluateWithContext(right, context);
 //Validators [ name, ...operator alias ]
 const OP_EQUAL = [
     _validateOperators.default.EQUAL,

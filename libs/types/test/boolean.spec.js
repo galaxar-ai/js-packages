@@ -17,7 +17,7 @@ describe("boolean", () => {
 
     describe("sanitize", () => {
         it("should return null for null input", () => {
-            const result = boolean.sanitize(null, {}, {});
+            const result = boolean.sanitize(null, {optional: true}, {});
             should.equal(result, null);
         });
 

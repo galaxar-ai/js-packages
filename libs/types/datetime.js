@@ -1,4 +1,4 @@
-import { Plugins } from "./types";
+import { Plugins, beginSanitize } from "./types";
 import { ValidationError, ApplicationError } from "./errors";
 
 export default {
@@ -16,8 +16,8 @@ export default {
      * @returns {Date|null}
      */
     sanitize: (value, meta, i18n, path) => {
-        if (value == null) return null;
-        if (meta.rawValue) return value;
+        const [ isDone, sanitized ] = beginSanitize(value, meta, i18n, path);
+        if (isDone) return sanitized;
 
         const raw = value;
 

@@ -1,6 +1,6 @@
 import Jxs from '../lib';
 
-describe('transformer:at', function () {
+describe('jxs:at', function () {
 
     it('array', function () {
         let array = [1,2,3];

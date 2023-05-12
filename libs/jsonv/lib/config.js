@@ -17,13 +17,24 @@ const formatKey = (key, hasPrefix) => (Number.isInteger(key) ? `[${key}]` : hasP
 const makePath = (key, prefix) => (prefix != null ? `${prefix}${formatKey(key, true)}` : formatKey(key, false));
 const formatPath = (prefix) => (prefix ? '[' + prefix + ']' : '<ROOT>');
 
-export const getChildContext = (context, currentValue, childKey, childValue) => ({
+/**
+ * Creates a new context object that represents the context of a child object within a larger data structure.
+ * @param {Object} context - The current context of the data structure.
+ * @param {*} currentValue - The current value of the object that the child object belongs to.
+ * @param {string} childKey - The key of the child object within the parent object.
+ * @param {*} childValue - The value of the child object.
+ * @returns {Object} A new context object that represents the context of the child object within the larger data structure.
+ */
+export const getChildContext = (context, currentValue, childKey, childValue, extra) => ({
     ...context,
+    ...extra,
     path: makePath(childKey, context.path),
     $$PARENT: currentValue,
     $$CURRENT: childValue,
     $$KEY: childKey,
 });
+
+export const contextVarKeys = new Set(['$$ROOT', '$$PARENT', '$$CURRENT', '$$KEY']);
 
 export const messages = {
     formatName,
@@ -35,6 +46,7 @@ export const messages = {
     SYNTAX_INVALID_EXPR: (expr) => `Invalid expression syntax: ${JSON.stringify(expr)}`, // complext expr, not split out operator yet
     SYNTAX_INVALID_OP: (op, prefix) => `Invalid operator "${op}" at ${formatPath(prefix)}.`,
     SYNTAX_NUMBER_AS_EXPR: 'Number value cannot be used as a transformer expression.',
+    SYNTAX_INVALID_CONTEXT: (key) => `Invalid context variable "${key}".`,
 
     INVALID_TRANSFORMER_OP: (op) => `Invalid transformer operator "${op}".`,
     UNSUPPORTED_VALIDATION_OP: (op, prefix) => `Unsupported validation operator "${op}" at ${formatPath(prefix)}.`,

@@ -38,6 +38,9 @@ _export(exports, {
     },
     getStringifier: function() {
         return getStringifier;
+    },
+    beginSanitize: function() {
+        return beginSanitize;
     }
 });
 const _errors = require("./errors");
@@ -68,12 +71,12 @@ const callType = (method)=>(value, typeInfo, i18n, fieldPath)=>{
         const typeObject = Types[typeInfo.type];
         return typeObject[method](value, typeInfo, i18n, fieldPath);
     };
-const sanitize = callType("sanitize");
-const serialize = callType("serialize");
+const sanitize = callType('sanitize');
+const serialize = callType('serialize');
 const safeJsonStringify = (value)=>{
     const bigintWriter = Plugins['bigintWriter'];
     if (bigintWriter) {
-        const replacer = (_, value)=>typeof value === "bigint" ? bigintWriter(value) : value;
+        const replacer = (_, value)=>typeof value === 'bigint' ? bigintWriter(value) : value;
         return JSON.stringify(value, replacer);
     }
     return JSON.stringify(value);
@@ -81,9 +84,37 @@ const safeJsonStringify = (value)=>{
 const getStringifier = ()=>{
     const bigintWriter = Plugins['bigintWriter'];
     if (bigintWriter) {
-        return (value)=>typeof value === "bigint" ? bigintWriter(value) : value.toString();
+        return (value)=>typeof value === 'bigint' ? bigintWriter(value) : value.toString();
     }
     return null;
+};
+const beginSanitize = (value, meta, i18n, path)=>{
+    if (value == null) {
+        if (meta.default != null) {
+            return [
+                true,
+                meta.default
+            ];
+        } else if (meta.optional) {
+            return [
+                true,
+                null
+            ];
+        }
+        throw new _errors.ValidationError('Value ' + (path ? `of "${path}" ` : '') + 'is required.', {
+            value,
+            meta,
+            i18n,
+            path
+        });
+    }
+    if (meta.rawValue) return [
+        true,
+        value
+    ];
+    return [
+        false
+    ];
 };
 // compatibility
 Types.sanitize = sanitize;

@@ -1,6 +1,7 @@
 import { ValidationError } from './errors';
 import toFloat from '@galaxar/utils/toFloat';
 import { identity } from "./functions";
+import { beginSanitize } from './types';
 
 export default {
     name: 'number',
@@ -8,8 +9,8 @@ export default {
     defaultValue: 0,
     validate: value => typeof value === 'number',
     sanitize: (value, meta, i18n, path) => {
-        if (value == null) return null;
-        if (meta.rawValue) return value;
+        const [ isDone, sanitized ] = beginSanitize(value, meta, i18n, path);
+        if (isDone) return sanitized;
 
         const raw = value;
         value = toFloat(value);

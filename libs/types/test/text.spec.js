@@ -17,7 +17,7 @@ describe("text", () => {
 
     describe("sanitize", () => {
         it("should return null for null input", () => {
-            const result = text.sanitize(null, {}, {}, "");
+            const result = text.sanitize(null, {optional: true}, {}, "");
             should.equal(result, null);
         });
 
@@ -35,8 +35,7 @@ describe("text", () => {
 
         it("should return null for empty string input with meta.emptyAsNull", () => {
             const value = "";
-            const result = text.sanitize(value, { emptyAsNull: true }, {}, "");
-            should.equal(result, null);
+            should.throws(() => text.sanitize(value, { emptyAsNull: true }, {}, ""), 'Value is required.');
         });
 
         it("should throw a ValidationError for non-string input", () => {

@@ -11,6 +11,7 @@ Object.defineProperty(exports, "default", {
 const _errors = require("./errors");
 const _toInteger = /*#__PURE__*/ _interop_require_default(require("@galaxar/utils/toInteger"));
 const _functions = require("./functions");
+const _types = require("./types");
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
@@ -24,8 +25,8 @@ const _default = {
     defaultValue: 0,
     validate: (value)=>typeof value === 'number' && Number.isInteger(value),
     sanitize: (value, meta, i18n, path)=>{
-        if (value == null) return null;
-        if (meta.rawValue) return value;
+        const [isDone, sanitized] = (0, _types.beginSanitize)(value, meta, i18n, path);
+        if (isDone) return sanitized;
         const raw = value;
         value = (0, _toInteger.default)(value);
         if (isNaN(value)) {

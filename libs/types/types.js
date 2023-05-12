@@ -1,4 +1,4 @@
-import { InvalidArgument } from "./errors";
+import { InvalidArgument, ValidationError } from './errors';
 
 export const Types = {};
 export const Primitives = new Set();
@@ -23,7 +23,7 @@ export const addType = (name, typeMeta) => {
 };
 
 export const addPlugin = (name, plugin) => {
-    Plugins[name] = plugin
+    Plugins[name] = plugin;
 };
 
 export const callType = (method) => (value, typeInfo, i18n, fieldPath) => {
@@ -35,14 +35,13 @@ export const callType = (method) => (value, typeInfo, i18n, fieldPath) => {
     return typeObject[method](value, typeInfo, i18n, fieldPath);
 };
 
-export const sanitize = callType("sanitize");
-export const serialize = callType("serialize");
+export const sanitize = callType('sanitize');
+export const serialize = callType('serialize');
 
 export const safeJsonStringify = (value) => {
     const bigintWriter = Plugins['bigintWriter'];
     if (bigintWriter) {
-        const replacer = (_, value) =>
-            typeof value === "bigint" ? bigintWriter(value) : value;
+        const replacer = (_, value) => (typeof value === 'bigint' ? bigintWriter(value) : value);
 
         return JSON.stringify(value, replacer);
     }
@@ -53,11 +52,31 @@ export const safeJsonStringify = (value) => {
 export const getStringifier = () => {
     const bigintWriter = Plugins['bigintWriter'];
     if (bigintWriter) {
-        return (value) =>
-            typeof value === "bigint" ? bigintWriter(value) : value.toString();
+        return (value) => (typeof value === 'bigint' ? bigintWriter(value) : value.toString());
     }
 
     return null;
+};
+
+export const beginSanitize = (value, meta, i18n, path) => {
+    if (value == null) {
+        if (meta.default != null) {
+            return [true, meta.default];
+        } else if (meta.optional) {
+            return [true, null];
+        }
+
+        throw new ValidationError('Value ' + (path ? `of "${path}" ` : '') + 'is required.', {
+            value,
+            meta,
+            i18n,
+            path,
+        });
+    }
+
+    if (meta.rawValue) return [true, value];
+
+    return [false];
 };
 
 // compatibility

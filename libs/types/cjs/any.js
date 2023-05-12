@@ -9,6 +9,7 @@ Object.defineProperty(exports, "default", {
     }
 });
 const _functions = require("./functions");
+const _types = require("./types");
 const T_ANY = {
     name: "any",
     alias: [
@@ -16,7 +17,11 @@ const T_ANY = {
     ],
     defaultValue: null,
     validate: _functions.everTrue,
-    sanitize: _functions.identity,
+    sanitize: (value, meta, i18n, path)=>{
+        const [isDone, sanitized] = (0, _types.beginSanitize)(value, meta, i18n, path);
+        if (isDone) return sanitized;
+        return value;
+    },
     serialize: (value)=>typeof value === "object" ? JSON.stringify(value) : value
 };
 const _default = T_ANY;

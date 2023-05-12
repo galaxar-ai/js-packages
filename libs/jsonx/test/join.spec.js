@@ -1,6 +1,6 @@
 import Jxs from '../lib';
 
-describe('transformer:join', function () {
+describe('jxs:join', function () {
     it('array', function () {
         let array = ['a', 'b', 'c'];
 

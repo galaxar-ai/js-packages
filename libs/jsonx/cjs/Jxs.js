@@ -9,7 +9,7 @@ Object.defineProperty(exports, "default", {
     }
 });
 const _config = /*#__PURE__*/ _interop_require_default(require("./config"));
-const _validators = /*#__PURE__*/ _interop_require_default(require("./validators"));
+const _transformers = /*#__PURE__*/ _interop_require_default(require("./transformers"));
 function _define_property(obj, key, value) {
     if (key in obj) {
         Object.defineProperty(obj, key, {
@@ -29,16 +29,15 @@ function _interop_require_default(obj) {
     };
 }
 /**
- * JSON Validation Syntax 
+ * JSON eXpression Syntax 
  * @class
- */ class Jvs {
+ */ class Jxs {
     /**
-     * Match the value with expected conditions in JSON expression
-     * @param {object} expected - JSON match expression
-     * @throws ValidationError
-     * @returns {Jvs}
-     */ match(expected) {
-        (0, _validators.default)(this.value, expected);
+     * Evaluate a JSON expression against the value and update the value
+     * @param {object} - JSON operation expression
+     * @returns {Jxs}
+     */ update(jxs) {
+        this.value = (0, _transformers.default)(this.value, jxs);
         return this;
     }
     /**
@@ -47,22 +46,6 @@ function _interop_require_default(obj) {
         this.value = value;
     }
 }
-_define_property(Jvs, "config", _config.default);
-_define_property(Jvs, "match", (value, jvs, options, context)=>{
-    const reason = (0, _validators.default)(value, jvs, {
-        throwError: false,
-        abortEarly: true,
-        plainError: true,
-        ...options
-    }, context);
-    if (reason === true) {
-        return [
-            true
-        ];
-    }
-    return [
-        false,
-        reason
-    ];
-});
-const _default = Jvs;
+_define_property(Jxs, "config", _config.default);
+_define_property(Jxs, "evaluate", _transformers.default);
+const _default = Jxs;

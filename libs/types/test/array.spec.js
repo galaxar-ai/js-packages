@@ -5,8 +5,12 @@ const { array } = Types;
 describe('array', () => {
 
     describe("sanitizeArray", () => {
+        it("should return null for null input (optional)", () => {
+            should.not.exist(array.sanitize(null, { type: "array", optional: true }, {}, "test"));
+        });
+
         it("should return null for null input", () => {
-            should.not.exist(array.sanitize(null, { type: "array" }, {}, "test"));
+            should.throws(() => array.sanitize(null, { type: "array" }, {}, "test"), 'Value of "test" is required.');
         });
 
         it("should return rawValue", () => {

@@ -18,8 +18,8 @@ const _default = {
     defaultValue: 0n,
     validate: (value)=>typeof value === 'bigint',
     sanitize: (value, meta, i18n, path)=>{
-        if (value == null) return null;
-        if (meta.rawValue) return value;
+        const [isDone, sanitized] = (0, _types.beginSanitize)(value, meta, i18n, path);
+        if (isDone) return sanitized;
         const raw = value;
         try {
             value = BigInt(value);

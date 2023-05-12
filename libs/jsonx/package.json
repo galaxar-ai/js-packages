@@ -9,7 +9,7 @@
         "access": "public"
     },
     "scripts": {
-        "test": "mocha --recursive test/**/*.spec.js",
+        "test": "pnpm build && mocha --recursive test/**/*.spec.js",
         "cover": "nyc --reporter=html --reporter=text mocha --recursive test/**/*.spec.js && open ./coverage/index.html",
         "prettier": "prettier --write .",
         "lint": "eslint \"**/*.js\"",
@@ -35,6 +35,14 @@
         "@galaxar/utils": "workspace:*",
         "@galaxar/types": "workspace:*",
         "@galaxar/jsonv": "workspace:*"
+    },
+    "prettier": {
+        "quoteProps": "consistent",
+        "printWidth": 120,
+        "singleQuote": true,
+        "trailingComma": "es5",
+        "tabWidth": 4,
+        "useTabs": false
     },
     "license": "MIT"
 }

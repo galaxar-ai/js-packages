@@ -26,8 +26,8 @@ const T_ARRAY = {
     defaultValue: [],
     validate: (value)=>Array.isArray(value),
     sanitize: (value, meta, i18n, path)=>{
-        if (value == null) return null;
-        if (meta.rawValue) return value;
+        const [isDone, sanitized] = (0, _types.beginSanitize)(value, meta, i18n, path);
+        if (isDone) return sanitized;
         const raw = value;
         if (typeof value === "string") {
             if (meta.csv) {

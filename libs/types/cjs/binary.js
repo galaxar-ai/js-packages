@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 const _errors = require("./errors");
+const _types = require("./types");
 module.exports = {
     name: 'binary',
     alias: [
@@ -12,8 +13,8 @@ module.exports = {
     defaultValue: null,
     validate: (value)=>value instanceof Buffer,
     sanitize: (value, meta, i18n, path)=>{
-        if (value == null) return null;
-        if (meta.rawValue) return value;
+        const [isDone, sanitized] = (0, _types.beginSanitize)(value, meta, i18n, path);
+        if (isDone) return sanitized;
         if (value instanceof Buffer) {
             return value;
         }

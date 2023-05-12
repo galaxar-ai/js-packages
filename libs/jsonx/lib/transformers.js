@@ -1,5 +1,5 @@
 // JSON Expression Syntax (JES)
-import { remap, isPlainObject, get as _get, template, filterNull } from '@galaxar/utils';
+import { remap, isPlainObject, get as _get, template, filterNull, objectToArray } from '@galaxar/utils';
 import { test, OP as v_ops } from '@galaxar/jsonv';
 
 import _size from 'lodash/size';
@@ -53,9 +53,10 @@ const OP_MOD = [t_ops.MOD, BINARY, '$mod', '$remainder'];
 //Collection operators (pure)
 const OP_KEYS = [t_ops.KEYS, UNARY, '$keys'];
 const OP_VALUES = [t_ops.VALUES, UNARY, '$values'];
-const OP_ENTRIES = [t_ops.ENTRIES, UNARY, '$entries'];
-const OP_OBJ_TO_ARRAY = [t_ops.OBJ_TO_ARRAY, UNARY, '$toArray', '$objectToArray'];
+const OP_ENTRIES = [t_ops.ENTRIES, UNARY, '$entries', '$pairs'];
 const OP_FILTER_NULL = [t_ops.FILTER_NULL, UNARY, '$filterNull', '$filterNullValues'];
+
+const OP_OBJ_TO_ARRAY = [t_ops.OBJ_TO_ARRAY, BINARY, '$toArray', '$objectToArray'];
 const OP_PICK = [t_ops.PICK, BINARY, '$pick', '$pickBy', '$filterByKeys']; // filter by key
 const OP_OMIT = [t_ops.OMIT, BINARY, '$omit', '$omitBy'];
 const OP_SLICE = [t_ops.SLICE, BINARY, '$slice', '$limit'];
@@ -84,7 +85,7 @@ const OP_INTERPOLATE = [t_ops.INTERPOLATE, BINARY, '$interpolate', '$template'];
 const matchOptions = { throwError: false, abortEarly: true, asPredicate: true };
 
 config.addTransformerToMap(OP_MATCH, (left, right, context) =>
-    test(left, v_ops.MATCH, right, matchOptions, context)
+    test(left, v_ops.MATCH, right, matchOptions, { ...context, jsonx: transform })
 );
 
 config.addTransformerToMap(OP_SIZE, (left) => _size(left));
@@ -145,7 +146,13 @@ config.addTransformerToMap(OP_MOD, (left, right) => left % right);
 config.addTransformerToMap(OP_KEYS, (left) => _keys(left));
 config.addTransformerToMap(OP_VALUES, (left) => _values(left));
 config.addTransformerToMap(OP_ENTRIES, (left) => _map(left, (value, key) => [key, value]));
-config.addTransformerToMap(OP_OBJ_TO_ARRAY, (left) => _map(left, (v, k) => ({ k, v })));
+config.addTransformerToMap(OP_OBJ_TO_ARRAY, (left, right) => {
+    if (right == null) {
+        return objectToArray(left);
+    }
+
+    return _map(left, (v, k) => transform(v, right, getChildContext(context, left, k, v), true));
+});
 config.addTransformerToMap(OP_FILTER_NULL, (left) => filterNull(left));
 
 config.addTransformerToMap(OP_PICK, (left, right, context) => {
@@ -162,7 +169,7 @@ config.addTransformerToMap(OP_PICK, (left, right, context) => {
     }
 
     return _pickBy(left, (item, key) =>
-        test(key, v_ops.MATCH, right, matchOptions, getChildContext(context, left, key, item))
+        test(key, v_ops.MATCH, right, matchOptions, getChildContext(context, left, key, item, { jsonx: transform }))
     );
 });
 
@@ -180,7 +187,7 @@ config.addTransformerToMap(OP_OMIT, (left, right, context) => {
     }
 
     return _omitBy(left, (item, key) =>
-        test(key, v_ops.MATCH, right, matchOptions, getChildContext(context, left, key, item))
+        test(key, v_ops.MATCH, right, matchOptions, getChildContext(context, left, key, item, { jsonx: transform }))
     );
 });
 
@@ -245,9 +252,7 @@ config.addTransformerToMap(OP_FILTER, (left, right, context) => {
     }
 
     return _filter(left, (value, key) =>
-        test(value, v_ops.MATCH, right, matchOptions, {
-            path: MSG.makePath(key, context.path),
-        })
+        test(value, v_ops.MATCH, right, matchOptions, getChildContext(context, left, key, value, { jsonx: transform }))
     );
 });
 config.addTransformerToMap(OP_REMAP, (left, right) => {
@@ -329,9 +334,9 @@ config.addTransformerToMap(OP_ASSIGN, (left, right, context) => {
     _each(rightValue, (value, key) => {
         if (value === undefined) {
             toRemove.push(key);
-        }   
+        }
     });
-      
+
     const merged = { ...left, ...rightValue };
 
     return toRemove.length > 0 ? _omit(merged, toRemove) : merged;

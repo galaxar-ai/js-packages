@@ -1,6 +1,6 @@
 import Jxs from '../lib';
 
-describe('transformer:addItem', function () {
+describe('jxs:addItem', function () {
     it('object', function () {
         let obj = {
             'id': 1,

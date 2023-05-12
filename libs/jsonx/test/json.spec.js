@@ -1,6 +1,6 @@
 import Jxs from '../lib';
 
-describe('transformer:json', function () {
+describe('jxs:json', function () {
     it('obj', function () {
         let obj = {
             'id': 1,
@@ -41,6 +41,16 @@ describe('transformer:json', function () {
         //console.log(transformed)
         transformed.should.be.eql(
             {one :1}
+        );
+    });
+
+    it('string', function () {
+        let json = 'fjiefjoa';
+        
+        let transformed = Jxs.evaluate(json, '$json');
+        //console.log(transformed)
+        transformed.should.be.eql(
+            '"fjiefjoa"'
         );
     });
 });

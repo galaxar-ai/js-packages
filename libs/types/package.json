@@ -9,8 +9,8 @@
         "access": "public"
     },
     "scripts": {
-        "test": "mocha --recursive ./__test__/*.spec.js",
-        "cover": "nyc --reporter=html --reporter=text mocha --recursive ./__test__/*.spec.js && open ./coverage/index.html",
+        "test": "pnpm build && mocha --recursive ./test/*.spec.js",
+        "cover": "nyc --reporter=html --reporter=text mocha --recursive ./test/*.spec.js && open ./coverage/index.html",
         "prettier": "prettier --write .",
         "lint": "eslint \"**/*.js\"",
         "lint-fix": "eslint \"**/*.js\" --fix",
@@ -27,12 +27,20 @@
         "exclude": [
             ".*",
             "cjs",
-            "__test__"
+            "test"
         ]
     },
     "keywords": [
         "galaxar",
         "types"
     ],
+    "prettier": {
+        "quoteProps": "consistent",
+        "printWidth": 120,
+        "singleQuote": true,
+        "trailingComma": "es5",
+        "tabWidth": 4,
+        "useTabs": false
+    },
     "license": "MIT"
 }

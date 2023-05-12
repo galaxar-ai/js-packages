@@ -1,6 +1,6 @@
 import Jxs from '../lib';
 
-describe('transformer:filterNull', function () {   
+describe('jxs:filterNull', function () {   
 
     it('bvt', function () {
         let obj = {

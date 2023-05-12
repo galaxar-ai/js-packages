@@ -1,14 +1,8 @@
 import Jxs from '../lib';
 
-describe('transformer:castArray', function () {
+describe('jxs:castArray', function () {
     it('obj', function () {
-        let obj = {
-            'id': 1,
-            'user': 100,
-            'agency': 1,
-            ':user': { email: 'email1', other: 'any' },
-            ':agency': { name: 'agency1', other: 'any' },
-        };
+        let obj = { key: 'any object' };
 
         let transformed = Jxs.evaluate(obj, '$castArray');
         //console.log(transformed)

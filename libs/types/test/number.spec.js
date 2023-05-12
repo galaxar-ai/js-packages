@@ -17,7 +17,7 @@ describe("number", () => {
 
     describe("sanitize", () => {
         it("should return null for null input", () => {
-            const result = number.sanitize(null, {}, {}, "");
+            const result = number.sanitize(null, {optional: true}, {}, "");
             should.equal(result, null);
         });
 

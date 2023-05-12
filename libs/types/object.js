@@ -1,6 +1,6 @@
 import _each from 'lodash/each';
 import { ValidationError } from './errors';
-import { Types, safeJsonStringify } from './types';
+import { Types, safeJsonStringify, beginSanitize } from './types';
 import { makePath } from '@galaxar/utils/pathUtils';
 import isPlainObject from '@galaxar/utils/isPlainObject';
 
@@ -17,8 +17,8 @@ export default {
     defaultValue: {},
     validate: value =>isPlainObject(value),
     sanitize: (value, meta, i18n, path) => {
-        if (value == null) return null;
-        if (meta.rawValue) return value;
+        const [ isDone, sanitized ] = beginSanitize(value, meta, i18n, path);
+        if (isDone) return sanitized;
 
         const raw = value;
         const type = typeof value;
@@ -47,7 +47,7 @@ export default {
             const newValue = {};
             _each(schema, (validationObject, fieldName) => {
                 const fieldValue = value[fieldName];
-                newValue[fieldName] = Types.sanitize(fieldValue, validationObject, i18n, makePath(path, fieldName));
+                newValue[fieldName] = Types.sanitize(fieldValue, validationObject, i18n, makePath(path, fieldName));                
             });
 
             if (meta.keepUnsanitized) {

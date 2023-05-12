@@ -16,7 +16,7 @@
         ]
     },
     "scripts": {
-        "test": "mocha --recursive ./__test__/*.spec.js",
+        "test": "pnpm build && mocha --recursive ./__test__/*.spec.js",
         "benchmark": "mocha --recursive test/*.spec.js",
         "cover": "nyc --reporter=html --reporter=text mocha --recursive ./__test__/*.spec.js && open ./coverage/index.html",
         "prettier": "prettier --write .",

@@ -1,5 +1,5 @@
 import { ValidationError } from "./errors";
-import { Types, safeJsonStringify, getStringifier } from "./types";
+import { Types, safeJsonStringify, getStringifier, beginSanitize } from "./types";
 
 import csvLineParse from "@galaxar/utils/csvLineParse";
 import arrayToCsv from "@galaxar/utils/arrayToCsv";
@@ -11,8 +11,8 @@ const T_ARRAY = {
     defaultValue: [],
     validate: value => Array.isArray(value),
     sanitize: (value, meta, i18n, path) => {
-        if (value == null) return null;
-        if (meta.rawValue) return value;
+        const [ isDone, sanitized ] = beginSanitize(value, meta, i18n, path);
+        if (isDone) return sanitized;
 
         const raw = value;
 

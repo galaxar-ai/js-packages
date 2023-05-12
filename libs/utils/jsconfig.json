@@ -2,7 +2,7 @@
     "compilerOptions": {
         "baseUrl": ".",   
         "module": "ES2022",     
-        "target": "ES2023"
+        "target": "ES2022"
     },
     "exclude": [
         "node_modules"

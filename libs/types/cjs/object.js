@@ -36,8 +36,8 @@ const _default = {
     defaultValue: {},
     validate: (value)=>(0, _isPlainObject.default)(value),
     sanitize: (value, meta, i18n, path)=>{
-        if (value == null) return null;
-        if (meta.rawValue) return value;
+        const [isDone, sanitized] = (0, _types.beginSanitize)(value, meta, i18n, path);
+        if (isDone) return sanitized;
         const raw = value;
         const type = typeof value;
         if (type === 'string') {

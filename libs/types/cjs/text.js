@@ -10,6 +10,7 @@ Object.defineProperty(exports, "default", {
 });
 const _functions = require("./functions");
 const _errors = require("./errors");
+const _types = require("./types");
 const _default = {
     name: 'text',
     alias: [
@@ -18,11 +19,11 @@ const _default = {
     defaultValue: '',
     validate: (value)=>typeof value === 'string',
     sanitize: (value, meta, i18n, path)=>{
-        if (value == null) return null;
-        if (meta.rawValue) return value;
         if (value === '' && meta.emptyAsNull) {
-            return null;
+            value = null;
         }
+        const [isDone, sanitized] = (0, _types.beginSanitize)(value, meta, i18n, path);
+        if (isDone) return sanitized;
         if (typeof value !== 'string') {
             throw new _errors.ValidationError('Invalid text value.', {
                 value,

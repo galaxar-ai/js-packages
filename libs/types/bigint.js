@@ -1,5 +1,5 @@
 import { ValidationError } from './errors';
-import { Plugins } from './types';
+import { Plugins, beginSanitize } from './types';
 
 export default {
     name: 'bigint',
@@ -7,8 +7,8 @@ export default {
     defaultValue: 0n,
     validate: value => typeof value === 'bigint',
     sanitize: (value, meta, i18n, path) => {
-        if (value == null) return null;
-        if (meta.rawValue) return value;
+        const [ isDone, sanitized ] = beginSanitize(value, meta, i18n, path);
+        if (isDone) return sanitized;
 
         const raw = value;
         try {

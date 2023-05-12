@@ -12,6 +12,9 @@ _export(exports, {
     getChildContext: function() {
         return getChildContext;
     },
+    contextVarKeys: function() {
+        return contextVarKeys;
+    },
     messages: function() {
         return messages;
     },
@@ -30,13 +33,20 @@ const formatName = (name, left, context, custom)=>{
 const formatKey = (key, hasPrefix)=>Number.isInteger(key) ? `[${key}]` : hasPrefix ? '.' + key : key;
 const makePath = (key, prefix)=>prefix != null ? `${prefix}${formatKey(key, true)}` : formatKey(key, false);
 const formatPath = (prefix)=>prefix ? '[' + prefix + ']' : '<ROOT>';
-const getChildContext = (context, currentValue, childKey, childValue)=>({
+const getChildContext = (context, currentValue, childKey, childValue, extra)=>({
         ...context,
+        ...extra,
         path: makePath(childKey, context.path),
         $$PARENT: currentValue,
         $$CURRENT: childValue,
         $$KEY: childKey
     });
+const contextVarKeys = new Set([
+    '$$ROOT',
+    '$$PARENT',
+    '$$CURRENT',
+    '$$KEY'
+]);
 const messages = {
     formatName,
     formatKey,
@@ -46,6 +56,7 @@ const messages = {
     SYNTAX_INVALID_EXPR: (expr)=>`Invalid expression syntax: ${JSON.stringify(expr)}`,
     SYNTAX_INVALID_OP: (op, prefix)=>`Invalid operator "${op}" at ${formatPath(prefix)}.`,
     SYNTAX_NUMBER_AS_EXPR: 'Number value cannot be used as a transformer expression.',
+    SYNTAX_INVALID_CONTEXT: (key)=>`Invalid context variable "${key}".`,
     INVALID_TRANSFORMER_OP: (op)=>`Invalid transformer operator "${op}".`,
     UNSUPPORTED_VALIDATION_OP: (op, prefix)=>`Unsupported validation operator "${op}" at ${formatPath(prefix)}.`,
     INVALID_COLLECTION_OP: (op)=>`Invalid collection operator "${op}".`,

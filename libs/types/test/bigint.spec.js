@@ -22,7 +22,7 @@ describe("bigint", () => {
 
     describe("sanitize", () => {
         it("should return null for null input", () => {
-            const result = bigint.sanitize(null, {}, {}, "");
+            const result = bigint.sanitize(null, { optional: true}, {}, "");
             should.equal(result, null);
         });
 

@@ -1,6 +1,6 @@
 // JSON Validation Syntax
 import { Types, Primitives } from '@galaxar/types';
-import { isPlainObject } from '@galaxar/utils';
+import { isPlainObject, get as _get } from '@galaxar/utils';
 
 import _isEqual from 'lodash/isEqual';
 import _has from 'lodash/has';
@@ -10,14 +10,60 @@ import _castArray from 'lodash/castArray';
 import JsvError from './JvsError';
 import validate, { test } from './validate';
 
-import config from './config';
+import config, { contextVarKeys } from './config';
 
 import ops from './validateOperators';
 
 const MSG = config.messages;
 
+function evaluateWithContext(jxs, context) {
+    if (jxs == null) {
+        return null;
+    }
+
+    if (context == null) {
+        context = {};
+    }
+
+    const type = typeof jxs;
+
+    if (type === 'string') {
+        if (jxs.startsWith('$$')) {
+            //get from context
+            const pos = jxs.indexOf('.');
+            if (pos === -1) {
+                if (!contextVarKeys.has(jxs)) {
+                    throw new Error(MSG.SYNTAX_INVALID_CONTEXT(jxs));
+                }
+                return context[jxs];
+            }
+
+            const key = jxs.substring(0, pos);
+            if (!contextVarKeys.has(key)) {
+                throw new Error(MSG.SYNTAX_INVALID_CONTEXT(key));
+            }
+
+            return _get(context, jxs);
+        }
+
+        return jxs;
+    }
+
+    if (Array.isArray(jxs)) {
+        return jxs.map((item) => evaluateWithContext(item, context));
+    }
+
+    if (type === 'object') {
+        return _mapValues(jxs, (item) => evaluateWithContext(item, context));
+    }
+
+    return jxs;
+}
+
 const processRightValue = (right, context) =>
-    context.jsonx && ((typeof right === 'string' && right[0] === '$') || isPlainObject(right)) ? context.jsonx(undefined, right, context, true) : right;
+    context.jsonx && ((typeof right === 'string' && right[0] === '$') || isPlainObject(right))
+        ? context.jsonx(undefined, right, context, true)
+        : evaluateWithContext(right, context);
 
 //Validators [ name, ...operator alias ]
 const OP_EQUAL = [ops.EQUAL, '$eq', '$eql', '$equal', '$being'];
@@ -227,7 +273,7 @@ config.addValidatorToMap(OP_ANY_ONE_MATCH, (left, right, options, context) => {
 config.addValidatorToMap(OP_TYPE, (left, right, options, context) => {
     if (typeof right !== 'string') {
         throw new Error(MSG.OPERAND_NOT_STRING(ops.TYPE));
-    }    
+    }
 
     if (!Primitives.has(right)) {
         throw new Error(MSG.UNSUPPORTED_TYPE(right));

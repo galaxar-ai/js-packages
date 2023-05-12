@@ -20,7 +20,7 @@ describe("datetime", () => {
 
     describe("sanitize", () => {
         it("should return null for null input", () => {
-            const result = datetime.sanitize(null, {}, {}, "");
+            const result = datetime.sanitize(null, {optional: true}, {}, "");
             should.equal(result, null);
         });
 

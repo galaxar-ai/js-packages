@@ -1,5 +1,5 @@
 import Jxs from '../lib';
-const { Types } = require('@genx/data');
+const { Types } = require('@galaxar/types');
 
 describe('Jxs:extension', function () {  
     it('sanitize', function () {
