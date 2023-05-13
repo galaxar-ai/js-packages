@@ -6,6 +6,7 @@ import _isEqual from 'lodash/isEqual';
 import _has from 'lodash/has';
 import _size from 'lodash/size';
 import _castArray from 'lodash/castArray';
+import _mapValues from 'lodash/mapValues';
 
 import JsvError from './JvsError';
 import validate, { test } from './validate';
@@ -16,8 +17,8 @@ import ops from './validateOperators';
 
 const MSG = config.messages;
 
-function evaluateWithContext(jxs, context) {
-    if (jxs == null) {
+function evaluateWithContext(value, context) {
+    if (value == null) {
         return null;
     }
 
@@ -25,39 +26,39 @@ function evaluateWithContext(jxs, context) {
         context = {};
     }
 
-    const type = typeof jxs;
+    const type = typeof value;
 
     if (type === 'string') {
-        if (jxs.startsWith('$$')) {
+        if (value.startsWith('$$')) {
             //get from context
-            const pos = jxs.indexOf('.');
+            const pos = value.indexOf('.');
             if (pos === -1) {
-                if (!contextVarKeys.has(jxs)) {
-                    throw new Error(MSG.SYNTAX_INVALID_CONTEXT(jxs));
+                if (!contextVarKeys.has(value)) {
+                    throw new Error(MSG.SYNTAX_INVALID_CONTEXT(value));
                 }
-                return context[jxs];
+                return context[value];
             }
 
-            const key = jxs.substring(0, pos);
+            const key = value.substring(0, pos);
             if (!contextVarKeys.has(key)) {
                 throw new Error(MSG.SYNTAX_INVALID_CONTEXT(key));
             }
 
-            return _get(context, jxs);
+            return _get(context, value);
         }
 
-        return jxs;
+        return value;
     }
 
-    if (Array.isArray(jxs)) {
-        return jxs.map((item) => evaluateWithContext(item, context));
+    if (Array.isArray(value)) {
+        return value.map((item) => evaluateWithContext(item, context));
     }
 
     if (type === 'object') {
-        return _mapValues(jxs, (item) => evaluateWithContext(item, context));
+        return _mapValues(value, (item) => evaluateWithContext(item, context));
     }
 
-    return jxs;
+    return value;
 }
 
 const processRightValue = (right, context) =>
@@ -163,6 +164,7 @@ config.addValidatorToMap(OP_MATCH, (left, right, options, context) => {
 
         right.every((rule) => {
             const reason = validate(left, rule, { ...options, asPredicate: false }, context);
+            
             if (reason !== true) {
                 errors.push(..._castArray(reason));
 
@@ -326,7 +328,7 @@ config.addValidatorToMap(OP_SAME_AS, (left, right, options, context) => {
         throw new Error(MSG.OPERAND_NOT_STRING(ops.OP_SAME_AS));
     }
 
-    return left === context.$$PARENT[right];
+    return left === _get(context.$$PARENT, right);
 });
 
 export default validate;

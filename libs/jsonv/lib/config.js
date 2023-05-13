@@ -1,9 +1,6 @@
 const validatorHandlers = {};
 const mapOfValidators = {};
 
-const transformerHandlers = {};
-const mapOfTransformers = {};
-
 const formatName = (name, left, context, custom) => {
     const fullName = name == null ? context.path : makePath(name, context?.path);
     return fullName == null
@@ -101,29 +98,6 @@ const config = {
 
         validatorHandlers[tag] = handler;
     },
-    addTransformerToMap: (tokens, handler) => {
-        const [tag, isUnary, ...alias] = tokens;
-
-        if (typeof isUnary !== 'boolean') {
-            throw new Error('The second param should be a boolean value.');
-        }
-
-        alias.forEach((op) => {
-            if (op in mapOfTransformers) {
-                throw new Error(`Duplicate transformer alias: "${op}" for operator "${tag}".`);
-            }
-            mapOfTransformers[op] = [tag, isUnary];
-        });
-
-        if (tag in transformerHandlers) {
-            throw new Error(`Duplicate operator name: "${tag}".`);
-        }
-
-        transformerHandlers[tag] = handler;
-    },
-    overrideTransformer: (tag, handler) => {
-        transformerHandlers[tag] = handler;
-    },
     overrideValidator: (tag, handler) => {
         validatorHandlers[tag] = handler;
     },
@@ -131,8 +105,6 @@ const config = {
     getValidatorTag: (op) => mapOfValidators[op],
     getValidator: (tag) => validatorHandlers[tag],
 
-    getTransformerTagAndType: (op) => mapOfTransformers[op],
-    getTransformer: (tag) => transformerHandlers[tag],
     loadMessages: (locale, moreMessages) => {
         messagesCache[locale] = moreMessages;
         return config;

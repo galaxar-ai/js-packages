@@ -10,9 +10,6 @@ function _export(target, all) {
     });
 }
 _export(exports, {
-    invalidType: function() {
-        return invalidType;
-    },
     test: function() {
         return test;
     },
@@ -79,13 +76,6 @@ function getUnmatchedExplanation(op, leftValue, rightValue, context) {
     const getter = MSG.validationErrors[op];
     return getter(context.name, leftValue, rightValue, context);
 }
-function invalidType(value, type, options, context) {
-    const reason = MSG.validationErrors[_validateOperators.default.TYPE](context.name, value, type, context);
-    if (options.throwError) {
-        throw new _JvsError.default(reason, value, context.path);
-    }
-    return options.plainError ? reason : new _JvsError.default(reason, value, context.path);
-}
 function test(left, op, right, options, context) {
     const handler = _config.default.getValidator(op);
     if (!handler) {
@@ -104,6 +94,9 @@ function test(left, op, right, options, context) {
     throwError: true,
     abortEarly: true
 }, context = {}) {
+    if (jvs == null) {
+        return true;
+    }
     const type = typeof jvs;
     if (type === 'string') {
         if (jvs.length === 0 || jvs[0] !== '$') {
@@ -119,11 +112,15 @@ function test(left, op, right, options, context) {
         }, options, context);
     }
     const { throwError , abortEarly , asPredicate , plainError  } = options;
-    if (jvs == null) {
-        return true;
+    if (Array.isArray(jvs)) {
+        return validate(actual, {
+            $match: jvs
+        }, options, context);
     }
     if (type !== 'object') {
-        throw new Error(MSG.SYNTAX_INVALID_EXPR(jvs));
+        return validate(actual, {
+            $equal: jvs
+        }, options, context);
     }
     let { path  } = context;
     const errors = [];
@@ -146,11 +143,11 @@ function test(left, op, right, options, context) {
             _context = context;
         } else {
             const fieldName = operator;
-            let complexKey = fieldName.indexOf('.') !== -1;
+            let isComplexKey = fieldName.indexOf('.') !== -1;
             //pick a field and then apply manipulation
-            left = actual != null ? complexKey ? (0, _utils.get)(actual, fieldName) : actual[fieldName] : undefined;
+            left = actual != null ? isComplexKey ? (0, _utils.get)(actual, fieldName) : actual[fieldName] : undefined;
             _context = (0, _config.getChildContext)(context, actual, fieldName, left);
-            if (opValue != null && (0, _utils.isPlainObject)(opValue)) {
+            if (opValue != null && typeof opValue === 'object') {
                 op = _validateOperators.default.MATCH;
             } else {
                 op = _validateOperators.default.EQUAL;

@@ -15,6 +15,7 @@ const _isEqual = /*#__PURE__*/ _interop_require_default(require("lodash/isEqual"
 const _has = /*#__PURE__*/ _interop_require_default(require("lodash/has"));
 const _size = /*#__PURE__*/ _interop_require_default(require("lodash/size"));
 const _castArray = /*#__PURE__*/ _interop_require_default(require("lodash/castArray"));
+const _mapValues = /*#__PURE__*/ _interop_require_default(require("lodash/mapValues"));
 const _JvsError = /*#__PURE__*/ _interop_require_default(require("./JvsError"));
 const _validate = /*#__PURE__*/ _interop_require_wildcard(require("./validate"));
 const _config = /*#__PURE__*/ _interop_require_wildcard(require("./config"));
@@ -64,39 +65,39 @@ function _interop_require_wildcard(obj, nodeInterop) {
     return newObj;
 }
 const MSG = _config.default.messages;
-function evaluateWithContext(jxs, context) {
-    if (jxs == null) {
+function evaluateWithContext(value, context) {
+    if (value == null) {
         return null;
     }
     if (context == null) {
         context = {};
     }
-    const type = typeof jxs;
+    const type = typeof value;
     if (type === 'string') {
-        if (jxs.startsWith('$$')) {
+        if (value.startsWith('$$')) {
             //get from context
-            const pos = jxs.indexOf('.');
+            const pos = value.indexOf('.');
             if (pos === -1) {
-                if (!_config.contextVarKeys.has(jxs)) {
-                    throw new Error(MSG.SYNTAX_INVALID_CONTEXT(jxs));
+                if (!_config.contextVarKeys.has(value)) {
+                    throw new Error(MSG.SYNTAX_INVALID_CONTEXT(value));
                 }
-                return context[jxs];
+                return context[value];
             }
-            const key = jxs.substring(0, pos);
+            const key = value.substring(0, pos);
             if (!_config.contextVarKeys.has(key)) {
                 throw new Error(MSG.SYNTAX_INVALID_CONTEXT(key));
             }
-            return (0, _utils.get)(context, jxs);
+            return (0, _utils.get)(context, value);
         }
-        return jxs;
+        return value;
     }
-    if (Array.isArray(jxs)) {
-        return jxs.map((item)=>evaluateWithContext(item, context));
+    if (Array.isArray(value)) {
+        return value.map((item)=>evaluateWithContext(item, context));
     }
     if (type === 'object') {
-        return _mapValues(jxs, (item)=>evaluateWithContext(item, context));
+        return (0, _mapValues.default)(value, (item)=>evaluateWithContext(item, context));
     }
-    return jxs;
+    return value;
 }
 const processRightValue = (right, context)=>context.jsonx && (typeof right === 'string' && right[0] === '$' || (0, _utils.isPlainObject)(right)) ? context.jsonx(undefined, right, context, true) : evaluateWithContext(right, context);
 //Validators [ name, ...operator alias ]
@@ -404,6 +405,7 @@ _config.default.addValidatorToMap(OP_SAME_AS, (left, right, options, context)=>{
     if (typeof right !== 'string') {
         throw new Error(MSG.OPERAND_NOT_STRING(_validateOperators.default.OP_SAME_AS));
     }
-    return left === context.$$PARENT[right];
+    console.log(left, context, context.$$PARENT[right]);
+    return left === (0, _utils.get)(context.$$PARENT, right);
 });
 const _default = _validate.default;

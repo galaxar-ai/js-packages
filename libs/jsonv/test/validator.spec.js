@@ -49,8 +49,8 @@ describe('jsv:validator', function () {
         };
 
         Jsv.match(obj, {
-            key1: [1, 2, 3],
-            key2: [1],
+            key1: { $eq: [1, 2, 3] },
+            key2: { $eq: [1] },
         })[0].should.be.ok();
 
         const result = Jsv.match(obj, {
@@ -81,6 +81,40 @@ describe('jsv:validator', function () {
         Jsv.match(obj, {
             c: { $required: true },
         }).should.be.eql([false, 'c is required.']);
+    });
+
+    it('not', function () {
+        let obj = {
+            a: 10,
+            b: 20
+        };
+
+        Jsv.match(obj, {
+            a: { $not: { $eq: 20 } }
+        }).should.be.eql([true]);
+
+        Jsv.match(obj, {
+            a: { $eq: 10 }
+        }).should.be.eql([true]);
+
+        const result = Jsv.match(obj, {
+            a: { $eq: 20 }
+        });
+
+        result[0].should.be.not.ok();
+        result[1].should.be.match(/ must be 20/);
+    });
+
+    it('size', function () {
+        let array =[10, 20, 30];
+
+        Jsv.match(array, {
+            $size: 3
+        }).should.be.eql([true]);
+
+        Jsv.match(array, {
+            $size: 2
+        }).should.be.eql([false, 'The value must be 2.']);
     });
 
     it('mixed', function () {
