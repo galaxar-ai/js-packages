@@ -1,10 +1,11 @@
-import config from '../lib/config';
-import vops from '../lib/validateOperators';
+import { namingFactory } from '../utils';
+import vops from '../validateOperators';
 
-const { formatName } = config.messages;
+const nameOfValue = () => '目标值';
+const formatName = namingFactory(nameOfValue);
 
 const messages = {
-    nameOfValue: () => '目标值',
+    formatName,
     validationErrors: {
         [vops.EQUAL]: (name, left, right, context) =>
             `${formatName(name, left, context)} 的值必须为 ${JSON.stringify(right)}。`,

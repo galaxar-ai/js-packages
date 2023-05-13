@@ -14,9 +14,9 @@ Object.defineProperty(exports, "default", {
         return _default;
     }
 });
-var sleep_ = function(ms) {
-    return new Promise(function(resolve /*, reject*/ ) {
+const sleep_ = (ms)=>new Promise((resolve /*, reject*/ )=>{
         setTimeout(resolve, ms);
     });
-};
-var _default = sleep_;
+const _default = sleep_;
+
+//# sourceMappingURL=sleep_.js.map

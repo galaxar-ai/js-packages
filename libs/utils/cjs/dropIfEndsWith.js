@@ -14,7 +14,7 @@ Object.defineProperty(exports, "default", {
         return _default;
     }
 });
-var dropIfEndsWith = function(str, ending) {
-    return str && str.endsWith(ending) ? str.substring(0, str.length - ending.length) : str;
-};
-var _default = dropIfEndsWith;
+const dropIfEndsWith = (str, ending)=>str && str.endsWith(ending) ? str.substring(0, str.length - ending.length) : str;
+const _default = dropIfEndsWith;
+
+//# sourceMappingURL=dropIfEndsWith.js.map

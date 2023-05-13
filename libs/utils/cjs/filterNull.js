@@ -8,18 +8,18 @@ Object.defineProperty(exports, "default", {
         return _default;
     }
 });
-var _reduce = /*#__PURE__*/ _interop_require_default(require("lodash/reduce"));
+const _reduce = /*#__PURE__*/ _interop_require_default(require("lodash/reduce"));
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
     };
 }
-var filterNull = function(obj) {
-    return (0, _reduce.default)(obj, function(result, v, k) {
+const filterNull = (obj)=>(0, _reduce.default)(obj, (result, v, k)=>{
         if (v != null) {
             result[k] = v;
         }
         return result;
     }, {});
-};
-var _default = filterNull;
+const _default = filterNull;
+
+//# sourceMappingURL=filterNull.js.map

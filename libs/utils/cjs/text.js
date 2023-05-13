@@ -1,21 +1,5 @@
 /**
  * @module text
- * @borrows string.quote as quote
- * @borrows string.unquote as unquote
- * @borrows string.isQuoted as isQuoted
- * @borrows string.isWrappedWith as isWrappedWith
- * @borrows string.bin2Hex as bin2Hex
- * @borrows string.compile as compile
- * @borrows string.template as template
- * @borrows string.replaceAll as replaceAll
- * @borrows string.dropIfEndsWith as dropIfEndsWith
- * @borrows string.dropIfStartsWith as dropIfStartsWith
- * @borrows string.ensureEndsWith as ensureEndsWith
- * @borrows string.ensureStartsWith as ensureStartsWith
- * @borrows string.simpleCsvParser as simpleCsvParser
- * @borrows string.csvLineParse as csvLineParse
- * @borrows string.trimRight as trimRight
- * @borrows string.trimLeft as trimLeft
  */ "use strict";
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -42,6 +26,12 @@ _export(exports, {
     bin2Hex: function() {
         return _bin2Hex.default;
     },
+    base64Encode: function() {
+        return _base64Encode.default;
+    },
+    base64Decode: function() {
+        return _base64Decode.default;
+    },
     compile: function() {
         return _compile.default;
     },
@@ -63,36 +53,44 @@ _export(exports, {
     ensureStartsWith: function() {
         return _ensureStartsWith.default;
     },
-    simpleCsvParser: function() {
-        return _simpleCsvParser.default;
-    },
     csvLineParse: function() {
-        return _simpleCsvParser.default;
-    },
-    trimRight: function() {
-        return _trimRight.default;
-    },
-    trimLeft: function() {
-        return _trimLeft.default;
+        return _csvLineParse.default;
     }
 });
-var _quote = /*#__PURE__*/ _interop_require_default(require("./quote"));
-var _unquote = /*#__PURE__*/ _interop_require_default(require("./unquote"));
-var _isQuoted = /*#__PURE__*/ _interop_require_default(require("./isQuoted"));
-var _isWrappedWith = /*#__PURE__*/ _interop_require_default(require("./isWrappedWith"));
-var _bin2Hex = /*#__PURE__*/ _interop_require_default(require("./bin2Hex"));
-var _compile = /*#__PURE__*/ _interop_require_default(require("./compile"));
-var _template = /*#__PURE__*/ _interop_require_default(require("./template"));
-var _replaceAll = /*#__PURE__*/ _interop_require_default(require("./replaceAll"));
-var _dropIfEndsWith = /*#__PURE__*/ _interop_require_default(require("./dropIfEndsWith"));
-var _dropIfStartsWith = /*#__PURE__*/ _interop_require_default(require("./dropIfStartsWith"));
-var _ensureEndsWith = /*#__PURE__*/ _interop_require_default(require("./ensureEndsWith"));
-var _ensureStartsWith = /*#__PURE__*/ _interop_require_default(require("./ensureStartsWith"));
-var _simpleCsvParser = /*#__PURE__*/ _interop_require_default(require("./simpleCsvParser"));
-var _trimRight = /*#__PURE__*/ _interop_require_default(require("./trimRight"));
-var _trimLeft = /*#__PURE__*/ _interop_require_default(require("./trimLeft"));
+const _quote = /*#__PURE__*/ _interop_require_default(require("./quote"));
+const _unquote = /*#__PURE__*/ _interop_require_default(require("./unquote"));
+const _isQuoted = /*#__PURE__*/ _interop_require_default(require("./isQuoted"));
+const _isWrappedWith = /*#__PURE__*/ _interop_require_default(require("./isWrappedWith"));
+const _bin2Hex = /*#__PURE__*/ _interop_require_default(require("./bin2Hex"));
+const _base64Encode = /*#__PURE__*/ _interop_require_default(require("./base64Encode"));
+const _base64Decode = /*#__PURE__*/ _interop_require_default(require("./base64Decode"));
+const _compile = /*#__PURE__*/ _interop_require_default(require("./compile"));
+const _template = /*#__PURE__*/ _interop_require_default(require("./template"));
+const _replaceAll = /*#__PURE__*/ _interop_require_default(require("./replaceAll"));
+const _dropIfEndsWith = /*#__PURE__*/ _interop_require_default(require("./dropIfEndsWith"));
+const _dropIfStartsWith = /*#__PURE__*/ _interop_require_default(require("./dropIfStartsWith"));
+const _ensureEndsWith = /*#__PURE__*/ _interop_require_default(require("./ensureEndsWith"));
+const _ensureStartsWith = /*#__PURE__*/ _interop_require_default(require("./ensureStartsWith"));
+const _csvLineParse = /*#__PURE__*/ _interop_require_default(require("./csvLineParse"));
+_export_star(require("./trim"), exports);
+_export_star(require("./padding"), exports);
+function _export_star(from, to) {
+    Object.keys(from).forEach(function(k) {
+        if (k !== "default" && !Object.prototype.hasOwnProperty.call(to, k)) {
+            Object.defineProperty(to, k, {
+                enumerable: true,
+                get: function() {
+                    return from[k];
+                }
+            });
+        }
+    });
+    return from;
+}
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
     };
 }
+
+//# sourceMappingURL=text.js.map

@@ -25,3 +25,5 @@ const T_ANY = {
     serialize: (value)=>typeof value === "object" ? JSON.stringify(value) : value
 };
 const _default = T_ANY;
+
+//# sourceMappingURL=any.js.map

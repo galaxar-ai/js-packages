@@ -13,9 +13,11 @@ Object.defineProperty(exports, "default", {
         return _camelCase.default;
     }
 });
-var _camelCase = /*#__PURE__*/ _interop_require_default(require("lodash/camelCase"));
+const _camelCase = /*#__PURE__*/ _interop_require_default(require("lodash/camelCase"));
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
     };
 }
+
+//# sourceMappingURL=camelCase.js.map

@@ -13,9 +13,11 @@ Object.defineProperty(exports, "default", {
         return _snakeCase.default;
     }
 });
-var _snakeCase = /*#__PURE__*/ _interop_require_default(require("lodash/snakeCase"));
+const _snakeCase = /*#__PURE__*/ _interop_require_default(require("lodash/snakeCase"));
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
     };
 }
+
+//# sourceMappingURL=snakeCase.js.map

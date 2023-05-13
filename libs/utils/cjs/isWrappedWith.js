@@ -14,7 +14,7 @@ Object.defineProperty(exports, "default", {
         return _default;
     }
 });
-var isWrappedWith = function(s, q) {
-    return s && q && s.length > q.length && s.startsWith(q) && s.endsWith(q);
-};
-var _default = isWrappedWith;
+const isWrappedWith = (s, q)=>s && q && s.length > q.length && s.startsWith(q) && s.endsWith(q);
+const _default = isWrappedWith;
+
+//# sourceMappingURL=isWrappedWith.js.map

@@ -107,6 +107,8 @@ function validate(actual, jvs, options = { throwError: true, abortEarly: true },
 
             _context = getChildContext(context, actual, fieldName, left);
 
+            console.log('left', { left, actual, fieldName, opValue });
+
             if (opValue != null && typeof opValue === 'object') {
                 op = ops.MATCH;
             } else {

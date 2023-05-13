@@ -14,7 +14,7 @@ Object.defineProperty(exports, "default", {
         return _default;
     }
 });
-var isPlainObject = function(any) {
-    return any != null && (any.constructor === Object || typeof any === "object" && Object.getPrototypeOf(any) === null);
-};
-var _default = isPlainObject;
+const isPlainObject = (any)=>any != null && (any.constructor === Object || typeof any === 'object' && Object.getPrototypeOf(any) === null);
+const _default = isPlainObject;
+
+//# sourceMappingURL=isPlainObject.js.map

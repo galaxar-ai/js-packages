@@ -14,12 +14,12 @@ Object.defineProperty(exports, "default", {
     }
 });
 function objectToQueryString(obj, excludeNullValue) {
-    var parts = [];
-    for(var k in obj){
-        var v = obj[k];
-        var part = void 0;
+    let parts = [];
+    for(let k in obj){
+        const v = obj[k];
+        let part;
         if (v != null) {
-            part = encodeURIComponent(k) + "=" + encodeURIComponent(v);
+            part = encodeURIComponent(k) + '=' + encodeURIComponent(v);
         } else if (excludeNullValue) {
             continue;
         } else {
@@ -27,6 +27,8 @@ function objectToQueryString(obj, excludeNullValue) {
         }
         parts.push(part);
     }
-    return parts.join("&");
+    return parts.join('&');
 }
-var _default = objectToQueryString;
+const _default = objectToQueryString;
+
+//# sourceMappingURL=urlObjectToQueryString.js.map

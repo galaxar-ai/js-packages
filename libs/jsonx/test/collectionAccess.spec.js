@@ -153,9 +153,7 @@ describe('jsx:keys/values/entries', function () {
                 { id: 3, name: 'name3', group: 'group2' },
                 { id: 4, name: 'name4', group: 'group2' },
             ],
-            group3: [
-                { id: 5, name: 'name5', group: 'group3' },
-            ],
+            group3: [{ id: 5, name: 'name5', group: 'group3' }],
         });
     });
 
@@ -164,29 +162,28 @@ describe('jsx:keys/values/entries', function () {
             { id: 2, name: 'name2', group: 'group1' },
             { id: 4, name: 'name4', group: 'group1' },
             { id: 5, name: 'name5', group: 'group2' },
-            { id: 1, name: 'name1', group: 'group2' },            
-            { id: 3, name: 'name3', group: 'group3' },            
+            { id: 1, name: 'name1', group: 'group2' },
+            { id: 3, name: 'name3', group: 'group3' },
         ];
 
         let transformed = Jxs.evaluate(array, { $sort: 'id' });
-        
+
         transformed.should.be.eql([
             { id: 1, name: 'name1', group: 'group2' },
             { id: 2, name: 'name2', group: 'group1' },
             { id: 3, name: 'name3', group: 'group3' },
             { id: 4, name: 'name4', group: 'group1' },
-            { id: 5, name: 'name5', group: 'group2' }
-          ]);
+            { id: 5, name: 'name5', group: 'group2' },
+        ]);
 
-        transformed = Jxs.evaluate(array, { $sort: [ 'group', 'name'] });
+        transformed = Jxs.evaluate(array, { $sort: ['group', 'name'] });
         transformed.should.be.eql([
             { id: 2, name: 'name2', group: 'group1' },
             { id: 4, name: 'name4', group: 'group1' },
             { id: 1, name: 'name1', group: 'group2' },
             { id: 5, name: 'name5', group: 'group2' },
-            { id: 3, name: 'name3', group: 'group3' }
-          ]);
-        
+            { id: 3, name: 'name3', group: 'group3' },
+        ]);
     });
 
     it('reverse', function () {
@@ -194,19 +191,72 @@ describe('jsx:keys/values/entries', function () {
             { id: 2, name: 'name2', group: 'group1' },
             { id: 4, name: 'name4', group: 'group1' },
             { id: 5, name: 'name5', group: 'group2' },
-            { id: 1, name: 'name1', group: 'group2' },            
-            { id: 3, name: 'name3', group: 'group3' },            
+            { id: 1, name: 'name1', group: 'group2' },
+            { id: 3, name: 'name3', group: 'group3' },
         ];
 
         let transformed = Jxs.evaluate(array, '$reverse');
-        
+
         transformed.should.be.eql([
             { id: 3, name: 'name3', group: 'group3' },
             { id: 1, name: 'name1', group: 'group2' },
             { id: 5, name: 'name5', group: 'group2' },
             { id: 4, name: 'name4', group: 'group1' },
-            { id: 2, name: 'name2', group: 'group1' }
-          ]);
+            { id: 2, name: 'name2', group: 'group1' },
+        ]);
     });
 
+    it('findIndex', function () {
+        let array = [
+            { id: 2, name: 'name2', group: 'group1' },
+            { id: 4, name: 'name4', group: 'group1' },
+            { id: 3, name: 'name3', group: 'group3' },
+            { id: 5, name: 'name5', group: 'group2' },
+            { id: 1, name: 'name1', group: 'group2' },
+            { id: 3, name: 'name3', group: 'group3' },
+        ];
+
+        let transformed = Jxs.evaluate(array, { $findIndex: { id: 4 } });
+
+        transformed.should.be.eql(1);
+
+        transformed = Jxs.evaluate(array, { $findIndex: [{ id: 3 }, 3] });
+
+        transformed.should.be.eql(5);
+    });
+
+    it('find', function () {
+        let array = [
+            { id: 2, name: 'name2', group: 'group1' },
+            { id: 4, name: 'name4', group: 'group1' },
+            { id: 3, name: 'name3', group: 'group3' },
+            { id: 5, name: 'name5', group: 'group2' },
+            { id: 1, name: 'name1', group: 'group2' },
+            { id: 3, name: 'name6', group: 'group3' },
+        ];
+
+        let transformed = Jxs.evaluate(array, { $find: { id: 4 } });
+
+        transformed.should.be.eql({ id: 4, name: 'name4', group: 'group1' });
+
+        transformed = Jxs.evaluate(array, { $find: [{ id: 3 }, 3] });
+
+        transformed.should.be.eql({ id: 3, name: 'name6', group: 'group3' });
+    });
+
+    it('find from object', function () {
+        let object = {
+            key1: 100,
+            key2: 200,
+            key3: { any: 1 }
+        };
+
+        let transformed = Jxs.evaluate(object, { $find: { $typeOf: 'object' } });
+
+        transformed.should.be.eql({ any: 1 });
+
+        transformed = Jxs.evaluate(object, { $find: [ { $gt: 50 }, 1 ] });
+
+        transformed.should.be.eql(200);
+    });
 });

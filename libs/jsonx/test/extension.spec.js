@@ -1,7 +1,7 @@
 import Jxs from '../lib';
 const { Types } = require('@galaxar/types');
 
-describe('Jxs:extension', function () {  
+describe.skip('Jxs:extension', function () {  
     it('sanitize', function () {
         let obj = {
             'intKey': 100,

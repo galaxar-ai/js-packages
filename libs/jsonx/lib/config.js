@@ -8,7 +8,7 @@ const mapOfTransformers = {};
 //JSON Expression Syntax Runtime Configuration
 const config = {
     messages: _config.messages,
-  
+
     addTransformerToMap: (tokens, handler) => {
         const [tag, isUnary, ...alias] = tokens;
 
@@ -32,9 +32,19 @@ const config = {
     overrideTransformer: (tag, handler) => {
         transformerHandlers[tag] = handler;
     },
-   
+
     getTransformerTagAndType: (op) => mapOfTransformers[op],
-    getTransformer: (tag) => transformerHandlers[tag]
+    getTransformer: (tag) => transformerHandlers[tag],
+
+    setLocale: (locale) => {
+        _config.setLocale(locale);
+        return config;
+    },
+
+    loadMessages: (locale, messages) => {
+        _config.loadMessages(locale, messages);
+        return config;
+    },
 };
 
 export default config;

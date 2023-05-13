@@ -19,12 +19,16 @@ const _default = {
     defaultValue: '',
     validate: (value)=>typeof value === 'string',
     sanitize: (value, meta, i18n, path)=>{
-        if (value === '' && meta.emptyAsNull) {
+        const isString = typeof value === 'string';
+        if (isString && meta.trim) {
+            value = value.trim();
+        }
+        if (value === '' && meta.nonEmpty) {
             value = null;
         }
         const [isDone, sanitized] = (0, _types.beginSanitize)(value, meta, i18n, path);
         if (isDone) return sanitized;
-        if (typeof value !== 'string') {
+        if (!isString) {
             throw new _errors.ValidationError('Invalid text value.', {
                 value,
                 meta,
@@ -36,3 +40,5 @@ const _default = {
     },
     serialize: _functions.identity
 };
+
+//# sourceMappingURL=text.js.map

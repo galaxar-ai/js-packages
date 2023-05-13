@@ -35,3 +35,5 @@ const _default = {
     },
     serialize: (value)=>value == null ? null : _types.Plugins['bigintWriter'] ? _types.Plugins['bigintWriter'](value) : value.toString()
 };
+
+//# sourceMappingURL=bigint.js.map

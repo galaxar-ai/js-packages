@@ -147,6 +147,12 @@ function test(left, op, right, options, context) {
             //pick a field and then apply manipulation
             left = actual != null ? isComplexKey ? (0, _utils.get)(actual, fieldName) : actual[fieldName] : undefined;
             _context = (0, _config.getChildContext)(context, actual, fieldName, left);
+            console.log('left', {
+                left,
+                actual,
+                fieldName,
+                opValue
+            });
             if (opValue != null && typeof opValue === 'object') {
                 op = _validateOperators.default.MATCH;
             } else {
@@ -179,3 +185,5 @@ function test(left, op, right, options, context) {
     return true;
 }
 const _default = validate;
+
+//# sourceMappingURL=validate.js.map

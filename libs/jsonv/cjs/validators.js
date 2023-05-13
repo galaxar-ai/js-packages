@@ -405,7 +405,8 @@ _config.default.addValidatorToMap(OP_SAME_AS, (left, right, options, context)=>{
     if (typeof right !== 'string') {
         throw new Error(MSG.OPERAND_NOT_STRING(_validateOperators.default.OP_SAME_AS));
     }
-    console.log(left, context, context.$$PARENT[right]);
     return left === (0, _utils.get)(context.$$PARENT, right);
 });
 const _default = _validate.default;
+
+//# sourceMappingURL=validators.js.map

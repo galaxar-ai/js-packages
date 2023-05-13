@@ -8,7 +8,7 @@ Object.defineProperty(exports, "default", {
         return _default;
     }
 });
-var _each = /*#__PURE__*/ _interop_require_default(require("lodash/each"));
+const _each = /*#__PURE__*/ _interop_require_default(require("lodash/each"));
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
@@ -19,14 +19,13 @@ function _interop_require_default(obj) {
  * @param {*} object
  * @param {*} keyPathSep
  * @returns {object}
- */ var flattenObject = function(object) {
-    var keyPathSep = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : ".";
-    var result = {};
-    (0, _each.default)(object, function(v, k) {
+ */ const flattenObject = (object, keyPathSep = '.')=>{
+    const result = {};
+    (0, _each.default)(object, (v, k)=>{
         k = k.toString();
-        if (v != null && typeof v === "object") {
+        if (v != null && typeof v === 'object') {
             v = flattenObject(v, keyPathSep);
-            (0, _each.default)(v, function(v2, k2) {
+            (0, _each.default)(v, (v2, k2)=>{
                 k2 = k2.toString();
                 result[k + keyPathSep + k2] = v2;
             });
@@ -36,4 +35,6 @@ function _interop_require_default(obj) {
     });
     return result;
 };
-var _default = flattenObject;
+const _default = flattenObject;
+
+//# sourceMappingURL=flattenObject.js.map

@@ -22,19 +22,13 @@ _export(exports, {
         return _default;
     }
 });
+const _utils = require("./utils");
 const validatorHandlers = {};
 const mapOfValidators = {};
-const formatName = (name, left, context, custom)=>{
-    const fullName = name == null ? context.path : makePath(name, context?.path);
-    return fullName == null ? messages.nameOfValue(custom) : context?.mapOfNames ? context.mapOfNames[fullName] : fullName;
-};
-const formatKey = (key, hasPrefix)=>Number.isInteger(key) ? `[${key}]` : hasPrefix ? '.' + key : key;
-const makePath = (key, prefix)=>prefix != null ? `${prefix}${formatKey(key, true)}` : formatKey(key, false);
-const formatPath = (prefix)=>prefix ? '[' + prefix + ']' : '<ROOT>';
 const getChildContext = (context, currentValue, childKey, childValue, extra)=>({
         ...context,
         ...extra,
-        path: makePath(childKey, context.path),
+        path: (0, _utils.makePath)(childKey, context.path),
         $$PARENT: currentValue,
         $$CURRENT: childValue,
         $$KEY: childKey
@@ -46,17 +40,14 @@ const contextVarKeys = new Set([
     '$$KEY'
 ]);
 const messages = {
-    formatName,
-    formatKey,
-    makePath,
     //Exception messages
     SYNTAX_OP_NOT_ALONE: 'Transformer operator can only be used alone in one pipeline stage.',
     SYNTAX_INVALID_EXPR: (expr)=>`Invalid expression syntax: ${JSON.stringify(expr)}`,
-    SYNTAX_INVALID_OP: (op, prefix)=>`Invalid operator "${op}" at ${formatPath(prefix)}.`,
+    SYNTAX_INVALID_OP: (op, prefix)=>`Invalid operator "${op}" at ${(0, _utils.formatPath)(prefix)}.`,
     SYNTAX_NUMBER_AS_EXPR: 'Number value cannot be used as a transformer expression.',
     SYNTAX_INVALID_CONTEXT: (key)=>`Invalid context variable "${key}".`,
     INVALID_TRANSFORMER_OP: (op)=>`Invalid transformer operator "${op}".`,
-    UNSUPPORTED_VALIDATION_OP: (op, prefix)=>`Unsupported validation operator "${op}" at ${formatPath(prefix)}.`,
+    UNSUPPORTED_VALIDATION_OP: (op, prefix)=>`Unsupported validation operator "${op}" at ${(0, _utils.formatPath)(prefix)}.`,
     INVALID_COLLECTION_OP: (op)=>`Invalid collection operator "${op}".`,
     INVALID_TRANSFORMER_HANDLER: (tag)=>`Handler for transformer "${tag}" not found.`,
     INVALID_TEST_HANLDER: (tag)=>`Handler for validator "${tag}" not found.`,
@@ -111,3 +102,5 @@ const config = {
     }
 };
 const _default = config;
+
+//# sourceMappingURL=config.js.map

@@ -67,3 +67,5 @@ const StatusCodes = {
     MISDIRECTED_REQUEST: 421
 };
 const _default = StatusCodes;
+
+//# sourceMappingURL=HttpCode.js.map

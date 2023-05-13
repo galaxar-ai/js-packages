@@ -1,5 +1,5 @@
 import Jsv from '../lib';
-import enUS from '../locale/en-US';
+import enUS from '../lib/locale/en-US';
 
 Jsv.config.loadMessages('en-US', enUS).setLocale('en-US');
 

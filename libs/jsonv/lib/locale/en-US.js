@@ -1,10 +1,11 @@
-import config from '../lib/config';
-import vops from '../lib/validateOperators';
+import { namingFactory } from '../utils';
+import vops from '../validateOperators';
 
-const { formatName } = config.messages;
+const nameOfValue = (custom) => (custom?.lowerCase ? 'the value' : 'The value');
+const formatName = namingFactory(nameOfValue);
 
 const messages = {
-    nameOfValue: (custom) => (custom?.lowerCase ? 'the value' : 'The value'),
+    formatName,
     validationErrors: {
         [vops.EQUAL]: (name, left, right, context) =>
             `${formatName(name, left, context)} must be ${JSON.stringify(right)}.`,

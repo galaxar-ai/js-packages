@@ -1,6 +1,6 @@
 import Jxs from '../lib';
 
-describe('transformer:omit', function () {
+describe('Jxs:omit', function () {
     it('obj', function () {
         let obj = {
             'id': 1,

@@ -1,6 +1,6 @@
 import Jxs from '../lib';
 
-describe('transformer:split', function () {   
+describe('Jxs:split', function () {   
 
     it('split 1', function () {
         let array = 'a,b,c';

@@ -12,14 +12,13 @@ Object.defineProperty(exports, "default", {
         return _default;
     }
 });
-function dbgGetCallerFile() {
-    var depth = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : 1;
-    var originalFunc = Error.prepareStackTrace;
-    var callerfile;
+function dbgGetCallerFile(depth = 1) {
+    const originalFunc = Error.prepareStackTrace;
+    let callerfile;
     try {
-        var err = new Error();
-        var currentfile;
-        var currentDepth = 0;
+        const err = new Error();
+        let currentfile;
+        let currentDepth = 0;
         Error.prepareStackTrace = function(err, stack) {
             return stack;
         };
@@ -37,4 +36,6 @@ function dbgGetCallerFile() {
     Error.prepareStackTrace = originalFunc;
     return callerfile;
 }
-var _default = dbgGetCallerFile;
+const _default = dbgGetCallerFile;
+
+//# sourceMappingURL=dbgGetCallerFile.js.map

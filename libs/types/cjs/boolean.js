@@ -30,3 +30,5 @@ const _default = {
     },
     serialize: _functions.identity
 };
+
+//# sourceMappingURL=boolean.js.map

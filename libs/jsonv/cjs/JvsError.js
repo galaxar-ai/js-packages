@@ -47,3 +47,5 @@ class JsvError extends Error {
     }
 }
 const _default = JsvError;
+
+//# sourceMappingURL=JvsError.js.map

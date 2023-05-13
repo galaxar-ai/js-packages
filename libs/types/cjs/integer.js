@@ -41,3 +41,5 @@ const _default = {
     },
     serialize: _functions.identity
 };
+
+//# sourceMappingURL=integer.js.map

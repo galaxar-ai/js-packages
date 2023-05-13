@@ -83,3 +83,5 @@ class ServerError extends _AppErrors.ApplicationError {
 }
 const Unauthenticated = Unauthorized; // try use Unauthenticated instead of Unauthorized for better expressing the error in code
 const PermissionDenied = Forbidden;
+
+//# sourceMappingURL=HttpErrors.js.map

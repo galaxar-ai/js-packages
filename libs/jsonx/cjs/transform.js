@@ -258,3 +258,5 @@ const PFX_REDUCE = '|+'; // reduce 1. intermediate = result op [key, value] 2. r
     return result;
 }
 const _default = transform;
+
+//# sourceMappingURL=transform.js.map

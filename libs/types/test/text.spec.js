@@ -33,9 +33,9 @@ describe("text", () => {
             result.should.equal(value);
         });
 
-        it("should return null for empty string input with meta.emptyAsNull", () => {
+        it("should return null for empty string input with meta.nonEmpty", () => {
             const value = "";
-            should.throws(() => text.sanitize(value, { emptyAsNull: true }, {}, ""), 'Value is required.');
+            should.throws(() => text.sanitize(value, { nonEmpty: true }, {}, ""), 'Value is required.');
         });
 
         it("should throw a ValidationError for non-string input", () => {

@@ -1,6 +1,6 @@
 import Jxs from '../lib';
 
-describe('transformer:math', function () {
+describe('Jxs:math', function () {
 
     it('add', function () {
        let obj = 10;

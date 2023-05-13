@@ -1,6 +1,6 @@
 import Jxs from '../lib';
 
-describe('transformer:setValue', function () {
+describe('Jxs:setValue', function () {
     it('obj', function () {
         let obj = {
             'id': 1,
@@ -29,5 +29,29 @@ describe('transformer:setValue', function () {
         let transformed = Jxs.evaluate(num, { $set: 'new' });
         //console.log(typeof transformed)
         transformed.should.be.eql('new');
+    });
+
+    it('obj', function () {
+        let obj = {
+            'id': 1,
+            'user': 100,
+            'agency': 1,
+            ':user': { email: 'email1', other: 'any' },
+            ':agency': { name: 'agency1', other: 'any' },
+        };
+
+        let transformed = Jxs.evaluate(obj, { 
+            $assign: {
+                'id': { $set: 2  }
+            }            
+        });
+        //console.log(typeof transformed)
+        transformed.should.be.eql({
+            'id': 2,
+            'user': 100,
+            'agency': 1,
+            ':user': { email: 'email1', other: 'any' },
+            ':agency': { name: 'agency1', other: 'any' },
+        });
     });
 });

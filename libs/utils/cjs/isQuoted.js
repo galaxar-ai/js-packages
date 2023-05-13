@@ -13,7 +13,7 @@ Object.defineProperty(exports, "default", {
         return _default;
     }
 });
-var isQuoted = function(s) {
-    return s && (s.startsWith("'") || s.startsWith('"')) && s[0] === s[s.length - 1];
-};
-var _default = isQuoted;
+const isQuoted = (s)=>s && (s.startsWith("'") || s.startsWith('"')) && s[0] === s[s.length - 1];
+const _default = isQuoted;
+
+//# sourceMappingURL=isQuoted.js.map

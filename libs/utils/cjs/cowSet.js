@@ -8,22 +8,9 @@ Object.defineProperty(exports, "default", {
         return _default;
     }
 });
-var _clone = /*#__PURE__*/ _interop_require_default(require("lodash/clone"));
-var _isInteger = /*#__PURE__*/ _interop_require_wildcard(require("./isInteger"));
-var _set = require("./set");
-function _define_property(obj, key, value) {
-    if (key in obj) {
-        Object.defineProperty(obj, key, {
-            value: value,
-            enumerable: true,
-            configurable: true,
-            writable: true
-        });
-    } else {
-        obj[key] = value;
-    }
-    return obj;
-}
+const _clone = /*#__PURE__*/ _interop_require_default(require("lodash/clone"));
+const _isInteger = /*#__PURE__*/ _interop_require_wildcard(require("./isInteger"));
+const _set = require("./set");
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
@@ -68,46 +55,32 @@ function _interop_require_wildcard(obj, nodeInterop) {
     }
     return newObj;
 }
-function _object_spread(target) {
-    for(var i = 1; i < arguments.length; i++){
-        var source = arguments[i] != null ? arguments[i] : {};
-        var ownKeys = Object.keys(source);
-        if (typeof Object.getOwnPropertySymbols === "function") {
-            ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function(sym) {
-                return Object.getOwnPropertyDescriptor(source, sym).enumerable;
-            }));
-        }
-        ownKeys.forEach(function(key) {
-            _define_property(target, key, source[key]);
-        });
-    }
-    return target;
-}
 // copy on write set
 function cowSet(collection, keyPath, value, options) {
-    options = _object_spread({
+    options = {
         numberAsArrayIndex: true,
-        keyPathSeparator: "."
-    }, options);
-    if (collection == null || typeof collection !== "object") {
+        keyPathSeparator: '.',
+        ...options
+    };
+    if (collection == null || typeof collection !== 'object') {
         return collection;
     }
     if (keyPath == null) {
         return collection;
     }
-    var nodes = Array.isArray(keyPath) ? keyPath.concat() : keyPath.split(options.keyPathSeparator);
-    var length = nodes.length;
+    let nodes = Array.isArray(keyPath) ? keyPath.concat() : keyPath.split(options.keyPathSeparator);
+    const length = nodes.length;
     if (length > 0) {
-        var lastIndex = length - 1;
-        var index = 0;
-        var nested = (0, _clone.default)(collection);
+        const lastIndex = length - 1;
+        let index = 0;
+        let nested = (0, _clone.default)(collection);
         collection = nested;
         while(nested != null && index < lastIndex){
-            var key = nodes[index++];
-            var next = nested[key];
-            if (next == null || typeof next !== "object") {
+            const key = nodes[index++];
+            let next = nested[key];
+            if (next == null || typeof next !== 'object') {
                 // peek next node, see if it is integer
-                var nextKey = nodes[index];
+                const nextKey = nodes[index];
                 if (options.numberAsArrayIndex && (0, _isInteger.default)(nextKey, {
                     range: _isInteger.RANGE_INDEX
                 })) {
@@ -121,9 +94,11 @@ function cowSet(collection, keyPath, value, options) {
                 nested = nested[key];
             }
         }
-        var lastKey = nodes[lastIndex];
+        const lastKey = nodes[lastIndex];
         (0, _set.addEntry)(nested, lastKey, value, options.numberAsArrayIndex);
     }
     return collection;
 }
-var _default = cowSet;
+const _default = cowSet;
+
+//# sourceMappingURL=cowSet.js.map

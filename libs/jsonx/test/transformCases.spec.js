@@ -1,6 +1,6 @@
-import Jxs from '../lib';
+import Jxs from '../lib/bundle';
 
-describe('transformer:cases', function () {
+describe('Jxs:cases', function () {
     it('case 1.1 - if else', function () {
         const objB = {
             value: '',

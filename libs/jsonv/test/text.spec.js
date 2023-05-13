@@ -1,7 +1,4 @@
-import Jsv from '../lib';
-import enUS from '../locale/en-US';
-
-Jsv.config.loadMessages('en-US', enUS).setLocale('en-US');
+import Jsv from '../lib/bundle';
 
 describe('jsv:text', function () {
     it('startWith', function () {

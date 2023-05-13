@@ -8,13 +8,13 @@ Object.defineProperty(exports, "default", {
         return _default;
     }
 });
-var _template = /*#__PURE__*/ _interop_require_default(require("lodash/template"));
+const _template = /*#__PURE__*/ _interop_require_default(require("lodash/template"));
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
     };
 }
-var templateSettings = {
+const templateSettings = {
     escape: false,
     evaluate: false,
     imports: false,
@@ -26,7 +26,9 @@ var templateSettings = {
  * @param {String} str
  * @param {Object} [settings] - Template settings, {@link https://lodash.com/docs/4.17.15#template}
  * @returns {Template}
- */ var compile = function(str, settings) {
-    return (0, _template.default)(str, settings !== null && settings !== void 0 ? settings : templateSettings);
+ */ const compile = (str, settings)=>{
+    return (0, _template.default)(str, settings ?? templateSettings);
 };
-var _default = compile;
+const _default = compile;
+
+//# sourceMappingURL=compile.js.map

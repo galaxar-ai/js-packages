@@ -15,6 +15,7 @@ const GET_TYPE = 'typeof';
 const MATCH = 'validate';
 const GET_BY_INDEX = 'byIndex';
 const GET_BY_KEY = 'byKey';
+const FIND_INDEX = 'findIndex';
 const FIND = 'find';
 const IF = 'if';
 //Type casting operators (pure)
@@ -48,6 +49,7 @@ const SET = 'set';
 const ADD_ITEM = 'addItem';
 const ASSIGN = 'assign';
 const APPLY = 'apply';
+const SANITIZE = 'sanitize';
 const SPLIT = 'split';
 const INTERPOLATE = 'interpolate';
 //Colllection modifier
@@ -60,6 +62,7 @@ const _default = {
     MATCH,
     GET_BY_INDEX,
     GET_BY_KEY,
+    FIND_INDEX,
     FIND,
     IF,
     CAST_ARRAY,
@@ -89,8 +92,11 @@ const _default = {
     ADD_ITEM,
     ASSIGN,
     APPLY,
+    SANITIZE,
     SPLIT,
     INTERPOLATE,
     MAP,
     REDUCE
 };
+
+//# sourceMappingURL=transformerOperators.js.map

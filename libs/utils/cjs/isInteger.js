@@ -25,67 +25,42 @@ _export(exports, {
         return _default;
     }
 });
-function _define_property(obj, key, value) {
-    if (key in obj) {
-        Object.defineProperty(obj, key, {
-            value: value,
-            enumerable: true,
-            configurable: true,
-            writable: true
-        });
-    } else {
-        obj[key] = value;
-    }
-    return obj;
-}
-function _object_spread(target) {
-    for(var i = 1; i < arguments.length; i++){
-        var source = arguments[i] != null ? arguments[i] : {};
-        var ownKeys = Object.keys(source);
-        if (typeof Object.getOwnPropertySymbols === "function") {
-            ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function(sym) {
-                return Object.getOwnPropertyDescriptor(source, sym).enumerable;
-            }));
-        }
-        ownKeys.forEach(function(key) {
-            _define_property(target, key, source[key]);
-        });
-    }
-    return target;
-}
-function _type_of(obj) {
-    "@swc/helpers - typeof";
-    return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj;
-}
-var regexInt = /^(\+|-)?\d+$/;
-var regexPos = /^\+?[1-9]\d*$/;
-var regexIndex = /^0$|^([1-9]\d*)$/;
-var regexNeg = /^-[1-9]\d*$/;
-var regexNonZero = /^(\+|-)?[1-9]\d*$/;
-var RANGE_POSITIVE = "positive";
-var RANGE_NEGATIVE = "negative";
-var RANGE_INDEX = "index";
-var RANGE_NON_ZERO = "nonZero";
-var _obj;
-var mapRegex = (_obj = {}, _define_property(_obj, RANGE_POSITIVE, regexPos), _define_property(_obj, RANGE_INDEX, regexIndex), _define_property(_obj, RANGE_NEGATIVE, regexNeg), _define_property(_obj, RANGE_NON_ZERO, regexNonZero), _obj);
+const regexInt = /^(\+|-)?\d+$/;
+const regexPos = /^\+?[1-9]\d*$/;
+const regexIndex = /^0$|^([1-9]\d*)$/;
+const regexNeg = /^-[1-9]\d*$/;
+const regexNonZero = /^(\+|-)?[1-9]\d*$/;
+const RANGE_POSITIVE = 'positive';
+const RANGE_NEGATIVE = 'negative';
+const RANGE_INDEX = 'index';
+const RANGE_NON_ZERO = 'nonZero';
+const mapRegex = {
+    [RANGE_POSITIVE]: regexPos,
+    [RANGE_INDEX]: regexIndex,
+    [RANGE_NEGATIVE]: regexNeg,
+    [RANGE_NON_ZERO]: regexNonZero
+};
 /**
  * Check a number or string whether it is exactly an integer
  * @param {*} value
  * @returns {boolean}
- */ var isInteger = function(value, options) {
-    options = _object_spread({
-        range: "all"
-    }, options);
-    var type = typeof value === "undefined" ? "undefined" : _type_of(value);
-    if (type === "number") {
+ */ const isInteger = (value, options)=>{
+    options = {
+        range: 'all',
+        ...options
+    };
+    const type = typeof value;
+    if (type === 'number') {
         return Number.isInteger(value);
-    } else if (type === "string") {
+    } else if (type === 'string') {
         value = value.trim();
-        var regex = mapRegex[options.range] || regexInt;
+        const regex = mapRegex[options.range] || regexInt;
         if (regex.test(value)) {
             return true;
         }
     }
     return false;
 };
-var _default = isInteger;
+const _default = isInteger;
+
+//# sourceMappingURL=isInteger.js.map

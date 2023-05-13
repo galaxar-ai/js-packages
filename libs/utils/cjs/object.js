@@ -9,9 +9,6 @@ function _export(target, all) {
     });
 }
 _export(exports, {
-    isPlainObject: function() {
-        return _isPlainObject.default;
-    },
     remap: function() {
         return _remap.default;
     },
@@ -52,19 +49,18 @@ _export(exports, {
         return _defaultDeep.default;
     }
 });
-var _isPlainObject = /*#__PURE__*/ _interop_require_default(require("./isPlainObject"));
-var _remap = /*#__PURE__*/ _interop_require_default(require("./remap"));
-var _diff = /*#__PURE__*/ _interop_require_default(require("./diff"));
-var _take = /*#__PURE__*/ _interop_require_default(require("./take"));
-var _pushIntoBucket = /*#__PURE__*/ _interop_require_default(require("./pushIntoBucket"));
-var _get = /*#__PURE__*/ _interop_require_default(require("./get"));
-var _set = /*#__PURE__*/ _interop_require_default(require("./set"));
-var _cowSet = /*#__PURE__*/ _interop_require_default(require("./cowSet"));
-var _objectToArray = /*#__PURE__*/ _interop_require_default(require("./objectToArray"));
-var _flattenObject = /*#__PURE__*/ _interop_require_default(require("./flattenObject"));
-var _unflattenObject = /*#__PURE__*/ _interop_require_default(require("./unflattenObject"));
-var _filterNull = /*#__PURE__*/ _interop_require_default(require("./filterNull"));
-var _defaultDeep = /*#__PURE__*/ _interop_require_default(require("./defaultDeep"));
+const _remap = /*#__PURE__*/ _interop_require_default(require("./remap"));
+const _diff = /*#__PURE__*/ _interop_require_default(require("./diff"));
+const _take = /*#__PURE__*/ _interop_require_default(require("./take"));
+const _pushIntoBucket = /*#__PURE__*/ _interop_require_default(require("./pushIntoBucket"));
+const _get = /*#__PURE__*/ _interop_require_default(require("./get"));
+const _set = /*#__PURE__*/ _interop_require_default(require("./set"));
+const _cowSet = /*#__PURE__*/ _interop_require_default(require("./cowSet"));
+const _objectToArray = /*#__PURE__*/ _interop_require_default(require("./objectToArray"));
+const _flattenObject = /*#__PURE__*/ _interop_require_default(require("./flattenObject"));
+const _unflattenObject = /*#__PURE__*/ _interop_require_default(require("./unflattenObject"));
+const _filterNull = /*#__PURE__*/ _interop_require_default(require("./filterNull"));
+const _defaultDeep = /*#__PURE__*/ _interop_require_default(require("./defaultDeep"));
 _export_star(require("./pathUtils"), exports);
 function _export_star(from, to) {
     Object.keys(from).forEach(function(k) {
@@ -84,3 +80,5 @@ function _interop_require_default(obj) {
         default: obj
     };
 }
+
+//# sourceMappingURL=object.js.map

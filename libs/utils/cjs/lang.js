@@ -21,17 +21,35 @@ _export(exports, {
     waitUntil_: function() {
         return _waitUntil_.default;
     },
+    isPlainObject: function() {
+        return _isPlainObject.default;
+    },
     isInteger: function() {
         return _isInteger.default;
+    },
+    toInteger: function() {
+        return _toInteger.default;
+    },
+    toBoolean: function() {
+        return _toBoolean.default;
+    },
+    toFloat: function() {
+        return _toFloat.default;
     }
 });
-var _ifThen = /*#__PURE__*/ _interop_require_default(require("./ifThen"));
-var _hookInvoke = /*#__PURE__*/ _interop_require_default(require("./hookInvoke"));
-var _sleep_ = /*#__PURE__*/ _interop_require_default(require("./sleep_"));
-var _waitUntil_ = /*#__PURE__*/ _interop_require_default(require("./waitUntil_"));
-var _isInteger = /*#__PURE__*/ _interop_require_default(require("./isInteger"));
+const _ifThen = /*#__PURE__*/ _interop_require_default(require("./ifThen"));
+const _hookInvoke = /*#__PURE__*/ _interop_require_default(require("./hookInvoke"));
+const _sleep_ = /*#__PURE__*/ _interop_require_default(require("./sleep_"));
+const _waitUntil_ = /*#__PURE__*/ _interop_require_default(require("./waitUntil_"));
+const _isPlainObject = /*#__PURE__*/ _interop_require_default(require("./isPlainObject"));
+const _isInteger = /*#__PURE__*/ _interop_require_default(require("./isInteger"));
+const _toInteger = /*#__PURE__*/ _interop_require_default(require("./toInteger"));
+const _toBoolean = /*#__PURE__*/ _interop_require_default(require("./toBoolean"));
+const _toFloat = /*#__PURE__*/ _interop_require_default(require("./toFloat"));
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
     };
 }
+
+//# sourceMappingURL=lang.js.map

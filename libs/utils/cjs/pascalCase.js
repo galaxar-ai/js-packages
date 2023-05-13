@@ -8,8 +8,8 @@ Object.defineProperty(exports, "default", {
         return _default;
     }
 });
-var _upperFirst = /*#__PURE__*/ _interop_require_default(require("lodash/upperFirst"));
-var _camelCase = /*#__PURE__*/ _interop_require_default(require("lodash/camelCase"));
+const _upperFirst = /*#__PURE__*/ _interop_require_default(require("lodash/upperFirst"));
+const _camelCase = /*#__PURE__*/ _interop_require_default(require("lodash/camelCase"));
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
@@ -20,7 +20,7 @@ function _interop_require_default(obj) {
  * @function string.pascalCase
  * @param {String} str
  * @returns {String}
- */ var pascalCase = function(str) {
-    return (0, _upperFirst.default)((0, _camelCase.default)(str));
-};
-var _default = pascalCase;
+ */ const pascalCase = (str)=>(0, _upperFirst.default)((0, _camelCase.default)(str));
+const _default = pascalCase;
+
+//# sourceMappingURL=pascalCase.js.map

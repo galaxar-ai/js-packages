@@ -14,7 +14,7 @@ Object.defineProperty(exports, "default", {
         return _default;
     }
 });
-var ensureEndsWith = function(str, ending) {
-    return str ? str.endsWith(ending) ? str : str + ending : ending;
-};
-var _default = ensureEndsWith;
+const ensureEndsWith = (str, ending)=>str ? str.endsWith(ending) ? str : str + ending : ending;
+const _default = ensureEndsWith;
+
+//# sourceMappingURL=ensureEndsWith.js.map

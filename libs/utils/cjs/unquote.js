@@ -8,7 +8,7 @@ Object.defineProperty(exports, "default", {
         return _default;
     }
 });
-var _replaceAll = /*#__PURE__*/ _interop_require_default(require("./replaceAll"));
+const _replaceAll = /*#__PURE__*/ _interop_require_default(require("./replaceAll"));
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
@@ -22,13 +22,13 @@ function _interop_require_default(obj) {
  * @param {Set|Array} [quoteSet] - Set of chars
  * @returns {String}
  */ function unquote(str, unescape, quoteSet) {
-    if (typeof str !== "string") {
+    if (typeof str !== 'string') {
         return str;
     }
     if (str.length < 2) {
         return str;
     }
-    var start = str[0];
+    let start = str[0];
     if (start !== str[str.length - 1]) {
         return str;
     }
@@ -42,8 +42,10 @@ function _interop_require_default(obj) {
     }
     str = str.slice(1, -1);
     if (unescape) {
-        return (0, _replaceAll.default)(str, "\\" + start, start);
+        return (0, _replaceAll.default)(str, '\\' + start, start);
     }
     return str;
 }
-var _default = unquote;
+const _default = unquote;
+
+//# sourceMappingURL=unquote.js.map

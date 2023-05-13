@@ -45,6 +45,16 @@ const config = {
         transformerHandlers[tag] = handler;
     },
     getTransformerTagAndType: (op)=>mapOfTransformers[op],
-    getTransformer: (tag)=>transformerHandlers[tag]
+    getTransformer: (tag)=>transformerHandlers[tag],
+    setLocale: (locale)=>{
+        _jsonv.config.setLocale(locale);
+        return config;
+    },
+    loadMessages: (locale, messages)=>{
+        _jsonv.config.loadMessages(locale, messages);
+        return config;
+    }
 };
 const _default = config;
+
+//# sourceMappingURL=config.js.map

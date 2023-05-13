@@ -49,3 +49,5 @@ function _interop_require_default(obj) {
 _define_property(Jxs, "config", _config.default);
 _define_property(Jxs, "evaluate", _transformers.default);
 const _default = Jxs;
+
+//# sourceMappingURL=Jxs.js.map

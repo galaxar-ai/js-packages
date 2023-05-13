@@ -41,3 +41,5 @@ function _interop_require_default(obj) {
 (0, _types.addType)('TEXT', _text.default);
 (0, _types.addType)('BINARY', _binary.default);
 (0, _types.addType)('BIGINT', _bigint.default);
+
+//# sourceMappingURL=index.js.map

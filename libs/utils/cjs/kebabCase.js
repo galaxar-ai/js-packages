@@ -13,9 +13,11 @@ Object.defineProperty(exports, "default", {
         return _kebabCase.default;
     }
 });
-var _kebabCase = /*#__PURE__*/ _interop_require_default(require("lodash/kebabCase"));
+const _kebabCase = /*#__PURE__*/ _interop_require_default(require("lodash/kebabCase"));
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
     };
 }
+
+//# sourceMappingURL=kebabCase.js.map

@@ -14,7 +14,7 @@ Object.defineProperty(exports, "default", {
         return _default;
     }
 });
-var ensureStartsWith = function(str, starting) {
-    return str ? str.startsWith(starting) ? str : starting + str : starting;
-};
-var _default = ensureStartsWith;
+const ensureStartsWith = (str, starting)=>str ? str.startsWith(starting) ? str : starting + str : starting;
+const _default = ensureStartsWith;
+
+//# sourceMappingURL=ensureStartsWith.js.map

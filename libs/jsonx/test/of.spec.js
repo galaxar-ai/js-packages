@@ -1,6 +1,6 @@
 import Jxs from '../lib';
 
-describe('transformer:of', function () {
+describe('Jxs:of', function () {
     it('obj', function () {
         let obj = {
             'id': 1,

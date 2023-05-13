@@ -16,21 +16,23 @@ Object.defineProperty(exports, "default", {
         return _default;
     }
 });
-var _get = function(collection, keyPath, defaultValue) {
+const _get = (collection, keyPath, defaultValue)=>{
     if (keyPath == null) {
-        return collection !== null && collection !== void 0 ? collection : undefined;
+        return collection ?? undefined;
     }
-    var nodes = Array.isArray(keyPath) ? keyPath : typeof keyPath === "string" ? keyPath.split(".") : [
+    let nodes = Array.isArray(keyPath) ? keyPath : typeof keyPath === 'string' ? keyPath.split('.') : [
         keyPath
     ];
     if (collection == null) {
-        return defaultValue !== null && defaultValue !== void 0 ? defaultValue : collection;
+        return defaultValue ?? collection;
     }
-    var index = 0;
-    var length = nodes.length;
+    let index = 0;
+    const length = nodes.length;
     while(collection != null && index < length){
         collection = collection[nodes[index++]];
     }
-    return typeof collection !== "undefined" && index && index === length ? collection : defaultValue;
+    return typeof collection !== 'undefined' && index && index === length ? collection : defaultValue;
 };
-var _default = _get;
+const _default = _get;
+
+//# sourceMappingURL=get.js.map

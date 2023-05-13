@@ -58,3 +58,5 @@ const T_ARRAY = {
     serialize: (value, typeInfo)=>value == null ? null : typeInfo?.csv ? (0, _arrayToCsv.default)(value, typeInfo?.delimiter, (0, _types.getStringifier)()) : (0, _types.safeJsonStringify)(value)
 };
 const _default = T_ARRAY;
+
+//# sourceMappingURL=array.js.map

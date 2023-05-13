@@ -1,6 +1,7 @@
 // JSON Expression Syntax (JES)
 import { remap, isPlainObject, get as _get, template, filterNull, objectToArray } from '@galaxar/utils';
-import { test, OP as v_ops } from '@galaxar/jsonv';
+import { Types } from '@galaxar/types';
+import { validate, test, OP as v_ops } from '@galaxar/jsonv';
 
 import _size from 'lodash/size';
 import _reduce from 'lodash/reduce';
@@ -19,6 +20,7 @@ import _map from 'lodash/map';
 import _mapValues from 'lodash/mapValues';
 import _findIndex from 'lodash/findIndex';
 import _findKey from 'lodash/findKey';
+import _find from 'lodash/find';
 import _isEqual from 'lodash/isEqual';
 import _each from 'lodash/each';
 
@@ -39,7 +41,8 @@ const OP_SUM = [t_ops.SUM, UNARY, '$sum', '$total'];
 const OP_GET_TYPE = [t_ops.GET_TYPE, UNARY, '$type'];
 const OP_GET_BY_INDEX = [t_ops.GET_BY_INDEX, BINARY, '$at', '$getByIndex', '$nth']; // supports -1 as the last index, -2 the second last
 const OP_GET_BY_KEY = [t_ops.GET_BY_KEY, BINARY, '$of', '$valueOf', '$getByKey']; // support key path
-const OP_FIND = [t_ops.FIND, BINARY, '$indexOf', '$keyOf'];
+const OP_FIND_INDEX = [t_ops.FIND_INDEX, BINARY, '$findIndex', '$indexOf', '$keyOf'];
+const OP_FIND = [t_ops.FIND, BINARY, '$find'];
 const OP_IF = [t_ops.IF, BINARY, '$if'];
 const OP_CAST_ARRAY = [t_ops.CAST_ARRAY, UNARY, '$castArray', '$makeArray'];
 
@@ -74,7 +77,9 @@ const OP_TO_OBJ = [t_ops.TO_OBJ, UNARY, '$object', '$toObject', '$parseJSON'];
 const OP_SET = [t_ops.SET, BINARY, '$set', '$=', '$value'];
 const OP_ADD_ITEM = [t_ops.ADD_ITEM, BINARY, '$addItem', '$addFields'];
 const OP_ASSIGN = [t_ops.ASSIGN, BINARY, '$assign', '$override', '$replace']; // will delete undefined entries
-const OP_APPLY = [t_ops.APPLY, BINARY, '$apply', '$eval']; // to be used in collection
+const OP_APPLY = [t_ops.APPLY, BINARY, '$apply', '$eval']; // to be used in collection, e.g. |>$apply
+
+const OP_SANITIZE = [t_ops.SANITIZE, BINARY, '$sanitize'];
 
 //String manipulate
 const OP_SPLIT = [t_ops.SPLIT, BINARY, '$split', '$explode'];
@@ -108,11 +113,50 @@ config.addTransformerToMap(OP_GET_TYPE, (left) =>
 config.addTransformerToMap(OP_GET_BY_INDEX, (left, right) => _nth(left, right));
 config.addTransformerToMap(OP_GET_BY_KEY, (left, right) => _get(left, right));
 
-config.addTransformerToMap(OP_FIND, (left, right, context) => {
-    const targetValue = transform(null, right, context);
+config.addTransformerToMap(OP_FIND_INDEX, (left, right, context) => {
+    let jvs;
+    let fromIndex = 0;
 
-    const predicate = (value) => _isEqual(value, targetValue);
-    return Array.isArray(left) ? _findIndex(left, predicate) : _findKey(left, predicate);
+    if (Array.isArray(right)) {
+        if (!Array.isArray(left)) {
+            throw new Error(MSG.INVALID_OP_EXPR(t_ops.FIND_INDEX));
+        }
+
+        if (right.length !== 2) {
+            throw new Error(MSG.OPERAND_NOT_TUPLE(t_ops.FIND_INDEX));
+        }
+
+        jvs = right[0];
+        fromIndex = right[1];
+    } else {
+        jvs = right;
+    }
+
+    const predicate = (value, key) =>
+        validate(value, jvs, matchOptions, getChildContext(context, left, key, value, { jsonx: transform }));
+
+    return Array.isArray(left) ? _findIndex(left, predicate, fromIndex) : _findKey(left, predicate);
+});
+
+config.addTransformerToMap(OP_FIND, (left, right, context) => {
+    let jvs;
+    let fromIndex = 0;
+
+    if (Array.isArray(right)) {
+        if (right.length !== 2) {
+            throw new Error(MSG.OPERAND_NOT_TUPLE(t_ops.FIND_INDEX));
+        }
+
+        jvs = right[0];
+        fromIndex = right[1];
+    } else {
+        jvs = right;
+    }
+
+    const predicate = (value, key) =>
+        validate(value, jvs, matchOptions, getChildContext(context, left, key, value, { jsonx: transform }));
+
+    return _find(left, predicate, fromIndex);
 });
 
 config.addTransformerToMap(OP_IF, (left, right, context) => {
@@ -344,6 +388,10 @@ config.addTransformerToMap(OP_ASSIGN, (left, right, context) => {
 
 config.addTransformerToMap(OP_APPLY, transform);
 
+config.addTransformerToMap(OP_SANITIZE, (left, right, context) => {
+    return Types.sanitize(left, transform(undefined, right, context, true));
+});
+
 config.addTransformerToMap(OP_SPLIT, (left, right) => {
     if (typeof left !== 'string') {
         throw new Error(MSG.VALUE_NOT_STRING(t_ops.SPLIT));
@@ -368,6 +416,10 @@ config.addTransformerToMap(OP_SPLIT, (left, right) => {
     return left.split(right);
 });
 
+const esTemplateSetting = {
+    interpolate: /\$\{([\s\S]+?)\}/g,
+};
+
 config.addTransformerToMap(OP_INTERPOLATE, (left, right) => {
     if (typeof left !== 'string') {
         throw new Error(MSG.VALUE_NOT_STRING(t_ops.INTERPOLATE));
@@ -376,6 +428,14 @@ config.addTransformerToMap(OP_INTERPOLATE, (left, right) => {
     if (right != null && typeof right !== 'object') {
         throw new Error(MSG.OPERAND_NOT_OBJECT(t_ops.INTERPOLATE));
     }
+
+    if (Array.isArray(right)) {
+        if (right.length !== 2) {
+            throw new Error(MSG.OPERAND_NOT_TUPLE(t_ops.INTERPOLATE));
+        }
+
+        return template(left, right[0], right[1] === 'es6' ? esTemplateSetting : right[1]);
+    }       
 
     return template(left, right);
 });

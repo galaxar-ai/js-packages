@@ -16,7 +16,7 @@ Object.defineProperty(exports, "default", {
         return _default;
     }
 });
-var replaceAll = function(str, search, replacement) {
-    return str && str.split(search).join(replacement);
-};
-var _default = replaceAll;
+const replaceAll = (str, search, replacement)=>str && str.split(search).join(replacement);
+const _default = replaceAll;
+
+//# sourceMappingURL=replaceAll.js.map

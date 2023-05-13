@@ -8,7 +8,7 @@ Object.defineProperty(exports, "default", {
         return _default;
     }
 });
-var _compile = /*#__PURE__*/ _interop_require_default(require("./compile"));
+const _compile = /*#__PURE__*/ _interop_require_default(require("./compile"));
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
@@ -24,4 +24,6 @@ function _interop_require_default(obj) {
  */ function template(str, values, settings) {
     return (0, _compile.default)(str, settings)(values);
 }
-var _default = template;
+const _default = template;
+
+//# sourceMappingURL=template.js.map

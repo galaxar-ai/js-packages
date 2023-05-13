@@ -15,7 +15,7 @@ Object.defineProperty(exports, "default", {
         return _default;
     }
 });
-var ifThen = function(obj, predicate, then) {
-    return predicate(obj) ? then : obj;
-};
-var _default = ifThen;
+const ifThen = (obj, predicate, then)=>predicate(obj) ? then : obj;
+const _default = ifThen;
+
+//# sourceMappingURL=ifThen.js.map

@@ -8,8 +8,8 @@ Object.defineProperty(exports, "default", {
         return _default;
     }
 });
-var _dropIfEndsWith = /*#__PURE__*/ _interop_require_default(require("./dropIfEndsWith"));
-var _ensureStartsWith = /*#__PURE__*/ _interop_require_default(require("./ensureStartsWith"));
+const _dropIfEndsWith = /*#__PURE__*/ _interop_require_default(require("./dropIfEndsWith"));
+const _ensureStartsWith = /*#__PURE__*/ _interop_require_default(require("./ensureStartsWith"));
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
@@ -22,15 +22,12 @@ function _interop_require_default(obj) {
  * @param {String} extraPath
  * @param {...any} more - More path
  * @returns {String}
- */ function join(base, extraPath) {
-    for(var _len = arguments.length, more = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++){
-        more[_key - 2] = arguments[_key];
-    }
+ */ function join(base, extraPath, ...more) {
     if (more && more.length > 0) {
-        return more.reduce(function(result, part) {
-            return join(result, part);
-        }, join(base, extraPath));
+        return more.reduce((result, part)=>join(result, part), join(base, extraPath));
     }
-    return base ? extraPath ? (0, _dropIfEndsWith.default)(base, "/") + (0, _ensureStartsWith.default)(extraPath, "/") : base : extraPath;
+    return base ? extraPath ? (0, _dropIfEndsWith.default)(base, '/') + (0, _ensureStartsWith.default)(extraPath, '/') : base : extraPath;
 }
-var _default = join;
+const _default = join;
+
+//# sourceMappingURL=urlJoin.js.map

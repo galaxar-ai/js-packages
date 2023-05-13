@@ -24,15 +24,15 @@ _export(exports, {
         return _naming;
     }
 });
-var _lodash = /*#__PURE__*/ _interop_require_default(require("lodash"));
+const _lodash = /*#__PURE__*/ _interop_require_default(require("lodash"));
 _export_star(require("./lang"), exports);
 _export_star(require("./array"), exports);
 _export_star(require("./object"), exports);
 _export_star(require("./collection"), exports);
 _export_star(require("./string"), exports);
-var _text = /*#__PURE__*/ _interop_require_wildcard(require("./text"));
-var _url = /*#__PURE__*/ _interop_require_wildcard(require("./url"));
-var _naming = /*#__PURE__*/ _interop_require_wildcard(require("./naming"));
+const _text = /*#__PURE__*/ _interop_require_wildcard(require("./text"));
+const _url = /*#__PURE__*/ _interop_require_wildcard(require("./url"));
+const _naming = /*#__PURE__*/ _interop_require_wildcard(require("./naming"));
 function _export_star(from, to) {
     Object.keys(from).forEach(function(k) {
         if (k !== "default" && !Object.prototype.hasOwnProperty.call(to, k)) {
@@ -90,3 +90,5 @@ function _interop_require_wildcard(obj, nodeInterop) {
     }
     return newObj;
 }
+
+//# sourceMappingURL=index.js.map

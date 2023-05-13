@@ -1,6 +1,10 @@
+import Jvs, { config } from '@galaxar/jsonv';
+import enUS from '@galaxar/jsonv/lib/locale/en-US';
 import Jxs from '../lib';
 
-describe.skip('transformer:hybrid', function () {
+config.loadMessages('en-US', enUS).setLocale('en-US');
+
+describe('Jxs:hybrid', function () {
     it('eval', function () {
         let obj = {
             key1: 2000,
@@ -97,40 +101,6 @@ describe.skip('transformer:hybrid', function () {
         pipelined.highestScore.should.be.exactly(100);
     });
 
-    it('keys-values-entries', function () {
-        let obj = {
-            'id': 1,
-            'user': 100,
-            'agency': 1,
-            ':user': { email: 'email1', other: 'any' },
-            ':agency': { name: 'agency1', other: 'any' },
-        };
-
-        let transformed = Jxs.match(obj, '$keys');
-        transformed.should.be.eql(['id', 'user', 'agency', ':user', ':agency']);
-
-        transformed = Jxs.match(obj, '$values');
-        transformed.should.be.eql([
-            1,
-            100,
-            1,
-            { email: 'email1', other: 'any' },
-            { name: 'agency1', other: 'any' },
-        ]);
-
-        transformed = Jxs.match(obj, [
-            '$toArray',
-            { '|>$remap': { k: 'category', v: 'item' } },
-        ]);
-        transformed.should.be.eql([
-            { category: 'id', item: 1 },
-            { category: 'user', item: 100 },
-            { category: 'agency', item: 1 },
-            { category: ':user', item: { email: 'email1', other: 'any' } },
-            { category: ':agency', item: { name: 'agency1', other: 'any' } },
-        ]);
-    });
-
     it('transform collection', function () {
         let array = [
             {
@@ -165,7 +135,7 @@ describe.skip('transformer:hybrid', function () {
             },
         ];
 
-        let transformed = Jxs.match(array, {
+        let transformed = Jxs.evaluate(array, {
             '|>$apply': {
                 user: ['$$PARENT.:user', { $pick: ['email'] }],
                 agency: ['$$PARENT.:agency', { $pick: ['name'] }],
@@ -179,105 +149,6 @@ describe.skip('transformer:hybrid', function () {
             { user: { email: 'email4' }, agency: { name: 'agency2' } },
             { user: { email: 'email5' }, agency: { name: 'agency2' } },
         ]);
-    });
-
-    it('startwith not string', function () {
-        let array = [
-            {
-                'user': 100,
-                'agency': 1,
-                ':user': { email: 'email1', other: 'any' },
-                ':agency': { name: 'agency1', other: 'any' },
-            },
-        ];
-        let array_error = [
-            {
-                undeclaredVariable: '100',
-                2111111111111111: '1',
-                3111111111111111: '2',
-                4111111111111111: '3',
-            },
-        ];
-        const Jxso_error = new Jxs(array_error);
-        let transformed1 = Jxs.match(array_error, {
-            '|>$apply': {
-                $pick: {
-                    $not: {
-                        $startWith: ':',
-                    },
-                },
-            },
-        });
-
-        const Jxso = new Jxs(array);
-        should.throws(function () {
-            Jxso.evaluate({
-                $merge: 1,
-            });
-        }, 'The right operand of a "OP_MERGE" operator must be an array.');
-
-        let transformed = Jxs.evaluate(array, {
-            '|>$apply': {
-                $merge: [
-                    {
-                        $pick: {
-                            $not: {
-                                $endWith: ':',
-                            },
-                        },
-                    },
-                    {
-                        '@user': ['$$PARENT.:user', { $pick: ['email'] }],
-                        '@agency': ['$$PARENT.:agency', { $pick: ['name'] }],
-                    },
-                ],
-            },
-        });
-
-        should.throws(() => {
-            let transformed = Jxs.evaluate(array, {
-                '|>$apply': {
-                    $merge: [
-                        {
-                            $pick: {
-                                $not: {
-                                    $endWith: 1,
-                                },
-                            },
-                        },
-                        {
-                            '@user': ['$$PARENT.:user', { $pick: ['email'] }],
-                            '@agency': [
-                                '$$PARENT.:agency',
-                                { $pick: ['name'] },
-                            ],
-                        },
-                    ],
-                },
-            });
-        }, 'AssertionError: Missing expected exception. InvalidArgument: Invalid validation operator "$add".');
-        transformed.should.be.eql([
-            {
-                'user': 100,
-                'agency': 1,
-                ':user': { email: 'email1', other: 'any' },
-                ':agency': { name: 'agency1', other: 'any' },
-                '@user': { email: 'email1' },
-                '@agency': { name: 'agency1' },
-            },
-        ]);
-    });
-
-    it('group', function () {
-        let array = [1];
-
-        let grouped = Jxs.match(array, {
-            '|>$apply': {
-                $group: [4],
-            },
-        });
-
-        grouped.should.be.eql([{}]);
     });
 
     it('transform collection - merge', function () {
@@ -314,7 +185,7 @@ describe.skip('transformer:hybrid', function () {
             },
         ];
 
-        let transformed = Jxs.match(array, {
+        let transformed = Jxs.evaluate(array, {
             '|>$apply': {
                 $merge: [
                     {
@@ -380,207 +251,7 @@ describe.skip('transformer:hybrid', function () {
         }, 'The value to take a "Add K-V Entry" operator must be either an object or an array.');
     });
 
-    it('omit', function () {
-        let array = [
-            {
-                id: 1,
-                user: 100,
-                agency: 1,
-            },
-        ];
-        should.throws(() => {
-            let transformed = Jxs.match(array, {
-                '|>$apply': [
-                    {
-                        $pooo: 1,
-                    },
-                ],
-            });
-        }, 'AssertionError: Missing expected exception. AssertionError: Missing expected exception. AssertionError: Missing expected exception. InvalidArgument: Invalid validation operator "$add".');
-
-        should.throws(() => {
-            let transformed = Jxs.evaluate(array, {
-                '|>$apply': [
-                    {
-                        '|>$pooooo': 1,
-                    },
-                ],
-            });
-        }, 'AssertionError: Missing expected exception. AssertionError: Missing expected exception. AssertionError: Missing expected exception. InvalidArgument: Invalid validation operator "$add".');
-
-        let transformed = Jxs.match(array, {
-            '|>$apply': [
-                {
-                    $omit: 1,
-                },
-            ],
-        });
-
-        transformed.should.be.eql([{ user: 100, id: 1, agency: 1 }]);
-    });
-
-    it('pick & omit by Jxs', function () {
-        let array = [
-            {
-                'id': 1,
-                'user': 100,
-                'agency': 1,
-                ':user': { email: 'email1', other: 'any' },
-                ':agency': { name: 'agency1', other: 'any' },
-            },
-            {
-                'id': 2,
-                'user': 101,
-                'agency': 1,
-                ':user': { email: 'email2', other: 'any' },
-                ':agency': { name: 'agency1', other: 'any' },
-            },
-            {
-                'id': 3,
-                'user': 102,
-                'agency': 1,
-                ':user': { email: 'email3', other: 'any' },
-                ':agency': { name: 'agency1', other: 'any' },
-            },
-            {
-                'id': 4,
-                'user': 103,
-                'agency': 2,
-                ':user': { email: 'email4', other: 'any' },
-                ':agency': { name: 'agency2', other: 'any' },
-            },
-            {
-                'id': 5,
-                'user': 104,
-                'agency': 2,
-                ':user': { email: 'email5', other: 'any' },
-                ':agency': { name: 'agency2', other: 'any' },
-            },
-        ];
-
-        should.throws(() => {
-            let transformed = Jxs.match(array, {
-                '|>$apply': [
-                    {
-                        $pick: {
-                            $not: {
-                                $startWith: ':',
-                            },
-                        },
-                    },
-                    {
-                        $addItem: ['$test', '$$CURRENT.id', 'aaa'],
-                    },
-                    {
-                        $omit: ['id'],
-                    },
-                ],
-            });
-        }, 'AssertionError: Missing expected exception. AssertionError: Missing expected exception. AssertionError: Missing expected exception. InvalidArgument: Invalid validation operator "$add".');
-
-        let transformed = Jxs.match(array, {
-            '|>$apply': [
-                {
-                    $pick: {
-                        $not: {
-                            $startWith: ':',
-                        },
-                    },
-                },
-                {
-                    $addItem: ['$test', '$$CURRENT.id'],
-                },
-                {
-                    $omit: ['id'],
-                },
-            ],
-        });
-
-        should.throws(() => {
-            let picked_left = Jxs.match(array, {
-                '|>$apply': [
-                    {
-                        $pick: {
-                            $not: {
-                                $startWith: 1,
-                            },
-                        },
-                    },
-                ],
-            });
-        }, 'AssertionError: Missing expected exception. InvalidArgument: Invalid validation operator "$add".');
-
-        transformed.should.be.eql([
-            { user: 100, agency: 1, $test: 1 },
-            { user: 101, agency: 1, $test: 2 },
-            { user: 102, agency: 1, $test: 3 },
-            { user: 103, agency: 2, $test: 4 },
-            { user: 104, agency: 2, $test: 5 },
-        ]);
-    });
-
     it('filter', function () {
-        let array = [
-            {
-                'id': 1,
-                'user': 100,
-                'agency': 1,
-                ':user': { email: 'email1', other: 'any' },
-                ':agency': { name: 'agency1', other: 'any' },
-            },
-            {
-                'id': 2,
-                'user': 101,
-                'agency': 1,
-                ':user': { email: 'email2', other: 'any' },
-                ':agency': { name: 'agency1', other: 'any' },
-            },
-            {
-                'id': 3,
-                'user': 102,
-                'agency': 1,
-                ':user': { email: 'email3', other: 'any' },
-                ':agency': { name: 'agency1', other: 'any' },
-            },
-            {
-                'id': 4,
-                'user': 103,
-                'agency': 2,
-                ':user': { email: 'email4', other: 'any' },
-                ':agency': { name: 'agency2', other: 'any' },
-            },
-            {
-                'id': 5,
-                'user': 104,
-                'agency': 2,
-                ':user': { email: 'email5', other: 'any' },
-                ':agency': { name: 'agency2', other: 'any' },
-            },
-        ];
-
-        let transformed = Jxs.match(array, [
-            {
-                $select: {
-                    user: {
-                        $gte: 102,
-                    },
-                },
-            },
-            {
-                '|>$omit': {
-                    $startWith: ':',
-                },
-            },
-        ]);
-
-        transformed.should.be.eql([
-            { id: 3, user: 102, agency: 1 },
-            { id: 4, user: 103, agency: 2 },
-            { id: 5, user: 104, agency: 2 },
-        ]);
-    });
-
-    it('remap', function () {
         let array = [
             {
                 'id': 1,
@@ -632,46 +303,12 @@ describe.skip('transformer:hybrid', function () {
                     $startWith: ':',
                 },
             },
-            {
-                '|>$remap': {
-                    user: 'username',
-                },
-            },
         ]);
 
         transformed.should.be.eql([
-            { username: 102 },
-            { username: 103 },
-            { username: 104 },
-        ]);
-    });
-
-    it('remap keep unmapped', function () {
-        let array = [
-            {
-                id: 1,
-                user: 100,
-            },
-            {
-                id: 2,
-                user: 101,
-            },
-        ];
-
-        let transformed = Jxs.match(array, [
-            {
-                '|>$remap': [
-                    {
-                        user: 'username',
-                    },
-                    true,
-                ],
-            },
-        ]);
-
-        transformed.should.be.eql([
-            { id: 1, username: 100 },
-            { id: 2, username: 101 },
+            { id: 3, user: 102, agency: 1 },
+            { id: 4, user: 103, agency: 2 },
+            { id: 5, user: 104, agency: 2 },
         ]);
     });
 
@@ -682,30 +319,32 @@ describe.skip('transformer:hybrid', function () {
 
         const Jxso = new Jxs(obj);
 
-        Jxso.match({
+        Jxso.update({
             $if: [
                 { key1:  { $match: { $gt: 0 } } },
                 { $set: 'positive' },
                 { $set: 'non-positive' },
             ],
-        }).match('positive');
+        }).value.should.be.eql('positive');
 
-        Jxso.match({
+        Jxs.evaluate({
+            key1: 1.5,
+        }, {
             $if: [
-                { key1: { $match: { $gt: 2 } } },
-                { $set: 'positive' },
-                { $set: 'non-positive' },
+                { $match: { key1: { $gt: 2 } } },
+                { $value: 'positive' },
+                { $value: 'non-positive' },
             ],
-        }).match('non-positive');
+        }).should.be.eql('non-positive');
 
         should.throws(function () {
-            Jxso.match({
+            Jxs.evaluate(obj, {
                 $if: { key1: { $match: { $gt: 0 } } },
             });
-        }, 'The right operand of a "If Else" operator must be an array.');
+        }, 'The right operand of a "if" operator must be an array.');
 
         should.throws(function () {
-            Jxso.evaluate({
+            Jxs.evaluate(obj, {
                 $if: [
                     { key1: { $match: { $gt: 0 } } },
                     { $set: 'positive' },

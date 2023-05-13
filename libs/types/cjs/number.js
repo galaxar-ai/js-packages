@@ -42,3 +42,5 @@ const _default = {
     },
     serialize: _functions.identity
 };
+
+//# sourceMappingURL=number.js.map

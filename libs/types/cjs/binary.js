@@ -30,3 +30,5 @@ module.exports = {
     },
     serialize: (value, meta)=>value == null ? null : value.toString(meta.encoding || 'base64')
 };
+
+//# sourceMappingURL=binary.js.map

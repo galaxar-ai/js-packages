@@ -14,7 +14,7 @@ Object.defineProperty(exports, "default", {
         return _default;
     }
 });
-var dropIfStartsWith = function(str, starting) {
-    return str && str.startsWith(starting) ? str.substring(starting.length) : str;
-};
-var _default = dropIfStartsWith;
+const dropIfStartsWith = (str, starting)=>str && str.startsWith(starting) ? str.substring(starting.length) : str;
+const _default = dropIfStartsWith;
+
+//# sourceMappingURL=dropIfStartsWith.js.map

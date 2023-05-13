@@ -18,6 +18,9 @@ _export(exports, {
     OP: function() {
         return _validateOperators.default;
     },
+    validate: function() {
+        return _validate.default;
+    },
     test: function() {
         return _validate.test;
     },
@@ -27,7 +30,7 @@ _export(exports, {
 });
 const _config = /*#__PURE__*/ _interop_require_wildcard(require("./config"));
 const _validateOperators = /*#__PURE__*/ _interop_require_default(require("./validateOperators"));
-const _validate = require("./validate");
+const _validate = /*#__PURE__*/ _interop_require_wildcard(require("./validate"));
 const _Jvs = /*#__PURE__*/ _interop_require_default(require("./Jvs"));
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
@@ -73,3 +76,5 @@ function _interop_require_wildcard(obj, nodeInterop) {
     }
     return newObj;
 }
+
+//# sourceMappingURL=index.js.map

@@ -1,18 +1,7 @@
+import { formatPath, makePath } from './utils';
+
 const validatorHandlers = {};
 const mapOfValidators = {};
-
-const formatName = (name, left, context, custom) => {
-    const fullName = name == null ? context.path : makePath(name, context?.path);
-    return fullName == null
-        ? messages.nameOfValue(custom)
-        : context?.mapOfNames
-            ? context.mapOfNames[fullName]
-            : fullName;
-};
-
-const formatKey = (key, hasPrefix) => (Number.isInteger(key) ? `[${key}]` : hasPrefix ? '.' + key : key);
-const makePath = (key, prefix) => (prefix != null ? `${prefix}${formatKey(key, true)}` : formatKey(key, false));
-const formatPath = (prefix) => (prefix ? '[' + prefix + ']' : '<ROOT>');
 
 /**
  * Creates a new context object that represents the context of a child object within a larger data structure.
@@ -34,10 +23,6 @@ export const getChildContext = (context, currentValue, childKey, childValue, ext
 export const contextVarKeys = new Set(['$$ROOT', '$$PARENT', '$$CURRENT', '$$KEY']);
 
 export const messages = {
-    formatName,
-    formatKey,
-    makePath,
-
     //Exception messages
     SYNTAX_OP_NOT_ALONE: 'Transformer operator can only be used alone in one pipeline stage.',
     SYNTAX_INVALID_EXPR: (expr) => `Invalid expression syntax: ${JSON.stringify(expr)}`, // complext expr, not split out operator yet
@@ -110,7 +95,7 @@ const config = {
         return config;
     },
     setLocale: (locale) => {
-        if (locale in messagesCache) {
+        if (locale in messagesCache) {            
             Object.assign(messages, messagesCache[locale]);
         }
     }

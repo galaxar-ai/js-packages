@@ -28,12 +28,14 @@ _export(exports, {
         return _snakeCase.default;
     }
 });
-var _camelCase = /*#__PURE__*/ _interop_require_default(require("./camelCase"));
-var _kebabCase = /*#__PURE__*/ _interop_require_default(require("./kebabCase"));
-var _pascalCase = /*#__PURE__*/ _interop_require_default(require("./pascalCase"));
-var _snakeCase = /*#__PURE__*/ _interop_require_default(require("./snakeCase"));
+const _camelCase = /*#__PURE__*/ _interop_require_default(require("./camelCase"));
+const _kebabCase = /*#__PURE__*/ _interop_require_default(require("./kebabCase"));
+const _pascalCase = /*#__PURE__*/ _interop_require_default(require("./pascalCase"));
+const _snakeCase = /*#__PURE__*/ _interop_require_default(require("./snakeCase"));
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
     };
 }
+
+//# sourceMappingURL=naming.js.map

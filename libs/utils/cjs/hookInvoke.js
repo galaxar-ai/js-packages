@@ -15,31 +15,26 @@ Object.defineProperty(exports, "default", {
         return _default;
     }
 });
-var hookInvoke = function(obj, onCalling, onCalled) {
-    return new Proxy(obj, {
-        get: function get(target, propKey /*, receiver*/ ) {
-            var origMethod = target[propKey];
-            if (typeof origMethod === "function") {
-                return function() {
-                    for(var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++){
-                        args[_key] = arguments[_key];
-                    }
+const hookInvoke = (obj, onCalling, onCalled)=>new Proxy(obj, {
+        get (target, propKey /*, receiver*/ ) {
+            const origMethod = target[propKey];
+            if (typeof origMethod === 'function') {
+                return function(...args) {
                     onCalling && Promise.resolve(onCalling(obj, {
                         name: propKey,
-                        args: args
+                        args
                     }));
-                    var returned = origMethod.apply(target, args);
-                    onCalled && Promise.resolve(returned).then(function(returned) {
-                        return Promise.resolve(onCalled(obj, {
+                    let returned = origMethod.apply(target, args);
+                    onCalled && Promise.resolve(returned).then((returned)=>Promise.resolve(onCalled(obj, {
                             name: propKey,
-                            returned: returned
-                        }));
-                    }).catch();
+                            returned
+                        }))).catch();
                     return returned;
                 };
             }
             return origMethod;
         }
     });
-};
-var _default = hookInvoke;
+const _default = hookInvoke;
+
+//# sourceMappingURL=hookInvoke.js.map

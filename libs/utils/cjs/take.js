@@ -16,8 +16,8 @@ Object.defineProperty(exports, "default", {
 });
 function take(object, n) {
     n == null && (n = 1);
-    var result = {}, i = 0;
-    for(var k in object){
+    let result = {}, i = 0;
+    for(let k in object){
         if (i++ < n) {
             result[k] = object[k];
         } else {
@@ -26,4 +26,6 @@ function take(object, n) {
     }
     return result;
 }
-var _default = take;
+const _default = take;
+
+//# sourceMappingURL=take.js.map

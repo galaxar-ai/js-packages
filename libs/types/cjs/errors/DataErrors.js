@@ -63,3 +63,5 @@ class DatabaseError extends _AppErrors.ApplicationError {
     }
 }
 ;
+
+//# sourceMappingURL=DataErrors.js.map

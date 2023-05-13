@@ -15,24 +15,20 @@ Object.defineProperty(exports, "default", {
         return _default;
     }
 });
-var arrayToObject = function(arrayOfObjects, keyGetter, valueGetter) {
+const arrayToObject = (arrayOfObjects, keyGetter, valueGetter)=>{
     if (arrayOfObjects == null) {
         return null;
     }
     if (!Array.isArray(arrayOfObjects)) {
-        throw new Error("The target argument should be an array.");
+        throw new Error('The target argument should be an array.');
     }
-    var _keyGetter = typeof keyGetter === "function" ? keyGetter : function(obj) {
-        return obj[keyGetter];
-    };
-    var _valueGetter = valueGetter == null ? function(obj) {
-        return obj;
-    } : typeof valueGetter === "function" ? valueGetter : function(obj) {
-        return obj[valueGetter];
-    };
-    return arrayOfObjects.reduce(function(table, obj, index) {
+    const _keyGetter = typeof keyGetter === 'function' ? keyGetter : (obj)=>obj[keyGetter];
+    const _valueGetter = valueGetter == null ? (obj)=>obj : typeof valueGetter === 'function' ? valueGetter : (obj)=>obj[valueGetter];
+    return arrayOfObjects.reduce((table, obj, index)=>{
         table[_keyGetter(obj, index)] = _valueGetter(obj, index);
         return table;
     }, {});
 };
-var _default = arrayToObject;
+const _default = arrayToObject;
+
+//# sourceMappingURL=arrayToObject.js.map

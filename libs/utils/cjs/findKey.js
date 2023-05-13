@@ -8,7 +8,7 @@ Object.defineProperty(exports, "default", {
         return _default;
     }
 });
-var _isPlainObject = /*#__PURE__*/ _interop_require_default(require("./isPlainObject"));
+const _isPlainObject = /*#__PURE__*/ _interop_require_default(require("./isPlainObject"));
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
@@ -24,25 +24,27 @@ function _interop_require_default(obj) {
  * @returns {Promise.<Object|undefined>}
  */ function findKey(obj, predicate) {
     if (Array.isArray(obj)) {
-        var l = obj.length;
-        for(var i = 0; i < l; i++){
-            var el = obj[i];
+        let l = obj.length;
+        for(let i = 0; i < l; i++){
+            const el = obj[i];
             if (predicate(el, i, obj)) {
                 return i;
             }
         }
         return undefined;
     } else if ((0, _isPlainObject.default)(obj)) {
-        for(var k in obj){
+        for(let k in obj){
             if (Object.prototype.hasOwnProperty.call(obj, k)) {
-                var el1 = obj[k];
-                if (predicate(el1, k, obj)) {
+                const el = obj[k];
+                if (predicate(el, k, obj)) {
                     return k;
                 }
             }
         }
         return undefined;
     }
-    throw new Error("The first argument should be a collection.");
+    throw new Error('The first argument should be a collection.');
 }
-var _default = findKey;
+const _default = findKey;
+
+//# sourceMappingURL=findKey.js.map
