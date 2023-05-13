@@ -8,6 +8,7 @@
 .prettierignore
 .travis.yml
 .editorconfig
+.swcrc
 jsconfig.json
 jsdoc.json
 babel.config.js
@@ -19,7 +20,6 @@ examples
 docs
 coverage
 .nyc_output
-__tests__
+__test__
 lib/**/*.spec.js
 allure-results
-dist
