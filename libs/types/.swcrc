@@ -12,5 +12,6 @@
         "type": "commonjs"        
     },
     "isModule": true,
+    "minify": true,
     "sourceMaps": true
 }

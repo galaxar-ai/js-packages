@@ -1,6 +1,6 @@
 {
     "name": "@galaxar/utils",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Galaxar JavaScript Utility Library for both Node.js and browser",
     "main": "cjs/index",
     "module": "index.js",
@@ -38,5 +38,13 @@
     },
     "dependencies": {
         "lodash": "^4.17.21"
+    },
+    "prettier": {
+        "quoteProps": "consistent",
+        "printWidth": 120,
+        "singleQuote": true,
+        "trailingComma": "es5",
+        "tabWidth": 4,
+        "useTabs": false
     }
 }

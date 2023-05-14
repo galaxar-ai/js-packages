@@ -60,9 +60,6 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
-      mobx:
-        specifier: ^6.9.0
-        version: 6.9.0
     devDependencies:
       '@genx/test':
         specifier: ^2.1.5
@@ -70,6 +67,9 @@ importers:
       csv-parse:
         specifier: ^5.0.4
         version: 5.0.4
+      mobx:
+        specifier: ^6.9.0
+        version: 6.9.0
 
 packages:
 
@@ -1873,7 +1873,7 @@ packages:
 
   /mobx@6.9.0:
     resolution: {integrity: sha512-HdKewQEREEJgsWnErClfbFoVebze6rGazxFLU/XUyrII8dORfVszN1V0BMRnQSzcgsNNtkX8DHj3nC6cdWE9YQ==}
-    dev: false
+    dev: true
 
   /mocha-multi@1.1.5(mocha@9.0.0):
     resolution: {integrity: sha512-KL8mRPqNt7cYK84PusE0hB23YC8ev//qIYPCpfe8/tCXkJeCiFnuvM+Mw/5wCC0quUevQFNp/H0OzS8x9ws9wQ==}
