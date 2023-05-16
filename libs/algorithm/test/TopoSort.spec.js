@@ -31,14 +31,21 @@ describe('unit:TopoSort', function () {
     it('sort', function () {
         let sorted = topoSort.sort();
 
-        sorted.should.be.deepEqual([
-            'step1',
-            'step2',
-            'step3',
-            'step4',
-            'step5',
-            'step6',
-        ]);
+        sorted.should.be.deepEqual(['step1', 'step2', 'step3', 'step4', 'step5', 'step6']);
+    });
+
+    it('sort 2', function () {
+        let topoSort2 = new TopoSort();
+
+        topoSort2.depends('step2', 'step1');
+        topoSort2.depends('step3', 'step1');
+        topoSort2.depends('step4', 'step2');
+        topoSort2.depends('step5', 'step2');
+        topoSort2.depends('step6', ['step2', 'step3']);
+
+        let sorted = topoSort2.sort();
+
+        sorted.should.be.deepEqual(['step1', 'step2', 'step3', 'step4', 'step5', 'step6']);
     });
 
     it('throw on circular dependence', function () {

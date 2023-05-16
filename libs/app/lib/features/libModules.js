@@ -27,7 +27,7 @@ export default {
      * This feature is loaded at plugin stage.
      * @member {string}
      */
-    type: Feature.PLUGIN,
+    stage: Feature.PLUGIN,
 
     /**
      * Load the feature.

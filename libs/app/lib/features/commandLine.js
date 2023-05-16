@@ -449,7 +449,7 @@ export default {
      * This feature is loaded at initialization stage
      * @member {string}
      */
-    type: Feature.INIT,
+    stage: Feature.INIT,
 
     /**
      * Load the feature

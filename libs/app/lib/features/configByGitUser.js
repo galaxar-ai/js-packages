@@ -14,7 +14,7 @@ export default {
      * This feature is loaded at configuration stage
      * @member {string}
      */
-    type: Feature.CONF,
+    stage: Feature.CONF,
 
     /**
      * Load the feature

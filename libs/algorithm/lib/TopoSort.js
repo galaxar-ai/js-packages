@@ -23,9 +23,7 @@ class TopoSort {
      */
     add(dependency, newDependents) {
         // cast to array
-        newDependents = Array.isArray(newDependents)
-            ? newDependents
-            : [newDependents];
+        newDependents = Array.isArray(newDependents) ? newDependents : newDependents == null ? [] : [newDependents];
 
         // get the existing dependents
         const dependents = this.mapOfDependents[dependency];
@@ -51,20 +49,40 @@ class TopoSort {
         }
     }
 
+    depends(node, dependencies) {
+        // cast to array
+        dependencies = Array.isArray(dependencies) ? dependencies : dependencies == null ? [] : [dependencies];
+
+        // get the existing dependencies
+        const _dependencies = this.mapOfDependencies[node];
+        if (!_dependencies) {
+            // new set of dependencies
+            this.mapOfDependencies[node] = new Set(dependencies);
+        } else {
+            dependencies.forEach((dependency) => {
+                _dependencies.add(dependency);
+            });
+        }
+
+        // get the existing dependents
+        dependencies.forEach((dependency) => {
+            const dependents = this.mapOfDependents[dependency];
+
+            if (dependents) {
+                dependents.add(node);
+            } else {
+                // new set of dependents
+                this.mapOfDependents[dependency] = new Set([node]);
+            }
+        });
+    }
+
     hasDependency(node) {
-        return (
-            (this.mapOfDependencies[node] &&
-                this.mapOfDependencies[node].size > 0) ||
-            false
-        );
+        return (this.mapOfDependencies[node] && this.mapOfDependencies[node].size > 0) || false;
     }
 
     hasDependent(node) {
-        return (
-            (this.mapOfDependents[node] &&
-                this.mapOfDependents[node].size > 0) ||
-            false
-        );
+        return (this.mapOfDependents[node] && this.mapOfDependents[node].size > 0) || false;
     }
 
     /**
@@ -82,24 +100,24 @@ class TopoSort {
         const nodesWithDependencies = Object.keys(this.mapOfDependencies);
 
         const initialNodes = new Set(nodesWithDependents);
-        nodesWithDependencies.forEach((nodeHasDependency) =>
-            initialNodes.delete(nodeHasDependency)
-        );
+        nodesWithDependencies.forEach((nodeHasDependency) => initialNodes.delete(nodeHasDependency));
 
         // List of nodes with no unsorted dependencies
         const s = [...initialNodes];
 
-        const allNodes = new Set(
-            nodesWithDependents.concat(nodesWithDependencies)
-        );
+        const allNodes = new Set(nodesWithDependents.concat(nodesWithDependencies));
 
         // number of unsorted nodes. If it is not zero at the end, this graph is a circular graph and cannot be sorted.
         let unsorted = allNodes.size;
 
-        const numWithDependencies = _.mapValues(
-            this.mapOfDependencies,
-            (node) => node.size
-        );
+        if (unsorted === 1) {
+            // only 1 node in the graph, no need to sort.
+            return Array.from(allNodes);
+        }
+
+        const numWithDependencies = _.mapValues(this.mapOfDependencies, (node) => node.size);
+
+        console.log({ numWithDependencies, s, allNodes })
 
         while (s.length !== 0) {
             const n = s.shift();
@@ -133,9 +151,7 @@ class TopoSort {
             }
 
             throw new Error(
-                'At least 1 circular dependency in nodes: \n\n' +
-                    circular.join('\n') +
-                    '\n\nGraph cannot be sorted!'
+                'At least 1 circular dependency in nodes: \n\n' + circular.join('\n') + '\n\nGraph cannot be sorted!'
             );
         }
 

@@ -383,13 +383,18 @@ class ServiceContainer extends AsyncEmitter {
     }
 
     _sortFeatures(features) {
+        if (features.length === 0) {
+            return features;
+        }
+        
         const topoSort = new TopoSort();
-        features.forEach(feature => {
-            feature.depends?.forEach(dep => topoSort.add(dep, feature.name));
+        features.forEach(( [feature] ) => {
+            topoSort.depends(feature.name, feature.depends);
         });
 
-        const groups = arrayToObject(features, 'name');
+        const groups = arrayToObject(features, ([feature]) => feature.name);
         const keys = topoSort.sort();
+
         return keys.map(key => groups[key]);
     }
 
@@ -433,7 +438,7 @@ class ServiceContainer extends AsyncEmitter {
             [Feature.INIT]: [],
             [Feature.SERVICE]: [],
             [Feature.PLUGIN]: [],
-            [Feature.READY]: [],
+            [Feature.FINAL]: [],
         };
 
         // load features
@@ -441,7 +446,7 @@ class ServiceContainer extends AsyncEmitter {
             if (this.options.allowedFeatures && this.options.allowedFeatures.indexOf(name) === -1) {
                 //skip disabled features
                 return;
-            }
+            }            
 
             let feature = this._loadFeature(name);
 
@@ -539,7 +544,12 @@ class ServiceContainer extends AsyncEmitter {
                 });
             }
 
-            featureObject = require(featurePath);
+            featureObject = this.tryRequire(featurePath);
+        }
+
+        // support ES6 default export
+        if (featureObject.default) {
+            featureObject = featureObject.default;
         }
 
         if (!validateFeature(featureObject)) {

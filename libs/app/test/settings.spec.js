@@ -12,6 +12,7 @@ describe.only('feature:settings', function () {
 
         cliApp = new App('test server', {
             workingPath: WORKING_DIR,
+            //logLevel: 'verbose'
         });
 
         cliApp.once('configLoaded', () => {

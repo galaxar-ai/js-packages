@@ -11,7 +11,7 @@ export default {
      * This feature is loaded at init stage
      * @member {string}
      */
-    type: Feature.INIT,
+    stage: Feature.INIT,
 
     /**
      * Load the feature

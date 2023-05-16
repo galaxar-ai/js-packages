@@ -1,7 +1,7 @@
 import { _, sleep_, batchAsync_ } from '@galaxar/utils';
 import { InvalidConfiguration } from '@galaxar/types';
 import { defaultAppOpts } from './defaultOpts';
-import { consoleLogger, makeLogger } from './logger';
+import { consoleLogger, makeLogger, setLogLevel } from './logger';
 
 /**
  * Runnable app mixin.
@@ -206,6 +206,7 @@ const Runnable = (T) =>
             if (this.options.logger) {
                 this.logger = this.options.logger;
             } else {
+                setLogLevel(this.options.logLevel);
                 this.logger = { log: makeLogger(consoleLogger) };
             }
 

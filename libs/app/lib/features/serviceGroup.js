@@ -12,7 +12,7 @@ module.exports = {
      * This feature is loaded at service stage
      * @member {string}
      */
-    type: Feature.SERVICE,
+    stage: Feature.SERVICE,
 
     /**
      * Load the feature
