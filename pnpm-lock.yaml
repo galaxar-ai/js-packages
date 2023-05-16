@@ -27,6 +27,39 @@ importers:
         specifier: ^1.3.57
         version: 1.3.57
 
+  libs/algorithm:
+    dependencies:
+      '@galaxar/types':
+        specifier: workspace:*
+        version: link:../types
+      '@galaxar/utils':
+        specifier: workspace:*
+        version: link:../utils
+
+  libs/app:
+    dependencies:
+      '@galaxar/algo':
+        specifier: workspace:*
+        version: link:../algorithm
+      '@galaxar/jsonc':
+        specifier: workspace:*
+        version: link:../jsonc
+      '@galaxar/sys':
+        specifier: workspace:*
+        version: link:../sys
+      '@galaxar/types':
+        specifier: workspace:*
+        version: link:../types
+      '@galaxar/utils':
+        specifier: workspace:*
+        version: link:../utils
+
+  libs/jsonc:
+    dependencies:
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+
   libs/jsonv:
     dependencies:
       '@galaxar/types':
@@ -47,6 +80,12 @@ importers:
       '@galaxar/utils':
         specifier: workspace:*
         version: link:../utils
+
+  libs/sys:
+    dependencies:
+      fs-extra:
+        specifier: ^11.1.1
+        version: 11.1.1
 
   libs/types:
     dependencies:
@@ -1763,7 +1802,6 @@ packages:
       graceful-fs: 4.2.11
       jsonfile: 6.1.0
       universalify: 2.0.0
-    dev: true
 
   /fs-extra@7.0.1:
     resolution: {integrity: sha512-YJDaCJZEnBmcbw13fvdAM9AwNOJwOzrE4pqMqBq5nFiEqXUqHwlK4B+3pUw6JNvfSPtX05xFHtYy/1ni01eGCw==}
@@ -2391,7 +2429,6 @@ packages:
       universalify: 2.0.0
     optionalDependencies:
       graceful-fs: 4.2.11
-    dev: true
 
   /keyv@4.5.2:
     resolution: {integrity: sha512-5MHbFaKn8cNSmVW7BYnijeAVlE4cYA/SVkifVgrh7yotnfhKmjuXpDKjrABLnT0SfHWV21P8ow07OGfRrNDg8g==}
@@ -3743,7 +3780,6 @@ packages:
   /universalify@2.0.0:
     resolution: {integrity: sha512-hAZsKq7Yy11Zu1DE0OzWjw7nnLZmJZYTDZZyEFHZdUhV8FkH5MCfoU1XMaxXovpyW5nq5scPqq0ZDP9Zyl04oQ==}
     engines: {node: '>= 10.0.0'}
-    dev: true
 
   /update-browserslist-db@1.0.11(browserslist@4.21.5):
     resolution: {integrity: sha512-dCwEFf0/oT85M1fHBg4F0jtLwJrutGoHSQXCh7u4o2t1drG+c0a9Flnqww6XUKSfQMPpJBRjU8d4RXB09qtvaA==}

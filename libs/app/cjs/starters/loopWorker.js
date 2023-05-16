@@ -1,0 +1,2 @@
+"use strict";const{sleep_}=require("@genx/july");const startWorker=require("./worker");async function startLoopWorker(worker,options){let{interval,...workerOptions}=options;if(typeof interval==="undefined"){interval=1e3}return startWorker(async app=>{while(true){await worker(app);await sleep_(interval)}},workerOptions)}module.exports=startLoopWorker;
+//# sourceMappingURL=loopWorker.js.map
