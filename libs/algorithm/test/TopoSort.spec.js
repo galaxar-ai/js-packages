@@ -53,4 +53,33 @@ describe('unit:TopoSort', function () {
 
         should.throws(() => topoSort.sort());
     });
+
+    it('no any dependency', function () {
+        let topoSort2 = new TopoSort();
+
+        topoSort2.depends('step1');
+        topoSort2.depends('step2');
+        topoSort2.depends('step3');
+        topoSort2.depends('step4');
+        topoSort2.depends('step5');
+        
+
+        let sorted = topoSort2.sort();
+
+        sorted.should.be.eql(['step1', 'step2', 'step3', 'step4', 'step5']);
+    });
+
+    it('no any dependent', function () {
+        let topoSort2 = new TopoSort();
+
+        topoSort2.add('step1');
+        topoSort2.add('step2');
+        topoSort2.add('step3');
+        topoSort2.add('step4');
+        topoSort2.add('step5');        
+
+        let sorted = topoSort2.sort();
+
+        sorted.should.be.eql(['step1', 'step2', 'step3', 'step4', 'step5']);
+    });
 });

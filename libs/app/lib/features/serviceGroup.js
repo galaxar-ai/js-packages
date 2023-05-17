@@ -1,6 +1,6 @@
-import { _, eachAsync_, batchAsync_ } from "@galaxar/utils";
-import Feature from "../Feature";
-
+import { _, eachAsync_, batchAsync_ } from '@galaxar/utils';
+import {InvalidConfiguration } from '@galaxar/types';
+import Feature from '../Feature';
 
 /**
  * Enable a service group
@@ -30,16 +30,24 @@ module.exports = {
 
         _.each(services, (instances, serviceName) => {
             let feature = app._loadFeature(serviceName);
-            features.push(feature);
+            if (!feature.groupable) {
+                throw new InvalidConfiguration(
+                    `Feature [${serviceName}] is not groupable.`,
+                    app,
+                    `serviceGroup.${serviceName}`
+                );
+            }
+
+            features.push([feature]);
             instancesMap[serviceName] = instances;
         });
 
         features = app._sortFeatures(features);
 
-        await eachAsync_(features, async (feature) => {
+        await eachAsync_(features, async ([feature]) => {
             const instances = instancesMap[feature.name];
             await batchAsync_(instances, (serviceOptions, instanceName) =>
-                feature.load_(app, serviceOptions, `${serviceName}-${instanceName}`)
+                feature.load_(app, serviceOptions, `${feature.name}-${instanceName}`)
             );
         });
     },

@@ -1,4 +1,4 @@
-const startWorker = require('./worker');
+import startWorker from './worker';
 
 async function startCommand(commandHandler, options) {  
     let { commandName, ...cmdOptions } = options;
@@ -10,4 +10,4 @@ async function startCommand(commandHandler, options) {
     return startWorker(commandHandler, workerOptions);
 }
 
-module.exports = startCommand;
+export default startCommand;

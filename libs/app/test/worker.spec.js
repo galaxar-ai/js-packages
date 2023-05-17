@@ -1,6 +1,4 @@
-'use strict';
-
-const startWorker = require('../worker');
+import { startWorker } from '../lib';
 
 describe('starters:worker', function () {
 

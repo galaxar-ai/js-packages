@@ -1,25 +1,33 @@
-const { sleep_ } = require('@genx/july');
-const startWorker = require('./worker');
+import { sleep_ } from '@galaxar/utils';
+import startWorker from './worker';
 
 /**
- * 
- * @param {Function} worker 
- * @param {object} options 
+ *
+ * @param {Function} worker
+ * @param {object} options
  * @property {integer} [options.interval=1000]
  */
 async function startLoopWorker(worker, options) {
-    let { interval, ...workerOptions } = options;
+    let { interval, ...workerOptions } = { interval: 1000, throwOnError: true, ...options };
 
-    if (typeof interval === 'undefined') {
-        interval = 1000;
-    }
+    return startWorker(async (app) => {
+        process.on('SIGINT', () => {
+            app.stop_()
+                .then(() => {})
+                .catch((error) => console.error(error.message || error));
+        });
 
-    return startWorker(async (app) => {             
-        while (true) {
-            await worker(app);
-            await sleep_(interval);
-        }            
+        let lastResult;
+
+        while (app.started) {
+            lastResult = await worker(app, lastResult);
+            if (app.started) {
+                await sleep_(interval);
+            }
+        }
+
+        return lastResult;
     }, workerOptions);
 }
 
-module.exports = startLoopWorker;
+export default startLoopWorker;

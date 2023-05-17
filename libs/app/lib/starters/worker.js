@@ -1,3 +1,5 @@
+import App from '../App';
+
 /**
  * Start a worker app
  * @param {Function} worker 
@@ -10,13 +12,8 @@ async function startWorker(worker, options) {
     const { workerName, dontStop, initializer, uninitializer, throwOnError, verbose, ...appOptions } = (options || {});
 
     if (verbose) {
-        appOptions.logger = {
-            ...appOptions.logger,
-            level: 'verbose',
-        };
+        appOptions.logLevel = 'verbose';
     }
-
-    const App = require('..');
 
     // create an app instance with custom configuration
     let app = new App(workerName || 'worker', appOptions);
@@ -30,7 +27,11 @@ async function startWorker(worker, options) {
         
         const result = await worker(app);
         
-        if (!dontStop) {
+        if (dontStop) {
+            process.on('SIGINT', () => {
+                app.stop_();
+            });     
+        } else {           
             await app.stop_();
         }
 
@@ -44,9 +45,10 @@ async function startWorker(worker, options) {
             throw error;
         }
         
-        console.error(error.message || error);
+        console.error(verbose ? error : error.message);
+
         process.exit(1);
     } 
 }
 
-module.exports = startWorker;
+export default startWorker;

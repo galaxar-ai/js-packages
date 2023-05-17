@@ -31,11 +31,12 @@
         ]
     },
     "dependencies": {
+        "@galaxar/algo": "workspace:*",
         "@galaxar/jsonc": "workspace:*",
         "@galaxar/sys": "workspace:*",
-        "@galaxar/utils": "workspace:*",
         "@galaxar/types": "workspace:*",
-        "@galaxar/algo": "workspace:*"
+        "@galaxar/utils": "workspace:*",
+        "inquirer": "^8.2.4"
     },
     "prettier": {
         "quoteProps": "consistent",
@@ -45,5 +46,8 @@
         "tabWidth": 4,
         "useTabs": false
     },
-    "license": "MIT"
+    "license": "MIT",
+    "devDependencies": {
+        "capture-console": "^1.0.1"
+    }
 }

@@ -13,4 +13,4 @@ class App extends Runnable(ServiceContainer) {
     }
 }
 
-module.exports = App;
+export default App;

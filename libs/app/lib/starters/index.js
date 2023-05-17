@@ -1,4 +1,4 @@
-exports.startWorker = require('./worker');
-exports.startLoopWorker = require('./loopWorker');
-exports.startQueueWorker = require('./queueWorker');
-exports.startCLI = exports.startCommand = require('./command');
+export { default as startWorker } from './worker';
+export { default as startLoopWorker } from './loopWorker';
+export { default as startQueueWorker } from './queueWorker';
+export { default as startCommand } from './command';

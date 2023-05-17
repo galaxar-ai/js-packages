@@ -110,14 +110,12 @@ class TopoSort {
         // number of unsorted nodes. If it is not zero at the end, this graph is a circular graph and cannot be sorted.
         let unsorted = allNodes.size;
 
-        if (unsorted === 1) {
+        if (s.length === 0 && (nodesWithDependencies.length === 0 || nodesWithDependents.length === 0)) {
             // only 1 node in the graph, no need to sort.
             return Array.from(allNodes);
         }
 
         const numWithDependencies = _.mapValues(this.mapOfDependencies, (node) => node.size);
-
-        console.log({ numWithDependencies, s, allNodes })
 
         while (s.length !== 0) {
             const n = s.shift();

@@ -1,4 +1,4 @@
-import AsyncEmitter from '../lib/AsyncEmitter';
+import AsyncEmitter from '../lib/helpers/AsyncEmitter';
 import { sleep_ } from '@galaxar/utils';
 
 describe('AsyncEmitter', () => {

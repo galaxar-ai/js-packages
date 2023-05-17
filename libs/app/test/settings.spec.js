@@ -4,7 +4,7 @@ import App from '../lib';
 
 const WORKING_DIR = path.resolve(__dirname, './temp');
 
-describe.only('feature:settings', function () {
+describe('feature:settings', function () {
     let cliApp;
 
     before(async function () {

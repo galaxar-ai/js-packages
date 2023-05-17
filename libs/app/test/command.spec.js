@@ -1,7 +1,5 @@
-'use strict';
-
-const startCommand = require('../command');
-const capcon = require('capture-console');
+import { startCommand } from '../lib';
+import capcon from 'capture-console';
 
 describe('starters:command', function () {
 

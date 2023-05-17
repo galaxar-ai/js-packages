@@ -75,7 +75,11 @@ const Runnable = (T) =>
          * @memberof Runnable
          */
         async stop_() {
+            let stopByThis = false;
+
             if (this.started) {
+                stopByThis = true;
+
                 if (this.libModules) {
                     await batchAsync_(this.libModules, (lib) => lib.stop_());
                     delete this.libModules;
@@ -88,7 +92,9 @@ const Runnable = (T) =>
 
             await sleep_(0);
 
-            this._uninitialize();
+            if (stopByThis) {
+                this._uninitialize();
+            }            
         }
 
         /**
@@ -195,7 +201,7 @@ const Runnable = (T) =>
             if (detach) {
                 this.log('verbose', 'Logger is detaching ...');
 
-                if (this.logger.close) {
+                if (this.logger?.close) {
                     this.logger.close();
                 }
 
@@ -234,4 +240,4 @@ const Runnable = (T) =>
         }
     };
 
-module.exports = Runnable;
+export default Runnable;

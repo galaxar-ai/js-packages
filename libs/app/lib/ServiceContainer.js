@@ -8,7 +8,7 @@ import path from 'node:path';
 
 import Feature, { validate as validateFeature } from './Feature';
 import defaultOpts from './defaultOpts';
-import AsyncEmitter from './AsyncEmitter';
+import AsyncEmitter from './helpers/AsyncEmitter';
 
 const FILE_EXT = ['.js', '.mjs', '.cjs', '.ts'];
 
@@ -137,8 +137,6 @@ class ServiceContainer extends AsyncEmitter {
                 ret.serviceGroup = serviceGroup;
             }
 
-            console.log('overrider', ret);
-
             return ret;
         };
 
@@ -171,11 +169,11 @@ class ServiceContainer extends AsyncEmitter {
          */
         await this.emit_('configLoaded', this.config);
 
-        if (_.isEmpty(this.config)) {
-            throw Error('Empty configuration. Nothing to do! Config path: ' + this.configPath);
-        }
-
-        await this._loadFeatures_();
+        if (!_.isEmpty(this.config)) {            
+            await this._loadFeatures_();
+        } else {
+            this.log('verbose', `Empty configuration! Config path: ${this.configPath}`);
+        }        
 
         /**
          * App ready
