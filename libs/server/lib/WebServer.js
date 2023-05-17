@@ -194,7 +194,6 @@ class WebServer extends Routable(Runnable(ServiceContainer)) {
             path.resolve(__dirname, 'serverFeatures')
         );
 
-        console.log('web server', pathArray);
         return pathArray;
     }
 }

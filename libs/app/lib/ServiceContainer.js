@@ -444,6 +444,10 @@ class ServiceContainer extends AsyncEmitter {
             this._logCache.length = 0;
         }
 
+        await this.emit_('configFinalized', this.config);
+
+        console.log('9999999999');
+
         let featureGroups = {
             [Feature.INIT]: [],
             [Feature.SERVICE]: [],

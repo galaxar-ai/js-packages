@@ -14,7 +14,8 @@ describe('server-only', function () {
 
     before(async function () {
         webServer = new WebServer('test server', { 
-            workingPath: WORKING_DIR
+            workingPath: WORKING_DIR,
+            logLevel: 'debug',
         });
 
         return webServer.start_();

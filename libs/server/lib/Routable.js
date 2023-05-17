@@ -107,7 +107,7 @@ const Routable = (T) =>
                 return factory;
             }
 
-            if (this.server && this.isServer) {
+            if (this.server && !this.isServer) {
                 return this.server.getMiddlewareFactory(name);
             }
 
@@ -369,7 +369,7 @@ const Routable = (T) =>
         _getFeatureFallbackPath() {
             let pathArray = super._getFeatureFallbackPath();            
             pathArray.splice(1, 0, path.resolve(__dirname, 'appFeatures'));
-            console.log('routable', pathArray);
+            
             return pathArray;
         }
     };

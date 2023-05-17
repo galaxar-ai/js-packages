@@ -7,17 +7,22 @@ class KoaEngine {
         this.server = server;
         this.engine = new Koa();
 
-        if (this.server.isServer) {
-            this.server.once('after:Config', (app) => {
-                const koaConfig = app.config.koa;
+        console.log('feiojfioajfiewajiofjo');
+
+        if (this.server.runnable) {
+            console.log('8888888');
+
+            this.server.on('configFinalized', (config) => {
+                console.log('foiejfieaofjoefoj');
+                const koaConfig = config.koa;
 
                 if (!koaConfig) {
-                    throw new InvalidConfiguration('Missing koa config.', app, 'koa');
+                    throw new InvalidConfiguration('Missing koa config.', this.server, 'koa');
                 }
 
                 this._initialize(koaConfig);
 
-                delete app.config.koa;
+                delete config.koa;
             });
         }
     }
