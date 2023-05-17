@@ -1,6 +1,6 @@
 import { startWorker } from '../lib';
 
-describe.only('feature:serviceGroup', function () {
+describe('feature:serviceGroup', function () {
     it('test1', async function () {
         await startWorker(async (app) => {
             const test1 = app.getService('superAgent-test1');

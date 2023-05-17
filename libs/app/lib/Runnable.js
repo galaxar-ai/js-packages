@@ -1,7 +1,6 @@
 import { _, sleep_, batchAsync_ } from '@galaxar/utils';
 import { InvalidConfiguration } from '@galaxar/types';
 import { defaultAppOpts } from './defaultOpts';
-import { consoleLogger, makeLogger, setLogLevel } from './logger';
 
 /**
  * Runnable app mixin.
@@ -14,14 +13,7 @@ const Runnable = (T) =>
         _getOnUncaughtException = (exitOnError) => (err) => {
             if (exitOnError) {
                 //wait 1 second for flushing the last log
-                let waitForLogging = setTimeout(() => {
-                    process.exit(1);
-                }, 1000);
-
-                this.log('error', err, () => {
-                    clearTimeout(waitForLogging);
-                    process.exit(1);
-                });
+                this.log('error', err);
             } else {
                 this.logError(err);
             }
@@ -62,6 +54,10 @@ const Runnable = (T) =>
          * @memberof Runnable
          */
         async start_() {
+            if (this.started) {
+                throw new Error('App already started.');
+            }
+
             this._initialize();
 
             process.on('exit', this._onExit);
@@ -168,56 +164,22 @@ const Runnable = (T) =>
             return app?.getService(name, true);
         }
 
-        /**
-         * Reset logger.
-         * Use it only if the options.logger config is changed in runtime
-         * @memberof Runnable
-         */
-        resetLogger() {
-            this._injectLogger(true /** detach */);
-            this._injectLogger();
-        }
-
         _initialize() {
             this._pwd = process.cwd();
             if (this.workingPath !== this._pwd) {
                 process.chdir(this.workingPath);
             }
 
-            this._injectLogger();
             this._injectErrorHandlers();
         }
 
         _uninitialize() {
             const detach = true;
             this._injectErrorHandlers(detach);
-            this._injectLogger(detach);
 
             process.chdir(this._pwd);
             delete this._pwd;
-        }
-
-        _injectLogger(detach) {
-            if (detach) {
-                this.log('verbose', 'Logger is detaching ...');
-
-                if (this.logger?.close) {
-                    this.logger.close();
-                }
-
-                delete this.logger;
-                return;
-            }
-
-            if (this.options.logger) {
-                this.logger = this.options.logger;
-            } else {
-                setLogLevel(this.options.logLevel);
-                this.logger = { log: makeLogger(consoleLogger) };
-            }
-
-            this.log('verbose', 'Logger injected.');
-        }
+        }      
 
         _injectErrorHandlers(detach) {
             if (detach) {
@@ -226,7 +188,7 @@ const Runnable = (T) =>
                     process.removeListener('uncaughtException', this._onUncaughtException);
                     delete this._onUncaughtException;
                 }
-                this.log('verbose', 'Process-wide error handlers detached.');
+                
                 return;
             }
 
@@ -235,8 +197,7 @@ const Runnable = (T) =>
                 process.on('uncaughtException', this._onUncaughtException);
             }
 
-            process.on('warning', this._onWarning);
-            this.log('verbose', 'Process-wide error handlers injected.');
+            process.on('warning', this._onWarning);            
         }
     };
 

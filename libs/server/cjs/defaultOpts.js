@@ -1,0 +1,2 @@
+"use strict";Object.defineProperty(exports,"__esModule",{value:true});function _export(target,all){for(var name in all)Object.defineProperty(target,name,{enumerable:true,get:all[name]})}_export(exports,{defaultRoutableOpts:function(){return defaultRoutableOpts},default:function(){return _default}});const defaultOpts={configName:"server",appModulesPath:"apps",middlewaresPath:"middlewares"};const defaultRoutableOpts={engine:"koa",traceMiddlewares:false,publicPath:"public",controllersPath:"actions"};const _default=defaultOpts;
+//# sourceMappingURL=defaultOpts.js.map

@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import path from 'node:path';
 import { readFile, writeFile } from 'node:fs/promises';
 
 class JsonConfigProvider {
@@ -35,7 +36,7 @@ class JsonConfigProvider {
 
         logger?.log(
             'info',
-            `Configuration is loaded from "${this.filePath}"`
+            `Configuration is loaded from "${path.relative(process.cwd(), this.filePath)}"`
         );
 
         return this.config;

@@ -1,0 +1,60 @@
+{
+    "name": "@galaxar/server",
+    "version": "1.0.1",
+    "description": "Node http server application framework",
+    "main": "cjs/index.js",
+    "module": "lib/index.js",
+    "react-native": "lib/index.js",
+    "publishConfig": {
+        "access": "public"
+    },
+    "scripts": {
+        "test": "pnpm build && mocha --recursive test/**/*.spec.js",
+        "cover": "nyc --reporter=html --reporter=text mocha --recursive test/**/*.spec.js && open ./coverage/index.html",
+        "prettier": "prettier --write .",
+        "lint": "eslint \"**/*.js\"",
+        "lint-fix": "eslint \"**/*.js\" --fix",
+        "clean": "shx rm -rf cjs",
+        "build": "pnpm clean && swc lib/**/*.js -d ./cjs"
+    },
+    "keywords": [
+        "galaxar",
+        "http",
+        "server",
+        "koa",
+        "app",
+        "framework"
+    ],
+    "nyc": {
+        "exclude": [
+            ".*",
+            "cjs",
+            "test",
+            "**/*.spec.js"
+        ]
+    },
+    "dependencies": {
+        "@galaxar/algo": "workspace:*",
+        "@galaxar/app": "workspace:*",
+        "@galaxar/jsonc": "workspace:*",
+        "@galaxar/sys": "workspace:*",
+        "@galaxar/types": "workspace:*",
+        "@galaxar/utils": "workspace:*",
+        "glob": "^10.2.4",
+        "koa": "^2.14.2",
+        "koa-mount": "^4.0.0",
+        "request-ip": "^3.3.0"
+    },
+    "prettier": {
+        "quoteProps": "consistent",
+        "printWidth": 120,
+        "singleQuote": true,
+        "trailingComma": "es5",
+        "tabWidth": 4,
+        "useTabs": false
+    },
+    "license": "MIT",
+    "devDependencies": {
+        "capture-console": "^1.0.1"
+    }
+}

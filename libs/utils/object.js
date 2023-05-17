@@ -11,5 +11,6 @@ export { default as unflattenObject } from './unflattenObject';
 export { default as filterNull } from './filterNull';
 export { default as xNull } from './filterNull';
 export { default as defaultDeep } from './defaultDeep';
+export { default as hasMethod } from './hasMethod';
 
-export * from './pathUtils';
+export * from './objectPathUtils';

@@ -1,0 +1,2 @@
+"use strict";Object.defineProperty(exports,"__esModule",{value:true});Object.defineProperty(exports,"default",{enumerable:true,get:function(){return _default}});const baseName=str=>{const pos=str.lastIndexOf(".");return pos===-1?str:str.substring(0,pos)};const _default=baseName;
+//# sourceMappingURL=baseName.js.map

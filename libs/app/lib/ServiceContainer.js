@@ -9,8 +9,42 @@ import path from 'node:path';
 import Feature, { validate as validateFeature } from './Feature';
 import defaultOpts from './defaultOpts';
 import AsyncEmitter from './helpers/AsyncEmitter';
+import { consoleLogger, makeLogger, setLogLevel } from './logger';
 
 const FILE_EXT = ['.js', '.mjs', '.cjs', '.ts'];
+
+const configOverrider = (defConf, envConf) => {
+    const { serviceGroup: defServiceGroup, ..._def } = defConf ?? {};
+    const { serviceGroup: envServiceGroup, ..._env } = envConf ?? {};
+
+    const serviceGroup = {};
+
+    if (defServiceGroup || envServiceGroup) {
+        defServiceGroup &&
+            _.each(defServiceGroup, (servicesMap, serviceName) => {
+                serviceGroup[serviceName] = servicesMap;
+            });
+
+        envServiceGroup &&
+            _.each(envServiceGroup, (servicesMap, serviceName) => {
+                serviceGroup[serviceName] = {
+                    ...serviceGroup[serviceName],
+                    ...servicesMap,
+                };
+            });
+    }
+
+    const ret = {
+        ..._def,
+        ..._env,
+    };
+
+    if (!_.isEmpty(serviceGroup)) {
+        ret.serviceGroup = serviceGroup;
+    }
+
+    return ret;
+};
 
 /**
  * Service container class.
@@ -77,6 +111,14 @@ class ServiceContainer extends AsyncEmitter {
          * Feature path
          */
         this.featuresPath = this.toAbsolutePath(this.options.featuresPath);
+
+        this._logCache = [];
+
+        // dummy
+        this.log = (...args) => {
+            this._logCache.push(args);
+            return this;
+        };
     }
 
     /**
@@ -107,39 +149,6 @@ class ServiceContainer extends AsyncEmitter {
          */
         this.services = {};
 
-        const overrider = (defConf, envConf) => {
-            const { serviceGroup: defServiceGroup, ..._def } = defConf ?? {};
-            const { serviceGroup: envServiceGroup, ..._env } = envConf ?? {};
-
-            const serviceGroup = {};
-
-            if (defServiceGroup || envServiceGroup) {
-                defServiceGroup &&
-                    _.each(defServiceGroup, (servicesMap, serviceName) => {
-                        serviceGroup[serviceName] = servicesMap;
-                    });
-
-                envServiceGroup &&
-                    _.each(envServiceGroup, (servicesMap, serviceName) => {
-                        serviceGroup[serviceName] = {
-                            ...serviceGroup[serviceName],
-                            ...servicesMap,
-                        };
-                    });
-            }
-
-            const ret = {
-                ..._def,
-                ..._env,
-            };
-
-            if (!_.isEmpty(serviceGroup)) {
-                ret.serviceGroup = serviceGroup;
-            }
-
-            return ret;
-        };
-
         if (this.options.loadConfigFromOptions) {
             this.config = this.options.config;
         } else {
@@ -157,7 +166,7 @@ class ServiceContainer extends AsyncEmitter {
                       this.options.configName,
                       this.env,
                       this,
-                      overrider
+                      configOverrider
                   );
 
             await this.loadConfig_();
@@ -169,11 +178,11 @@ class ServiceContainer extends AsyncEmitter {
          */
         await this.emit_('configLoaded', this.config);
 
-        if (!_.isEmpty(this.config)) {            
+        if (!_.isEmpty(this.config)) {
             await this._loadFeatures_();
         } else {
             this.log('verbose', `Empty configuration! Config path: ${this.configPath}`);
-        }        
+        }
 
         /**
          * App ready
@@ -247,7 +256,12 @@ class ServiceContainer extends AsyncEmitter {
     }
 
     tryRequire(pkgName) {
-        return _tryRequire(pkgName, this.workingPath);
+        const obj = _tryRequire(pkgName, this.workingPath);
+        if (obj.__esModule && typeof obj.default !== 'undefined') {
+            return obj.default;
+        }
+
+        return obj;
     }
 
     /**
@@ -304,19 +318,7 @@ class ServiceContainer extends AsyncEmitter {
         }
 
         Object.assign(this._featureRegistry, _.omit(registry, ['*']));
-    }
-
-    /**
-     * Default log method, may be override by loggers feature
-     * @param {string} - Log level
-     * @param {string} - Log message
-     * @param {...object} - Extra meta data
-     * @returns {ServiceContainer}
-     */
-    log(level, ...rest) {
-        this.logger?.log(level, ...rest);
-        return this;
-    }
+    }    
 
     /**
      * Helper method to log an exception
@@ -384,16 +386,16 @@ class ServiceContainer extends AsyncEmitter {
         if (features.length === 0) {
             return features;
         }
-        
+
         const topoSort = new TopoSort();
-        features.forEach(( [feature] ) => {
+        features.forEach(([feature]) => {
             topoSort.depends(feature.name, feature.depends);
         });
 
         const groups = arrayToObject(features, ([feature]) => feature.name);
         const keys = topoSort.sort();
 
-        return keys.map(key => groups[key]);
+        return keys.map((key) => groups[key]);
     }
 
     /**
@@ -432,6 +434,16 @@ class ServiceContainer extends AsyncEmitter {
             return this._loadFeatures_();
         }
 
+        // if no logger in config, use console logger
+        if (this.config.logger == null) {
+            setLogLevel(this.options.logLevel);
+            const logging = makeLogger(consoleLogger);
+            this.logger = { log: logging };
+            this.log = logging;
+            this._logCache.forEach((log) => this.logger.log(...log));
+            this._logCache.length = 0;
+        }
+
         let featureGroups = {
             [Feature.INIT]: [],
             [Feature.SERVICE]: [],
@@ -444,7 +456,7 @@ class ServiceContainer extends AsyncEmitter {
             if (this.options.allowedFeatures && this.options.allowedFeatures.indexOf(name) === -1) {
                 //skip disabled features
                 return;
-            }            
+            }
 
             let feature = this._loadFeature(name);
 
@@ -473,8 +485,7 @@ class ServiceContainer extends AsyncEmitter {
 
             await feature.load_(this, options, name);
             this.features[name].loaded = true;
--
-            this.log('verbose', `Feature "${name}" loaded. [OK]`);
+            -this.log('verbose', `Feature "${name}" loaded. [OK]`);
 
             await this.emit_('after:load:' + name);
         });
@@ -484,12 +495,12 @@ class ServiceContainer extends AsyncEmitter {
     }
 
     _dependsOn(features, fromFeature) {
-        let hasNotEnabled = _.find(_.castArray(features), feature => !this.enabled(feature));
-    
+        let hasNotEnabled = _.find(_.castArray(features), (feature) => !this.enabled(feature));
+
         if (hasNotEnabled) {
             throw new Error(`The "${hasNotEnabled}" feature depended by "${fromFeature}" feature is not enabled.`);
         }
-    };
+    }
 
     /**
      * Load a feature object by name.
@@ -545,18 +556,13 @@ class ServiceContainer extends AsyncEmitter {
             featureObject = this.tryRequire(featurePath);
         }
 
-        // support ES6 default export
-        if (featureObject.default) {
-            featureObject = featureObject.default;
-        }
-
         if (!validateFeature(featureObject)) {
             throw new Error(`Invalid feature object loaded from "${featurePath}".`);
         }
 
         featureObject = typeof featureObject === 'function' ? featureObject(this) : featureObject;
         featureObject.name = feature;
-        this.features[feature] = featureObject
+        this.features[feature] = featureObject;
         return featureObject;
     }
 }

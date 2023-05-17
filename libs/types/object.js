@@ -1,7 +1,7 @@
 import _each from 'lodash/each';
 import { ValidationError } from './errors';
 import { Types, safeJsonStringify, beginSanitize } from './types';
-import { makePath } from '@galaxar/utils/pathUtils';
+import { makePath } from '@galaxar/utils/objectPathUtils';
 import isPlainObject from '@galaxar/utils/isPlainObject';
 
 const jsonStarter = new Set(['"', '[', '{']);

@@ -1,0 +1,2 @@
+"use strict";Object.defineProperty(exports,"__esModule",{value:true});Object.defineProperty(exports,"default",{enumerable:true,get:function(){return _default}});const _types=require("@galaxar/types");const serverPassport=(opt,app)=>{let passportService=app.getService("passport");if(!passportService){throw new _types.InvalidConfiguration("Passport feature is not enabled.",app,"passport")}return passportService.middlewares};const _default=serverPassport;
+//# sourceMappingURL=serverPassport.js.map

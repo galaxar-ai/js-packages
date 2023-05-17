@@ -1,0 +1,11 @@
+{       
+    "koa": {       
+        "keys": [ "a", "b" ] 
+    },
+    "middlewares": {
+        "favicon": "public/favicon.ico",
+        "koa-compress": {},
+        "koa-etag": {},        
+        "serveStatic": {}
+    }
+}

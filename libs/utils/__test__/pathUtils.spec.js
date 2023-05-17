@@ -1,4 +1,4 @@
-import { toPathArray, makePathArray, makePath } from '../pathUtils';
+import { toPathArray, makePathArray, makePath } from '../objectPathUtils';
 
 describe('pathUtils', () => {
     it('to path array', () => {

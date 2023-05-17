@@ -1,17 +1,16 @@
-export const LOG_UNKNOWN = 'unknown';
-export const LOG_DEBUG = 'debug';
-export const LOG_VERBOSE = 'verbose';
-export const LOG_INFO = 'info';
-export const LOG_WARNING = 'warning';
-export const LOG_ERROR = 'error';
-export const LOG_DISABLE = 'disable';
-
-export const TRACE = -1;
-export const DEBUG = 1;
-export const VERBOSE = 2;
-export const INFO = 3;
-export const WARNING = 4;
-export const ERROR = 5;
+const LOG_UNKNOWN = 'unknown';
+const LOG_DEBUG = 'debug';
+const LOG_VERBOSE = 'verbose';
+const LOG_INFO = 'info';
+const LOG_WARNING = 'warning';
+const LOG_ERROR = 'error';
+const LOG_DISABLE = 'disable';
+const TRACE = -1;
+const DEBUG = 1;
+const VERBOSE = 2;
+const INFO = 3;
+const WARNING = 4;
+const ERROR = 5;
 
 let logLevel = INFO;
 
@@ -60,4 +59,4 @@ export const consoleLogger = (level, args) =>
         ? console.warn
         : level === TRACE
         ? console.trace
-        : console.log)(`[${levelText[level]}]`, ...args);
+        : console.log)(`${levelText[level]}:`, ...args);

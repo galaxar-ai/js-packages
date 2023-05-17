@@ -1,0 +1,34 @@
+{
+    "loggers": {        
+        "accessLog": {
+            "transports": [
+                {
+                    "type": "console",                    
+                    "options": {      
+                        "level": "verbose",                      
+                        "format": "#!jsv: log.format.combine(log.format.colorize(), log.format.simple())"
+                    }
+                }
+            ]
+        }
+    },
+    "timezone": "",
+    "koa": {       
+        "keys": [ "a", "b" ] 
+    },
+    "middlewares": {
+        "favicon": "public/favicon.ico",
+        "accessLog": { "logger": "accessLog" },
+        "koa-compress": {},
+        "koa-etag": {},        
+        "serveStatic": {}
+    },
+    "appRouting": {
+        "/test": {
+            "name": "test",
+            "options": {
+                "publicPath": "www"
+            }
+        }
+    }
+}

@@ -17,5 +17,6 @@ export { default as dropIfStartsWith } from './dropIfStartsWith';
 export { default as ensureEndsWith } from './ensureEndsWith';
 export { default as ensureStartsWith } from './ensureStartsWith';
 export { default as csvLineParse } from './csvLineParse';
+export { default as baseName } from './baseName';
 export * from './trim';
 export * from './padding';
