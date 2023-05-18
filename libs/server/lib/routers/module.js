@@ -1,5 +1,5 @@
 import path from 'node:path';
-import { _, url as urlUtil, text } from '@galaxar/utils';
+import { _, url as urlUtil, text, esmCheck } from '@galaxar/utils';
 import { InvalidConfiguration } from '@galaxar/types';
 import { supportedMethods } from '../helpers';
 
@@ -73,7 +73,7 @@ function moduleRouter(app, baseRoute, moduleItem) {
         let controller;
 
         try {
-            controller = require(controllerFile);
+            controller = esmCheck(require(controllerFile));
         } catch (e) {
             if (e.code === 'MODULE_NOT_FOUND') {
                 throw new InvalidConfiguration(

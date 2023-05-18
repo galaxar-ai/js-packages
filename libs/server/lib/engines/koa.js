@@ -1,3 +1,4 @@
+import http from 'node:http';
 import Koa from 'koa';
 import mount from 'koa-mount';
 import { _, toBoolean } from '@galaxar/utils';
@@ -45,22 +46,22 @@ class KoaEngine {
 
             if (err.status && err.status < 500) {
                 if (ctx.log) {
-                    ctx.log('warn', info);
+                    ctx.log.warn(info);
                 } else {
-                    ctx.appModule.log('warn', info);
+                    ctx.appModule.log('warn', 'REQUEST ERROR', info);
                 }
                 
                 return;
             }
 
             if (ctx.log) {
-                ctx.log('error', info);
+                ctx.log.error(info);
             } else {
-                ctx.appModule.log('error', info);
+                ctx.appModule.log('error', 'SERVER ERROR', info);
             }            
         });
 
-        server.httpServer = require('http').createServer(koa.callback());
+        server.httpServer = http.createServer(koa.callback());
 
         let port = options.httpPort || 2331;
 
@@ -95,7 +96,7 @@ class KoaEngine {
     }
 
     mount(route, subEngine) {
-        this.engine.use(mount(route, subEngine));
+        this.engine.use(mount(route, subEngine.engine));
     }
 
     middleware(fn) {

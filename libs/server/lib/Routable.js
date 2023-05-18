@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { fs, isDir } from '@galaxar/sys';
 import { globSync } from 'glob';
-import { _, url as urlUtil, text } from '@galaxar/utils';
+import { _, url as urlUtil, text, esmCheck } from '@galaxar/utils';
 import { ApplicationError, InvalidConfiguration, InvalidArgument } from '@galaxar/types';
 import { defaultRoutableOpts } from './defaultOpts';
 
@@ -111,7 +111,7 @@ const Routable = (T) =>
                 return this.server.getMiddlewareFactory(name);
             }
 
-            let npmMiddleware = this.tryRequire(name, true);
+            let npmMiddleware = this.tryRequire(name);
             if (npmMiddleware) {
                 return npmMiddleware;
             }
@@ -280,8 +280,6 @@ const Routable = (T) =>
             let hasNotEnabled = _.find(_.castArray(features), feature => !this.enabled(feature));
         
             if (hasNotEnabled) {
-                console.log(Object.keys(this.features));
-
                 throw new InvalidConfiguration(
                     `Middleware "${middleware}" requires "${hasNotEnabled}" feature to be enabled.`,
                     this,
@@ -353,11 +351,7 @@ const Routable = (T) =>
 
         _createEngine() {
             try {
-                let Engine = require(`./engines/${this.options.engine}`);
-                if (Engine.__esModule && typeof Engine.default === 'function') {
-                    // support es6 module
-                    Engine = Engine.default;
-                }
+                let Engine = esmCheck(require(`./engines/${this.options.engine}`));                
                 return new Engine(this);
             } catch (err) {
                 if (err.code === 'MODULE_NOT_FOUND') {

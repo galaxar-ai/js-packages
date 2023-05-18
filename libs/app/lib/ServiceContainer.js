@@ -1,5 +1,5 @@
 import ConfigLoader, { JsonConfigProvider } from '@galaxar/jsonc';
-import { _, pushIntoBucket, eachAsync_, arrayToObject } from '@galaxar/utils';
+import { _, pushIntoBucket, eachAsync_, arrayToObject, esmCheck } from '@galaxar/utils';
 import { fs, tryRequire as _tryRequire } from '@galaxar/sys';
 import { InvalidConfiguration, Types } from '@galaxar/types';
 import { TopoSort } from '@galaxar/algo';
@@ -257,11 +257,7 @@ class ServiceContainer extends AsyncEmitter {
 
     tryRequire(pkgName, local) {
         const obj = local ? require(pkgName) : _tryRequire(pkgName, this.workingPath);
-        if (obj.__esModule && typeof obj.default !== 'undefined') {
-            return obj.default;
-        }
-
-        return obj;
+        return esmCheck(obj);
     }
 
     /**
@@ -422,7 +418,7 @@ class ServiceContainer extends AsyncEmitter {
         }
 
         // if no logger in config, use console logger
-        if (this.config.logger == null) {
+        if (this.runnable && this.config.logger == null) {
             setLogLevel(this.options.logLevel);
             const logging = makeLogger(consoleLogger);
             this.logger = { log: logging };

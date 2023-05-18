@@ -6,6 +6,7 @@
     },
     "middlewares": {
         "favicon": "public/favicon.ico",
+        "ip": {},
         "accessLog": { "logger": "accessLog" },
         "koa-compress": {},
         "koa-etag": {},        

@@ -9,8 +9,8 @@
         "access": "public"
     },
     "scripts": {
-        "test": "pnpm build && mocha --recursive test/**/*.spec.js",
-        "cover": "nyc --reporter=html --reporter=text mocha --recursive test/**/*.spec.js && open ./coverage/index.html",
+        "test": "pnpm build && SWCRC=true mocha --recursive test/**/*.spec.js",
+        "cover": "SWCRC=true nyc --reporter=html --reporter=text mocha --recursive test/**/*.spec.js && open ./coverage/index.html",
         "prettier": "prettier --write .",
         "lint": "eslint \"**/*.js\"",
         "lint-fix": "eslint \"**/*.js\" --fix",
@@ -64,6 +64,7 @@
         "capture-console": "^1.0.1",
         "pino": "^8.14.1",
         "pino-http": "^8.3.3",
-        "supertest": "^6.3.3"
+        "supertest": "^6.3.3",
+        "swig-templates": "^2.0.3"
     }
 }

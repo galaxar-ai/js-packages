@@ -5,6 +5,7 @@
 
 import path from 'node:path';
 import { InvalidConfiguration } from '@galaxar/types';
+import { esmCheck } from '@galaxar/utils';
 
 /**
  * Action middleware creator
@@ -28,11 +29,7 @@ const action = (controllerAction, app) => {
     let ctrl;
 
     try {
-        ctrl = require(controllerPath);
-        if (ctrl.__esModule && ctrl.default) {
-            // ES6 default export
-            ctrl = ctrl.default;
-        }
+        ctrl = esmCheck(require(controllerPath));
     } catch (err) {
         if (err.code === 'MODULE_NOT_FOUND') {
             throw new InvalidConfiguration(`Failed to load [${controller}] at ${controllerPath}. ${err.message}`, app, {
@@ -46,7 +43,7 @@ const action = (controllerAction, app) => {
 
     if (Array.isArray(actioner)) {
         let actionFunction = actioner.concat().pop();
-        if (typeof actionFunction !== 'function') {            
+        if (typeof actionFunction !== 'function') {
             throw new InvalidConfiguration(
                 `${controllerAction} does not contain a valid action in returned middleware chain.`,
                 app

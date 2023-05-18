@@ -4,7 +4,7 @@
  */
 
 import { Feature } from '@galaxar/app';
-import { _, batchAsync_, isPlainObject } from '@galaxar/utils';
+import { _, batchAsync_, isPlainObject, esmCheck } from '@galaxar/utils';
 
 export default {
     /**
@@ -24,11 +24,9 @@ export default {
             batchAsync_(routes, async (routersConfig, route) => {
                 if (isPlainObject(routersConfig)) {
                     return batchAsync_(routersConfig, async (options, type) => {
-                        let loader_ = require('../routers/' + type).default;
+                        let loader_ = esmCheck(require('../routers/' + type));
 
                         app.log('verbose', `A "${type}" router is created at "${route}" in app [${app.name}].`);
-
-                        console.log(type, loader_);
 
                         return loader_(app, route, options);
                     });
@@ -50,7 +48,7 @@ export default {
                         [mainRoute]: routersConfig,
                     };
 
-                    const loader_ = require('../routers/rule').default;
+                    const loader_ = esmCheck(require('../routers/rule'));
                     app.log('verbose', `A "rule" router is created at "${baseRoute}" in app [${app.name}].`);
 
                     return loader_(app, baseRoute, { rules: rules });

@@ -1,5 +1,6 @@
 
 const IPV4_PREFIX = '::ffff:';
+const IPV4_LOCALHOST = '::1';
 
 const ip = (options, app) => {
     const requestIp = app.tryRequire('request-ip');
@@ -11,8 +12,12 @@ const ip = (options, app) => {
             ip = ip.substring(IPV4_PREFIX.length);
         }
 
-        ctx.request.ip = ip;               
+        if (ip === IPV4_LOCALHOST) {
+            ip = '127.0.0.1';
+        }       
 
+        ctx.request.ip = ip; 
+        ctx.req.info = { remoteAddress: ip, remotePort: ctx.req.socket.remotePort };
         return next();
     };
 };

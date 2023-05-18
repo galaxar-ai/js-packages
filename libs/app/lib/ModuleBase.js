@@ -1,4 +1,4 @@
-import path from "node:path";
+import path from 'node:path';
 
 const ModuleBase = (Base) =>
     class extends Base {
@@ -8,19 +8,14 @@ const ModuleBase = (Base) =>
          * @param {string} route - The base route of the app module.
          * @param {string} appPath - The path to load the app's module files
          * @param {object} [options] - The app module's extra options defined in its parent's configuration.
-         * @property {bool} [options.logWithAppName=false] - Flag to include app name in log message.
          */
         constructor(hostApp, name, appPath, options) {
-            super(
-                name,                
-                {
-                    workingPath: appPath,
-                    configPath: path.join(appPath, 'conf'),
-                    sourcePath: './',
-                    logWithAppName: true,
-                    ...options
-                }
-            );
+            super(name, {
+                workingPath: appPath,
+                configPath: path.join(appPath, 'conf'),
+                sourcePath: './',
+                ...options,
+            });
 
             /**
              * Hosting app.
@@ -41,6 +36,12 @@ const ModuleBase = (Base) =>
             this.sourcePath = this.toAbsolutePath(this.options.sourcePath);
 
             this.featuresPath = path.resolve(this.sourcePath, this.options.featuresPath);
+
+            this.logger = this.host.logger?.child({ module: this.name }, { level: this.options.logLevel });
+            this.log = (level, message, info) => {
+                this.logger ? this.logger[level](info, message) : this.host.log(level, message, info);
+                return this;
+            };
         }
 
         /**
@@ -76,27 +77,6 @@ const ModuleBase = (Base) =>
          */
         requireFromLib(libName, relativePath) {
             return this.host.requireFromLib(libName, relativePath);
-        }
-
-        /**
-         * Default log method, may be override by loggers feature
-         * @param {string} level - Log level
-         * @param {string} message - Log message
-         * @param {...object} rest - Extra meta data
-         * @returns {Routable}
-         */
-        log(level, ...rest) {
-            if (this.options.logWithAppName) {
-                rest = [ "[" + this.name + "]", ...rest ];
-            }
-
-            if (this.logger) {
-                this.logger.log(level, ...rest);
-            } else {
-                this.host.log(level, ...rest);
-            }
-
-            return this;
         }
     };
 

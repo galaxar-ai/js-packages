@@ -50,7 +50,7 @@ export default {
     
         let options = { 
             env: server.env, 
-            logWithAppName: server.options.logWithAppName,
+            logLevel: server.options.logLevel,
             traceMiddlewares: server.options.traceMiddlewares,
             ...config.options
         };
@@ -100,7 +100,7 @@ export default {
         server.log('verbose', `App [${app.name}] is loaded.`);
 
         //delayed the app routes mounting after all plugins of the server are loaded
-        server.on('before:' + Feature.READY, () => {
+        server.on('before:' + Feature.FINAL, () => {
             server.mountApp(app);
         });        
     })

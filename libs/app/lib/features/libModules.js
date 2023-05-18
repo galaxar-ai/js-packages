@@ -39,7 +39,7 @@ export default {
         return batchAsync_(entries, async (config, name) => {
             let options = {
                 env: app.env,
-                logWithAppName: app.options.logWithAppName,
+                logLevel: app.options.logLevel,
                 ...config.options,
             };
 

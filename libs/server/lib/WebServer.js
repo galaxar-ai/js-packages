@@ -96,6 +96,7 @@ class WebServer extends Routable(Runnable(ServiceContainer)) {
 
     visitChildModules(vistor) {
         super.visitChildModules(vistor);
+
         if (this.appModules) {
             _.each(this.appModules, vistor);
         }
