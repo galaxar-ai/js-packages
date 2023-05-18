@@ -1,10 +1,7 @@
-"use strict";
-
-const path = require("path");
-const { _, url: urlUtil, text } = require("@genx/july");
-const Literal = require("../enum/Literal");
-const Router = require("@koa/router");
-const { InvalidConfiguration } = require("@genx/error");
+import path from 'node:path';
+import { _, url as urlUtil, text } from '@galaxar/utils';
+import { InvalidConfiguration } from '@galaxar/types';
+import { supportedMethods } from '../helpers';
 
 /**
  * Module router for mounting a specific controller.
@@ -28,44 +25,80 @@ const { InvalidConfiguration } = require("@genx/error");
  *       module: "controller"
  *   }
  */
-module.exports = function (app, baseRoute, moduleItem) {
-    let controllerPath = path.join(app.backendPath, Literal.CONTROLLERS_PATH);
+function moduleRouter(app, baseRoute, moduleItem) {
+    const Router = app.tryRequire('@koa/router');
 
-    if (typeof moduleItem === "string") {
+    let controllerPath = app.controllersPath;
+
+    if (typeof moduleItem === 'string') {
         // [ 'controllerName' ]
         moduleItem = {
             controller: moduleItem,
         };
     }
 
-    let currentPrefix = urlUtil.join(baseRoute, moduleItem.route || "/");
-    let router = currentPrefix === "/" ? new Router() : new Router({ prefix: text.dropIfEndsWith(currentPrefix, "/") });
+    let currentPrefix = urlUtil.join(baseRoute, moduleItem.route || '/');
+    let router = currentPrefix === '/' ? new Router() : new Router({ prefix: text.dropIfEndsWith(currentPrefix, '/') });
 
     if (moduleItem.middlewares) {
         //module-wide middlewares
         app.useMiddlewares(router, moduleItem.middlewares);
     }
 
-    const controllers = _.castArray(moduleItem.controller);
+    let controllers;
+
+    if (moduleItem.controllers) {
+        controllers = moduleItem.controllers;
+        if (!Array.isArray(controllers)) {
+            throw new InvalidConfiguration(
+                'Invalid module router configuration: controllers must be an array.',
+                app,
+                `routing.${baseRoute}.module.controllers`
+            );
+        }
+    } else {
+        if (typeof moduleItem.controller !== 'string') {
+            throw new InvalidConfiguration(
+                'Invalid module router configuration: controller must be a string.',
+                app,
+                `routing.${baseRoute}.module.controller`
+            );
+        }
+
+        controllers = [moduleItem.controller];
+    }
 
     controllers.forEach((moduleController) => {
-        let controllerFile = path.join(controllerPath, moduleController + ".js");
+        let controllerFile = path.join(controllerPath, moduleController);
         let controller;
 
-        controller = require(controllerFile);
+        try {
+            controller = require(controllerFile);
+        } catch (e) {
+            if (e.code === 'MODULE_NOT_FOUND') {
+                throw new InvalidConfiguration(
+                    `Failed to load controller '${moduleController}'. ${e.message}`,
+                    app,
+                    `routing.${baseRoute}.module`
+                );
+            }
+
+            throw e;
+        }
+
         let isController = false;
 
-        if (typeof controller === "function") {
+        if (typeof controller === 'function') {
             controller = new controller(app);
             isController = true;
         }
 
         for (let actionName in controller) {
             let action = controller[actionName];
-            if (typeof action !== "function" || !action.__metaHttpMethod) continue; // only marked httpMethod should be mounted
+            if (typeof action !== 'function' || !action.__metaHttpMethod) continue; // only marked httpMethod should be mounted
 
             const method = action.__metaHttpMethod;
-            let subRoute = text.ensureStartsWith(action.__metaRoute || _.kebabCase(actionName), "/");
+            let subRoute = text.ensureStartsWith(action.__metaRoute || _.kebabCase(actionName), '/');
 
             let bindAction;
 
@@ -75,11 +108,11 @@ module.exports = function (app, baseRoute, moduleItem) {
                 bindAction = action;
             }
 
-            if (!Literal.ALLOWED_HTTP_METHODS.has(method)) {
+            if (!supportedMethods.has(method)) {
                 throw new InvalidConfiguration(
-                    "Unsupported http method: " + method,
+                    'Unsupported http method: ' + method,
                     app,
-                    `routing.${baseRoute}.modules ${moduleItem.controller}.${actionName}`
+                    `routing.${baseRoute}.module ${moduleItem.controller}.${actionName}`
                 );
             }
 
@@ -93,4 +126,6 @@ module.exports = function (app, baseRoute, moduleItem) {
     });
 
     app.addRouter(router);
-};
+}
+
+export default moduleRouter;

@@ -1,5 +1,5 @@
 import { _, eachAsync_, batchAsync_ } from '@galaxar/utils';
-import {InvalidConfiguration } from '@galaxar/types';
+import { InvalidConfiguration } from '@galaxar/types';
 import Feature from '../Feature';
 
 /**
@@ -46,9 +46,13 @@ module.exports = {
 
         await eachAsync_(features, async ([feature]) => {
             const instances = instancesMap[feature.name];
-            await batchAsync_(instances, (serviceOptions, instanceName) =>
-                feature.load_(app, serviceOptions, `${feature.name}-${instanceName}`)
-            );
+            await batchAsync_(instances, (serviceOptions, instanceName) => {
+                const fullName = `${feature.name}-${instanceName}`;
+                const { load_, ...others } = feature;
+                load_(app, serviceOptions, `${feature.name}-${instanceName}`);
+                others.enabled = true;
+                app.features[fullName] = others;
+            });
         });
     },
 };

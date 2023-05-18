@@ -5,7 +5,7 @@
     },
     "include": [
         "**/*.js"
-    ],
+, "test/index.js"    ],
     "exclude": [
         "node_modules",
         "cjs"

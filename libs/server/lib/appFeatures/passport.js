@@ -6,9 +6,9 @@
  */
 
 const path = require('path');
-const { _, eachAsync_ } = require('@genx/july');
+const { _, eachAsync_ } = require('@galaxar/utils');
 const { Feature } = require('..').Enums;
-const { InvalidConfiguration } = require('@genx/error');
+const { InvalidConfiguration } = require('@galaxar/types');
 
 module.exports = {
 

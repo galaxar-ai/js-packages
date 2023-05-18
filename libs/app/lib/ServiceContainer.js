@@ -1,12 +1,12 @@
 import ConfigLoader, { JsonConfigProvider } from '@galaxar/jsonc';
 import { _, pushIntoBucket, eachAsync_, arrayToObject } from '@galaxar/utils';
 import { fs, tryRequire as _tryRequire } from '@galaxar/sys';
-import { InvalidConfiguration } from '@galaxar/types';
+import { InvalidConfiguration, Types } from '@galaxar/types';
 import { TopoSort } from '@galaxar/algo';
 
 import path from 'node:path';
 
-import Feature, { validate as validateFeature } from './Feature';
+import Feature from './Feature';
 import defaultOpts from './defaultOpts';
 import AsyncEmitter from './helpers/AsyncEmitter';
 import { consoleLogger, makeLogger, setLogLevel } from './logger';
@@ -255,8 +255,8 @@ class ServiceContainer extends AsyncEmitter {
         return path.resolve(this.workingPath, ...args);
     }
 
-    tryRequire(pkgName) {
-        const obj = _tryRequire(pkgName, this.workingPath);
+    tryRequire(pkgName, local) {
+        const obj = local ? require(pkgName) : _tryRequire(pkgName, this.workingPath);
         if (obj.__esModule && typeof obj.default !== 'undefined') {
             return obj.default;
         }
@@ -318,7 +318,7 @@ class ServiceContainer extends AsyncEmitter {
         }
 
         Object.assign(this._featureRegistry, _.omit(registry, ['*']));
-    }    
+    }
 
     /**
      * Helper method to log an exception
@@ -336,28 +336,15 @@ class ServiceContainer extends AsyncEmitter {
         return this;
     }
 
-    /**
-     * Replace the default logger set on creation of the app.
-     * @param {Logger} logger
-     * @memberof ServiceContainer
-     */
-    replaceLogger(logger) {
-        if (logger) {
-            this._loggerBackup = this.logger;
-            this._externalLoggerBackup = this._externalLogger;
+    featureConfig(config, typeInfo, name) {
+        this.sanitize(config, typeInfo, name, 'feature');
+    }
 
-            this.logger = logger;
-            this._externalLogger = true;
-
-            this.log('verbose', 'A new app logger attached.');
-        } else {
-            this.logger = this._loggerBackup;
-            this._externalLogger = this._externalLoggerBackup;
-
-            delete this._loggerBackup;
-            delete this._externalLoggerBackup;
-
-            this.log('verbose', 'The current app logger is dettached.');
+    sanitize(config, typeInfo, name, category) {
+        try {
+            return Types.sanitize(config, { type: 'object', ...typeInfo }, undefined, name);
+        } catch (err) {
+            throw new InvalidConfiguration(err.message, this, { category, name });
         }
     }
 
@@ -446,8 +433,6 @@ class ServiceContainer extends AsyncEmitter {
 
         await this.emit_('configFinalized', this.config);
 
-        console.log('9999999999');
-
         let featureGroups = {
             [Feature.INIT]: [],
             [Feature.SERVICE]: [],
@@ -488,7 +473,7 @@ class ServiceContainer extends AsyncEmitter {
             depends && this._dependsOn(depends, name);
 
             await feature.load_(this, options, name);
-            this.features[name].loaded = true;
+            this.features[name].enabled = true;
             -this.log('verbose', `Feature "${name}" loaded. [OK]`);
 
             await this.emit_('after:load:' + name);
@@ -528,7 +513,7 @@ class ServiceContainer extends AsyncEmitter {
                 }
 
                 featurePath = loadOption[0];
-                featureObject = this.tryRequire(featurePath);
+                featureObject = this.tryRequire(featurePath, true);
 
                 if (loadOption.length > 1) {
                     //one module may contains more than one feature
@@ -536,7 +521,7 @@ class ServiceContainer extends AsyncEmitter {
                 }
             } else {
                 featurePath = loadOption;
-                featureObject = this.tryRequire(featurePath);
+                featureObject = this.tryRequire(featurePath, true);
             }
         } else {
             //load by fallback paths
@@ -557,10 +542,10 @@ class ServiceContainer extends AsyncEmitter {
                 });
             }
 
-            featureObject = this.tryRequire(featurePath);
+            featureObject = this.tryRequire(featurePath, true);
         }
 
-        if (!validateFeature(featureObject)) {
+        if (!Feature.validate(featureObject)) {
             throw new Error(`Invalid feature object loaded from "${featurePath}".`);
         }
 

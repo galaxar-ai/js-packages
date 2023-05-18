@@ -40,12 +40,15 @@
         "@galaxar/sys": "workspace:*",
         "@galaxar/types": "workspace:*",
         "@galaxar/utils": "workspace:*",
+        "@koa/router": "^12.0.0",
         "glob": "^10.2.4",
         "koa": "^2.14.2",
+        "koa-body": "^6.0.1",
         "koa-compress": "^5.1.1",
         "koa-etag": "^4.0.0",
         "koa-mount": "^4.0.0",
         "koa-static": "^5.0.0",
+        "koa-views": "^8.0.0",
         "request-ip": "^3.3.0"
     },
     "prettier": {
@@ -58,6 +61,9 @@
     },
     "license": "MIT",
     "devDependencies": {
-        "capture-console": "^1.0.1"
+        "capture-console": "^1.0.1",
+        "pino": "^8.14.1",
+        "pino-http": "^8.3.3",
+        "supertest": "^6.3.3"
     }
 }

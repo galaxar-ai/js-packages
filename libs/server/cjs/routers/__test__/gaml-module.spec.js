@@ -1,5 +1,5 @@
-"use strict";const path=require("path");const request=require("supertest");const{fs}=require("@genx/sys");const WebServer=require("../../WebServer");const WORKING_DIR=path.resolve(__dirname,"../../../test/temp");let resourceBook=`
-const { _ } = require('@genx/july');
+"use strict";const path=require("path");const request=require("supertest");const{fs}=require("@galaxar/sys");const WebServer=require("../../WebServer");const WORKING_DIR=path.resolve(__dirname,"../../../test/temp");let resourceBook=`
+const { _ } = require('@galaxar/utils');
 
 let books = [ { id: 1, title: 'Book 1' }, { id: 2, title: 'Book 2' } ];
 let maxid = 2;

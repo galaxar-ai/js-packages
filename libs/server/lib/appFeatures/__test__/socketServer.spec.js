@@ -1,7 +1,7 @@
 'use strict';
 
 const path = require('path');
-const { fs } = require('@genx/sys');
+const { fs } = require('@galaxar/sys');
 const WebServer = require('../../../src/WebServer');
 
 const WORKING_DIR = path.resolve(__dirname, '../../../test/temp');

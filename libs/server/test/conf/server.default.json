@@ -1,0 +1,13 @@
+{
+    "logger": {},
+    "serviceGroup": {
+        "logger": {
+            "fileLogger": {
+                "transport": {
+                    "target": "pino/file",
+                    "options": { "destination": "./debug.log" }
+                }
+            }            
+        }
+    }
+}

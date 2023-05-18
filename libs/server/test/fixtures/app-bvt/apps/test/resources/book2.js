@@ -1,4 +1,4 @@
-const { _ } = require('@genx/july');
+import { _ } from '@galaxar/utils';
 
 class BookController {
     books = [ { id: 1, title: 'Book 1' }, { id: 2, title: 'Book 2' } ];
@@ -34,4 +34,4 @@ class BookController {
     }
 }
 
-module.exports = BookController;
+export default BookController;

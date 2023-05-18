@@ -94,6 +94,13 @@ class WebServer extends Routable(Runnable(ServiceContainer)) {
         return super.stop_();
     }
 
+    visitChildModules(vistor) {
+        super.visitChildModules(vistor);
+        if (this.appModules) {
+            _.each(this.appModules, vistor);
+        }
+    }
+
     /**
      * Mount an app at specified route.
      * @param {WebModule} app

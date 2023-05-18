@@ -1,18 +1,6 @@
 {
-    "loggers": {        
-        "accessLog": {
-            "transports": [
-                {
-                    "type": "console",                    
-                    "options": {      
-                        "level": "verbose",                      
-                        "format": "#!jsv: log.format.combine(log.format.colorize(), log.format.simple())"
-                    }
-                }
-            ]
-        }
+    "logger": {        
     },
-    "timezone": "",
     "koa": {       
         "keys": [ "a", "b" ] 
     },

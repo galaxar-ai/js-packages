@@ -1,26 +1,18 @@
 import Koa from 'koa';
 import mount from 'koa-mount';
 import { _, toBoolean } from '@galaxar/utils';
+import { InvalidConfiguration } from '@galaxar/types';
 
 class KoaEngine {
     constructor(server) {
         this.server = server;
         this.engine = new Koa();
 
-        console.log('feiojfioajfiewajiofjo');
-
         if (this.server.runnable) {
-            console.log('8888888');
-
             this.server.on('configFinalized', (config) => {
-                console.log('foiejfieaofjoefoj');
                 const koaConfig = config.koa;
 
-                if (!koaConfig) {
-                    throw new InvalidConfiguration('Missing koa config.', this.server, 'koa');
-                }
-
-                this._initialize(koaConfig);
+                this._initialize({ ...koaConfig });
 
                 delete config.koa;
             });
@@ -49,23 +41,23 @@ class KoaEngine {
         }
 
         koa.on('error', (err, ctx) => {
-            let extra = _.pick(err, ['status', 'code', 'info']);
-
-            if (ctx) {
-                extra.request = _.pick(ctx, ['method', 'url', 'ip']);
-            }
-
-            extra.app = ctx.appModule.name;
+            const info = { err, app: ctx.appModule.name };
 
             if (err.status && err.status < 500) {
-                if (server.env === 'development') {
-                    extra.stack = err.stack;
+                if (ctx.log) {
+                    ctx.log('warn', info);
+                } else {
+                    ctx.appModule.log('warn', info);
                 }
-                server.log('warn', `[${err.status}] ` + err.message, extra);
+                
                 return;
             }
 
-            server.logError(err);
+            if (ctx.log) {
+                ctx.log('error', info);
+            } else {
+                ctx.appModule.log('error', info);
+            }            
         });
 
         server.httpServer = require('http').createServer(koa.callback());

@@ -1,8 +1,6 @@
-import path from 'node:path';
 import { _, text } from "@galaxar/utils";
 import { ServiceContainer, ModuleBase } from "@galaxar/app";
 import Routable from "./Routable";
-import Literal from "./enum/Literal";
 
 /**
  * Web application module class.
@@ -20,6 +18,8 @@ class WebModule extends ModuleBase(Routable(ServiceContainer)) {
      */
     constructor(server, name, route, appPath, options) {    
         super(server, name, appPath, options);
+
+        this.server = this.host;
 
         /**
          * Mounting route.

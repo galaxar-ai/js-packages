@@ -2,7 +2,7 @@
 'use strict';
 
 const path = require('path');
-const { fs } = require('@genx/sys');
+const { fs } = require('@galaxar/sys');
 const request = require('supertest');
 const assert = require('assert');
 const WebServer = require('../../WebServer');

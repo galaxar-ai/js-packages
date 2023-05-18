@@ -1,8 +1,8 @@
 "use strict";
 
 const path = require("path");
-const { _, text } = require("@genx/july");
-const { glob } = require("@genx/sys");
+const { _, text } = require("@galaxar/utils");
+const { glob } = require("@galaxar/sys");
 const Router = require("@koa/router");
 const Literal = require("../enum/Literal");
 const { hasMethod } = require("../helpers/Helpers");

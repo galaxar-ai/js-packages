@@ -1,6 +1,4 @@
-"use strict";
-
-const { Helpers: { httpMethod } } = require('../../../../../../../lib');
+import { httpMethod } from '../../../../../../lib';
 
 async function middleware1(ctx, next) {    
     ctx.state1 = 'Hello';
@@ -25,4 +23,4 @@ class Module2Controller {
     }
 }
 
-module.exports = Module2Controller;
+export default Module2Controller;

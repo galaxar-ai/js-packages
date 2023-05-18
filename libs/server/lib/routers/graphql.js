@@ -1,7 +1,7 @@
 "use strict";
 
 const path = require('path');
-const { InvalidConfiguration } = require('@genx/error');
+const { InvalidConfiguration } = require('@galaxar/types');
 const Koa = require('koa');
 const mount = require('koa-mount');
 

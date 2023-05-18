@@ -62,7 +62,25 @@ const Runnable = (T) =>
 
             process.on('exit', this._onExit);
 
-            return super.start_();
+            await super.start_();
+
+            if (this.options.logLevel === 'verbose' || this.options.logLevel === 'debug') {
+                const childModules = {};
+                this.visitChildModules((childModule, name) => {
+                    childModules[name] = {
+                        features: Object.keys(childModule.features),
+                        services: Object.keys(childModule.services),
+                    };
+                });
+
+                this.log('verbose', 'Enabled features & services:', {
+                    features: Object.keys(this.features),
+                    services: Object.keys(this.services),
+                    modules: childModules,
+                });
+            }
+
+            return this;
         }
 
         /**
@@ -90,7 +108,13 @@ const Runnable = (T) =>
 
             if (stopByThis) {
                 this._uninitialize();
-            }            
+            }
+        }
+
+        visitChildModules(vistor) {
+            if (this.libModules) {
+                _.each(this.libModules, vistor);
+            }
         }
 
         /**
@@ -179,7 +203,7 @@ const Runnable = (T) =>
 
             process.chdir(this._pwd);
             delete this._pwd;
-        }      
+        }
 
         _injectErrorHandlers(detach) {
             if (detach) {
@@ -188,7 +212,7 @@ const Runnable = (T) =>
                     process.removeListener('uncaughtException', this._onUncaughtException);
                     delete this._onUncaughtException;
                 }
-                
+
                 return;
             }
 
@@ -197,7 +221,7 @@ const Runnable = (T) =>
                 process.on('uncaughtException', this._onUncaughtException);
             }
 
-            process.on('warning', this._onWarning);            
+            process.on('warning', this._onWarning);
         }
     };
 

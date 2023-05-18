@@ -4,7 +4,6 @@
 
 import path from "node:path";
 import request from "supertest";
-import sh from "shelljs";
 import WebServer from "../lib";
 
 const WORKING_DIR = path.resolve(__dirname, 'fixtures/server-only');
@@ -22,8 +21,7 @@ describe('server-only', function () {
     });
 
     after(async function () {        
-        await webServer.stop_();        
-        sh.rm('-rf', path.join(WORKING_DIR, '*.log'));
+        await webServer.stop_();      
     });
 
     describe('middleware:serveStatic', function () {

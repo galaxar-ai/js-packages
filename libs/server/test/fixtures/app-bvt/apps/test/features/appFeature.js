@@ -1,18 +1,13 @@
-const {
-    Feature,
-    Helpers: { ensureFeatureName },
-} = require("@genx/app");
+import { Feature } from "@galaxar/app";
 
-module.exports = {
+export default {
     /**
      * This feature is loaded at service stage
      * @member {string}
      */
-    type: Feature.SERVICE,
+    stage: Feature.SERVICE,
 
     load_: async function (app, config, name) {
-        ensureFeatureName(name);
-
         const { param } = config;
 
         const service = {

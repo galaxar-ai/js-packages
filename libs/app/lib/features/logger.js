@@ -46,10 +46,23 @@ export default {
     load_: function (app, config, name) {
         const pino = app.tryRequire('pino');
 
+        config = app.featureConfig(
+            config,
+            {
+                schema: {
+                    transport: { type: 'object', optional: true },
+                },
+            },
+            name
+        );
+
         const options = {
             nestedKey: 'payload',
             transport: {
                 target: 'pino-pretty',
+                options: {
+                    colorize: true,
+                },
             },
             ...config,
         };
@@ -73,12 +86,12 @@ export default {
             if (app._logCache.length > 0) {
                 app._logCache.forEach(([level, message, obj]) => logger[level](obj, message));
             }
-            
+
             app.logger = logger;
             app.log = (level, message, info) => {
                 logger[level](info, message);
                 return this;
-            };            
+            };
         }
 
         app.registerService(name, logger);

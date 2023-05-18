@@ -1,5 +1,3 @@
-import { InvalidConfiguration, Types } from '@galaxar/types';
-
 /**
  * Feature loading stage
  */
@@ -24,25 +22,17 @@ const Feature = {
      * Final preparation before service container get into work
      */
     FINAL: 'Final',
-};
 
-/**
- * Validate a feature object.
- * @param {object} featureObject - Feature object
- * @property {string} featureObject.type - Feature loading stage
- * @property {function} featureObject.load_ - Feature loading method
- * @returns {bool}
- */
-export const validate = (featureObject) => {
-    return featureObject && featureObject.hasOwnProperty('stage') && typeof featureObject.load_ === 'function';
-};
-
-export const config = (app, options, typeInfo, featureName) => {
-    try {
-        return Types.sanitize(options, { type: 'object', ...typeInfo }, undefined, featureName);
-    } catch (err) {
-        throw new InvalidConfiguration(err.message, app, { feature: featureName });
-    }
+    /**
+     * Validate a feature object.
+     * @param {object} featureObject - Feature object
+     * @property {string} featureObject.type - Feature loading stage
+     * @property {function} featureObject.load_ - Feature loading method
+     * @returns {bool}
+     */
+    validate(featureObject) {
+        return featureObject && featureObject.hasOwnProperty('stage') && typeof featureObject.load_ === 'function';
+    }    
 };
 
 export default Feature;

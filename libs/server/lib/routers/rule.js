@@ -1,9 +1,6 @@
-"use strict";
-
-const { _, text } = require("@genx/july");
-const Router = require("@koa/router");
-const { InvalidConfiguration } = require("@genx/error");
-const Literal = require("../enum/Literal");
+import { _, text } from "@galaxar/utils";
+import { InvalidConfiguration } from "@galaxar/types";
+import { supportedMethods } from '../helpers';
 
 /**
  * Rule based router.
@@ -47,6 +44,8 @@ const Literal = require("../enum/Literal");
  * }
  */
 function load_(app, baseRoute, options) {
+    const Router = app.tryRequire("@koa/router");
+
     let router = baseRoute === "/" ? new Router() : new Router({ prefix: text.dropIfEndsWith(baseRoute, "/") });
 
     if (options.middlewares) {
@@ -80,7 +79,7 @@ function load_(app, baseRoute, options) {
         }
 
         _.forOwn(methods, (middlewares, method) => {
-            if (!Literal.ALLOWED_HTTP_METHODS.has(method) && method !== "all") {
+            if (!supportedMethods.has(method) && method !== "all") {
                 throw new InvalidConfiguration(
                     "Unsupported http method: " + method,
                     app,
@@ -95,4 +94,4 @@ function load_(app, baseRoute, options) {
     app.addRouter(router);
 }
 
-module.exports = load_;
+export default load_;

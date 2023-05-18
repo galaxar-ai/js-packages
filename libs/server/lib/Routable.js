@@ -111,7 +111,7 @@ const Routable = (T) =>
                 return this.server.getMiddlewareFactory(name);
             }
 
-            let npmMiddleware = this.tryRequire(name);
+            let npmMiddleware = this.tryRequire(name, true);
             if (npmMiddleware) {
                 return npmMiddleware;
             }
@@ -280,6 +280,8 @@ const Routable = (T) =>
             let hasNotEnabled = _.find(_.castArray(features), feature => !this.enabled(feature));
         
             if (hasNotEnabled) {
+                console.log(Object.keys(this.features));
+
                 throw new InvalidConfiguration(
                     `Middleware "${middleware}" requires "${hasNotEnabled}" feature to be enabled.`,
                     this,
@@ -359,7 +361,7 @@ const Routable = (T) =>
                 return new Engine(this);
             } catch (err) {
                 if (err.code === 'MODULE_NOT_FOUND') {
-                    throw new InvalidArgument(`Engine "${this.options.engine}" is not supported.`);
+                    throw new InvalidArgument(`Failed to load engine "${this.options.engine}". ${err.message}`);
                 }
 
                 throw err;

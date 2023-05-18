@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../lib/helpers/supportedMethods.js"],"sourcesContent":["const methods = new Set(['options', 'get', 'head', 'post', 'put', 'delete', 'patch', 'search', 'trace', 'connect']);\n\nexport default methods;\n"],"names":["methods","Set"],"mappings":"oGAEA,iDAAA,YAFA,MAAMA,QAAU,IAAIC,IAAI,CAAC,UAAW,MAAO,OAAQ,OAAQ,MAAO,SAAU,QAAS,SAAU,QAAS,UAAU,QAElH,SAAeD"}

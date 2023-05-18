@@ -1,8 +1,7 @@
 {
     "middlewares": {
         "serveStatic": {},
-        "koa-body": {},
-        "koa-override": {}
+        "koa-body": {}
     },
     "appFeature": {
         "param": "test"

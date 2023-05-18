@@ -8,12 +8,12 @@
  */
 
 const path = require('path');
-const { _, url: urlUtil, text } = require('@genx/july');
+const { _, url: urlUtil, text } = require('@galaxar/utils');
 const {
     Feature,
     Helpers: { ensureFeatureName },
 } = require("@genx/app");
-const { InvalidConfiguration } = require('@genx/error');
+const { InvalidConfiguration } = require('@galaxar/types');
 
 const DEFAULT_CONTROLLER_PATH = 'events';
 
