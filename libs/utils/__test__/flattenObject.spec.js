@@ -51,8 +51,8 @@ describe('flattenObject', () => {
                 },
                 g: 40,
             },
-            h: [ { i: 1, j: 2 }, 50 ],
-        }
+            h: [{ i: 1, j: 2 }, 50],
+        };
 
         const obj2 = flattenObject(obj3);
 

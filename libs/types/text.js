@@ -6,7 +6,7 @@ export default {
     name: 'text',
     alias: ['string'],
     defaultValue: '',
-    validate: value => typeof value === 'string',
+    validate: (value) => typeof value === 'string',
     sanitize: (value, meta, i18n, path) => {
         const isString = typeof value === 'string';
 
@@ -18,20 +18,20 @@ export default {
             value = null;
         }
 
-        const [ isDone, sanitized ] = beginSanitize(value, meta, i18n, path);
-        if (isDone) return sanitized;        
+        const [isDone, sanitized] = beginSanitize(value, meta, i18n, path);
+        if (isDone) return sanitized;
 
         if (!isString) {
             throw new ValidationError('Invalid text value.', {
                 value,
                 meta,
                 i18n,
-                path
+                path,
             });
         }
 
         return value;
     },
 
-    serialize: identity
+    serialize: identity,
 };

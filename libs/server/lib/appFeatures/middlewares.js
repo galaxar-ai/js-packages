@@ -6,7 +6,6 @@
 import { Feature } from '@galaxar/app';
 
 export default {
-
     /**
      * This feature is loaded at plugin stage
      * @member {string}
@@ -21,6 +20,6 @@ export default {
      */
     load_: function (app, middlewares) {
         //delay to load middlewares after all plug-ins are ready
-        app.useMiddlewares(app.router, middlewares);        
-    }
+        app.useMiddlewares(app.router, middlewares);
+    },
 };

@@ -1,22 +1,22 @@
-import { Plugins, beginSanitize } from "./types";
-import { ValidationError, ApplicationError } from "./errors";
+import { Plugins, beginSanitize } from './types';
+import { ValidationError, ApplicationError } from './errors';
 
 export default {
     name: 'datetime',
     alias: ['date', 'time', 'timestamp'],
     defaultValue: new Date(0),
-    validate: value => value instanceof Date,
+    validate: (value) => value instanceof Date,
 
     /**
      * Transform a value into a JavaScript Date object.
-     * @param {*} value 
-     * @param {*} meta 
-     * @param {*} i18n 
+     * @param {*} value
+     * @param {*} meta
+     * @param {*} i18n
      * @param {string} [path]
      * @returns {Date|null}
      */
     sanitize: (value, meta, i18n, path) => {
-        const [ isDone, sanitized ] = beginSanitize(value, meta, i18n, path);
+        const [isDone, sanitized] = beginSanitize(value, meta, i18n, path);
         if (isDone) return sanitized;
 
         const raw = value;
@@ -47,7 +47,7 @@ export default {
                     value: raw,
                     meta,
                     i18n,
-                    path
+                    path,
                 });
             }
         }

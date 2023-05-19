@@ -19,7 +19,9 @@ class FiniteStateMachine {
         (...args) =>
             eachAsync_(array, (action_) => action_(...args));
 
-    static ifAny = (array) => async (...args) => {
+    static ifAny =
+        (array) =>
+        async (...args) => {
             const l = array.length;
             const reason = [];
 
@@ -37,7 +39,9 @@ class FiniteStateMachine {
             return FiniteStateMachine.fail('None of the required conditions met.\n' + reason.join('\n'));
         };
 
-    static ifAll = (array) => async (...args) => {
+    static ifAll =
+        (array) =>
+        async (...args) => {
             const l = array.length;
 
             for (let i = 0; i < l; i++) {

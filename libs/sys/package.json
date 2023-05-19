@@ -29,8 +29,8 @@
             "test",
             "**/*.spec.js"
         ]
-    },    
-    "dependencies": {        
+    },
+    "dependencies": {
         "fs-extra": "^11.1.1"
     },
     "prettier": {

@@ -7,7 +7,7 @@ module.exports = {
     defaultValue: null,
     validate: (value) => value instanceof Buffer,
     sanitize: (value, meta, i18n, path) => {
-        const [ isDone, sanitized ] = beginSanitize(value, meta, i18n, path);
+        const [isDone, sanitized] = beginSanitize(value, meta, i18n, path);
         if (isDone) return sanitized;
 
         if (value instanceof Buffer) {
@@ -22,12 +22,9 @@ module.exports = {
             value,
             meta,
             i18n,
-            path
+            path,
         });
     },
 
-    serialize: (value, meta) =>
-        value == null
-            ? null
-            : value.toString(meta.encoding || 'base64'),
+    serialize: (value, meta) => (value == null ? null : value.toString(meta.encoding || 'base64')),
 };

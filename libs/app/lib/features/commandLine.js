@@ -3,22 +3,22 @@
  * @module Feature_CommandLine
  */
 
-import path from "node:path";
-import { _, pushIntoBucket, eachAsync_ } from "@galaxar/utils";
-import { ApplicationError, InvalidConfiguration } from "@galaxar/types";
-import Feature from "../Feature";
+import path from 'node:path';
+import { _, pushIntoBucket, eachAsync_ } from '@galaxar/utils';
+import { ApplicationError, InvalidConfiguration } from '@galaxar/types';
+import Feature from '../Feature';
 
 function translateMinimistOptions(opts) {
     let m = {};
 
     _.forOwn(opts, (detail, name) => {
         if (detail.bool) {
-            pushIntoBucket(m, "boolean", name);
+            pushIntoBucket(m, 'boolean', name);
         } else {
-            pushIntoBucket(m, "string", name);
+            pushIntoBucket(m, 'string', name);
         }
 
-        if ("default" in detail) {
+        if ('default' in detail) {
             _.set(m, `default.${name}`, detail.default);
         }
 
@@ -31,7 +31,7 @@ function translateMinimistOptions(opts) {
 }
 
 function optionDecorator(name) {
-    return name.length == 1 ? "-" + name : "--" + name;
+    return name.length == 1 ? '-' + name : '--' + name;
 }
 
 const gArgv = process.argv.slice(2);
@@ -48,7 +48,7 @@ class CommandLineArgumentError extends ApplicationError {
      * @param {boolean} nonOption - Whether it is an option
      */
     constructor(message, name, nonOption) {
-        super(message, "E_CLI_INVALID_ARG", { name, nonOption });
+        super(message, 'E_CLI_INVALID_ARG', { name, nonOption });
     }
 }
 
@@ -68,22 +68,22 @@ class CommandLine {
     }
 
     parse(options) {
-        const minimist = this.app.tryRequire("minimist");
+        const minimist = this.app.tryRequire('minimist');
         const minimistOpts = translateMinimistOptions(options);
         this.argv = minimist(gArgv, minimistOpts);
 
         // fix: non-default arg has default value
-        minimistOpts.boolean?.forEach(bn => {
+        minimistOpts.boolean?.forEach((bn) => {
             if (!(bn in minimistOpts.default)) {
                 delete this.argv[bn];
             }
-        });        
+        });
 
-        minimistOpts.string?.forEach(sn => {
+        minimistOpts.string?.forEach((sn) => {
             if (!(sn in minimistOpts.default)) {
                 delete this.argv[sn];
             }
-        });        
+        });
     }
 
     option(name) {
@@ -114,7 +114,7 @@ class CommandLine {
     }
 
     async valueOrFunctionCall_(functor) {
-        if (typeof functor === "function") {
+        if (typeof functor === 'function') {
             return await functor(this);
         }
 
@@ -123,8 +123,8 @@ class CommandLine {
 
     async doFilter_(name, opt, argIndex) {
         if (opt.filter) {
-            if (typeof argIndex === "undefined") {
-                if (!(typeof opt.filter !== "function")) {
+            if (typeof argIndex === 'undefined') {
+                if (!(typeof opt.filter !== 'function')) {
                     throw new InvalidConfiguration(
                         `The "filter" in the inquirer option for argument option "${name}" should be a function!`,
                         this.app,
@@ -134,7 +134,7 @@ class CommandLine {
 
                 this.updateOption(name, await opt.filter(this.argv[name], this));
             } else {
-                if (!(typeof opt.filter !== "function")) {
+                if (!(typeof opt.filter !== 'function')) {
                     throw new InvalidConfiguration(
                         `The "filter" in the inquirer option for argument value "${name}" at position ${argIndex} should be a function!`,
                         this.app,
@@ -145,21 +145,21 @@ class CommandLine {
                 this.argv._[argIndex] = await opt.filter(this.argv._[argIndex], this);
             }
         }
-    };
+    }
 
     argExist(name, argIndex) {
-        return typeof argIndex === "undefined" ? name in this.argv : this.argv._.length > argIndex;
+        return typeof argIndex === 'undefined' ? name in this.argv : this.argv._.length > argIndex;
     }
 
     async inquire_() {
-        const inquirer = this.app.tryRequire("inquirer");
+        const inquirer = this.app.tryRequire('inquirer');
 
         const doInquire_ = (item, argIndex) =>
             inquirer.prompt([item]).then((answers) => {
                 console.log();
 
                 _.forOwn(answers, (ans, name) => {
-                    if (typeof argIndex === "undefined") {
+                    if (typeof argIndex === 'undefined') {
                         this.updateOption(name, ans);
                     } else {
                         assert: this.argv._.length === argIndex;
@@ -172,7 +172,7 @@ class CommandLine {
         const prepareInquire_ = async (opts, name, argIndex) => {
             let argExists = this.argExist(name, argIndex);
 
-            if ("inquire" in opts && !argExists) {
+            if ('inquire' in opts && !argExists) {
                 //need inquire and the value not given through command line
                 let inquire = await this.valueOrFunctionCall_(opts.inquire);
 
@@ -182,14 +182,14 @@ class CommandLine {
 
                     if (opts.promptType) {
                         type = opts.promptType;
-                        if (type === "list" || type === "rawList" || type === "checkbox" || type === "expand") {
+                        if (type === 'list' || type === 'rawList' || type === 'checkbox' || type === 'expand') {
                             if (!opts.choicesProvider) {
                                 throw new InvalidConfiguration(
-                                    typeof argIndex === "undefined"
+                                    typeof argIndex === 'undefined'
                                         ? `Missing "choicesProvider" in the inquirer option for argument option "${name}"!`
                                         : `Missing "choicesProvider" in the inquirer option for argument value "${name}" at postion ${argIndex}!`,
                                     this.app,
-                                    typeof argIndex === "undefined"
+                                    typeof argIndex === 'undefined'
                                         ? `commandLine.options[${name}].choicesProvider`
                                         : `commandLine.arguments[${argIndex}].choicesProvider`
                                 );
@@ -198,14 +198,14 @@ class CommandLine {
                             q.choices = await this.valueOrFunctionCall_(opts.choicesProvider);
                         }
                     } else if (opts.bool) {
-                        type = "confirm";
+                        type = 'confirm';
                     } else {
-                        type = "input";
+                        type = 'input';
                     }
 
                     q.type = type;
 
-                    if ("promptDefault" in opts) {
+                    if ('promptDefault' in opts) {
                         q.default = await this.valueOrFunctionCall_(opts.promptDefault);
                     }
 
@@ -224,10 +224,10 @@ class CommandLine {
             }
 
             if ((await this.valueOrFunctionCall_(this.usage.showArguments)) && this.argExist(name, argIndex)) {
-                if (typeof argIndex === "undefined") {
-                    console.log("option", name, `(${opts.desc})`, ":", this.argv[name]);
+                if (typeof argIndex === 'undefined') {
+                    console.log('option', name, `(${opts.desc})`, ':', this.argv[name]);
                 } else {
-                    console.log(`<${name}>`, ":", this.argv._[argIndex]);
+                    console.log(`<${name}>`, ':', this.argv._[argIndex]);
                 }
             }
         };
@@ -300,7 +300,7 @@ class CommandLine {
 
         if (errors.length > 0) {
             this.showUsage({
-                afterBanner: () => "Error(s):\n" + errors.map((msg) => " - " + msg).join("\n") + "\n\n",
+                afterBanner: () => 'Error(s):\n' + errors.map((msg) => ' - ' + msg).join('\n') + '\n\n',
             });
 
             process.exit(1);
@@ -310,7 +310,7 @@ class CommandLine {
     async processSilentModeArguments_() {
         await eachAsync_(this.usage.arguments, async (arg, index) => {
             if (this.argv._.length <= index) {
-                if (arg.hasOwnProperty("silentModeDefault")) {
+                if (arg.hasOwnProperty('silentModeDefault')) {
                     for (let i = this.argv._.length; i < index; i++) {
                         this.argv._.push(undefined);
                     }
@@ -332,7 +332,7 @@ class CommandLine {
                 if (opts.onArgumentExists) {
                     await opts.onArgumentExists(this);
                 }
-            } else if (opts.hasOwnProperty("silentModeDefault")) {
+            } else if (opts.hasOwnProperty('silentModeDefault')) {
                 this.updateOption(name, await this.valueOrFunctionCall_(opts.silentModeDefault));
             }
         });
@@ -340,21 +340,21 @@ class CommandLine {
 
     getBanner() {
         if (this.usage.banner) {
-            let banner = "";
+            let banner = '';
 
-            if (typeof this.usage.banner === "function") {
+            if (typeof this.usage.banner === 'function') {
                 banner += this.usage.banner(this);
-            } else if (typeof this.usage.banner === "string") {
+            } else if (typeof this.usage.banner === 'string') {
                 banner += this.usage.banner;
             } else {
                 throw new InvalidConfiguration(
-                    "Invalid banner value of commandLine feature.",
+                    'Invalid banner value of commandLine feature.',
                     this.app,
                     `commandLine.banner`
                 );
             }
 
-            banner += "\n";
+            banner += '\n';
 
             return banner;
         }
@@ -365,21 +365,21 @@ class CommandLine {
     getUsage(injects) {
         injects = { ...this.injects, ...injects };
 
-        let usage = "";
+        let usage = '';
 
         let banner = !this.bannerShown && this.getBanner();
         if (banner) {
-            usage += banner + "\n";
+            usage += banner + '\n';
         }
 
         if (injects && injects.afterBanner) {
             usage += injects.afterBanner();
         }
 
-        let fmtArgs = "";
+        let fmtArgs = '';
         if (!_.isEmpty(this.usage.arguments)) {
             fmtArgs =
-                " " + this.usage.arguments.map((arg) => (arg.required ? `<${arg.name}>` : `[${arg.name}]`)).join(" ");
+                ' ' + this.usage.arguments.map((arg) => (arg.required ? `<${arg.name}>` : `[${arg.name}]`)).join(' ');
         }
 
         usage += `Usage: ${this.usage.program || path.basename(process.argv[1])}${fmtArgs} [options]\n\n`;
@@ -391,34 +391,34 @@ class CommandLine {
         if (!_.isEmpty(this.usage.options)) {
             usage += `Options:\n`;
             _.forOwn(this.usage.options, (opts, name) => {
-                let line = "  " + optionDecorator(name);
+                let line = '  ' + optionDecorator(name);
                 if (opts.alias) {
-                    line += _.reduce(opts.alias, (sum, a) => sum + ", " + optionDecorator(a), "");
+                    line += _.reduce(opts.alias, (sum, a) => sum + ', ' + optionDecorator(a), '');
                 }
 
-                line += "\n";
-                line += "    " + opts.desc + "\n";
+                line += '\n';
+                line += '    ' + opts.desc + '\n';
 
-                if ("default" in opts) {
-                    line += "    default: " + opts.default.toString() + "\n";
+                if ('default' in opts) {
+                    line += '    default: ' + opts.default.toString() + '\n';
                 }
 
                 if (opts.required) {
-                    if (typeof opts.required === "function") {
-                        line += "    conditional\n";
+                    if (typeof opts.required === 'function') {
+                        line += '    conditional\n';
                     } else {
-                        line += "    required\n";
+                        line += '    required\n';
                     }
                 }
 
                 if (opts.choicesProvider && Array.isArray(opts.choicesProvider)) {
-                    line += "    available values:\n";
+                    line += '    available values:\n';
                     opts.choicesProvider.forEach((choice) => {
                         line += `        "${choice.value}": ${choice.name}\n`;
                     });
                 }
 
-                line += "\n";
+                line += '\n';
 
                 usage += line;
             });
@@ -460,7 +460,7 @@ export default {
      * @property {array} [usageOptions.arguments] - Command line arguments, identified by the position of appearance
      * @property {object} [usageOptions.options] - Command line options
      * @property {boolean|function} [usageOptions.silentMode] - Whether to run in silient mode, default false
-     * @property {boolean|function} [usageOptions.nonValidationMode] - Whether to run validation     
+     * @property {boolean|function} [usageOptions.nonValidationMode] - Whether to run validation
      * @property {boolean} [usageOptions.showUsageOnError]
      *
      * @example
@@ -487,7 +487,7 @@ export default {
 
         let silentMode = usageOptions.silentMode;
 
-        if (silentMode && typeof silentMode === "function") {
+        if (silentMode && typeof silentMode === 'function') {
             silentMode = silentMode(app.commandLine);
         }
 
@@ -502,7 +502,7 @@ export default {
 
         let nonValidationMode = usageOptions.nonValidationMode;
 
-        if (nonValidationMode && typeof nonValidationMode === "function") {
+        if (nonValidationMode && typeof nonValidationMode === 'function') {
             nonValidationMode = nonValidationMode(app.commandLine);
         }
 

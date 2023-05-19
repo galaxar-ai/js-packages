@@ -38,6 +38,5 @@ describe('isInteger', function () {
         isInteger('0', { range: RANGE_NEGATIVE }).should.not.be.ok();
         isInteger('0', { range: RANGE_NON_ZERO }).should.not.be.ok();
         isInteger('0', { range: RANGE_INDEX }).should.be.ok();
-        
     });
 });

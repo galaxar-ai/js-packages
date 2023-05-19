@@ -1,4 +1,4 @@
-import get from "../get";
+import get from '../get';
 import pushIntoBucket from '../pushIntoBucket';
 
 describe('pushIntoBucket', () => {

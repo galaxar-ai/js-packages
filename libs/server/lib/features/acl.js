@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 /**
  * Enable acl feature
@@ -10,7 +10,6 @@ const { Feature } = require('..').Enums;
 const { InvalidConfiguration } = require('@galaxar/types');
 
 module.exports = {
-
     /**
      * This feature is loaded at service stage
      * @member {string}
@@ -25,9 +24,9 @@ module.exports = {
      * @property {string} [config.dataSource] - Store type of acl
      * @property {object} [config.prefix] - Store options
      * @returns {Promise.<*>}
-     * 
+     *
      * @example
-     * 
+     *
      * acl: {
      *   backend: 'mongodb.dataSourceName'
      * }
@@ -43,30 +42,38 @@ module.exports = {
 
         switch (backend) {
             case 'memory':
-            backendStore = new Acl.memoryBackend();
-            break;
+                backendStore = new Acl.memoryBackend();
+                break;
 
             case 'mongodb':
-            if (!config.dataSource) {
-                throw new InvalidConfiguration('"dataSource" is required for mongodb backend of acl.', app, 'acl.dataSource');
-            }
+                if (!config.dataSource) {
+                    throw new InvalidConfiguration(
+                        '"dataSource" is required for mongodb backend of acl.',
+                        app,
+                        'acl.dataSource'
+                    );
+                }
 
-            let mongodb = app.getService(config.dataSource);
-            if (!mongodb) {
-                throw new InvalidConfiguration(`Data source "${config.dataSource}" not found.`, app, 'acl.dataSource');
-            }
+                let mongodb = app.getService(config.dataSource);
+                if (!mongodb) {
+                    throw new InvalidConfiguration(
+                        `Data source "${config.dataSource}" not found.`,
+                        app,
+                        'acl.dataSource'
+                    );
+                }
 
-            backendStore = new Acl.mongodbBackend(await mongodb.connect_(), config.prefix);
-            break;
+                backendStore = new Acl.mongodbBackend(await mongodb.connect_(), config.prefix);
+                break;
 
             case 'redis':
-            throw new Error('to be implemented');
-            break;
+                throw new Error('to be implemented');
+                break;
 
             default:
-            throw new InvalidConfiguration('Unsupported acl backend: ' + backend, app, 'acl.backend');
-        }        
-    
-        app.acl = new Acl(backendStore);       
-    }
+                throw new InvalidConfiguration('Unsupported acl backend: ' + backend, app, 'acl.backend');
+        }
+
+        app.acl = new Acl(backendStore);
+    },
 };

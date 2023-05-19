@@ -27,8 +27,6 @@ describe('url', () => {
 
         a.should.be.eql('/abc/def/abc/');
         b.should.be.eql('/abc/def/abc/abcd');
-
-        
     });
 
     it('url append query', () => {
@@ -152,9 +150,7 @@ describe('url', () => {
 
         cases.forEach((testCase, i) => {
             console.log(`checking case ${i}`);
-            appendQuery(testCase.url, testCase.query).should.be.eql(
-                testCase.expected
-            );
+            appendQuery(testCase.url, testCase.query).should.be.eql(testCase.expected);
         });
     });
 });

@@ -58,7 +58,7 @@ function applyUnaryOperator(value, tag, context) {
  * @returns {*}
  */
 function applyOperator(currentValue, rightValue, [op, isUnary], context) {
-    if (isUnary) {        
+    if (isUnary) {
         return applyUnaryOperator(currentValue, op, context);
     }
 
@@ -84,10 +84,7 @@ function transformCollection(currentValue, collectionOp, opMeta, expectedFieldVa
             );
 
         case PFX_REDUCE:
-            if (
-                !Array.isArray(expectedFieldValue) ||
-                (isUnary && expectedFieldValue.length !== 1)
-            ) {
+            if (!Array.isArray(expectedFieldValue) || (isUnary && expectedFieldValue.length !== 1)) {
                 throw new Error(MSG.INVALID_COLLECTION_OP_EXPR(ops.REDUCE, opMeta[0], expectedFieldValue));
             }
 

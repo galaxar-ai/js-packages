@@ -75,8 +75,8 @@ describe('diff', function () {
     });
 
     it('array', async function () {
-        const result = diff({ k: [ 10, 20, 30 ] }, { k: [ 10, 30, 40 ] });
-        result.should.be.eql({ k: [ 40 ] })
+        const result = diff({ k: [10, 20, 30] }, { k: [10, 30, 40] });
+        result.should.be.eql({ k: [40] });
     });
 
     it('equal', async function () {
@@ -86,7 +86,7 @@ describe('diff', function () {
 
     it('null base', async function () {
         const result = diff(null, { k: 10 });
-        result.should.be.eql({ k: 10 })
+        result.should.be.eql({ k: 10 });
     });
 
     it('null target', async function () {

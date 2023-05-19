@@ -3,15 +3,15 @@
  * @module Middleware_PassportCheck
  */
 
-import { HttpCode } from "@galaxar/types";
+import { HttpCode } from '@galaxar/types';
 
 /**
  * Initialize ensureLoggedIn middleware
  * @param {object} options
  * @property {string} [options.loginUrl] - If given, will redirect to loginUrl if not loggedIn
- * @property {boolean} [options.successReturnToOrRedirect] - If given, will redirect to loginUrl if not loggedIn 
+ * @property {boolean} [options.successReturnToOrRedirect] - If given, will redirect to loginUrl if not loggedIn
  * @param {Routable} app
- */  
+ */
 const passportCheck = (options, app) => {
     return async (ctx, next) => {
         if (ctx.isAuthenticated()) {
@@ -19,7 +19,7 @@ const passportCheck = (options, app) => {
         }
 
         if (options.successReturnToOrRedirect && ctx.session) {
-            ctx.session.returnTo = ctx.originalUrl || ctx.url;            
+            ctx.session.returnTo = ctx.originalUrl || ctx.url;
         }
 
         if (!options.loginUrl) {
@@ -27,7 +27,7 @@ const passportCheck = (options, app) => {
         }
 
         return ctx.redirect(options.loginUrl);
-    }
+    };
 };
 
 export default passportCheck;

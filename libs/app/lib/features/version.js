@@ -7,7 +7,6 @@ import { fs } from '@galaxar/sys';
 import Feature from '../Feature';
 
 export default {
-
     /**
      * This feature is loaded at init stage
      * @member {string}
@@ -29,8 +28,8 @@ export default {
 
             let pkg = await fs.readJson(pkgFile);
             version = pkg.version;
-        } 
+        }
 
         app.version = version;
-    }
+    },
 };

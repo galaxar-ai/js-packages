@@ -1,7 +1,7 @@
 /**
  * Enable customized feature loading source, from npm modules or other location
  * @module Feature_FeatureRegistry
- * 
+ *
  * @example
  *  featureRegistry: {
  *    "*": "fallback path",
@@ -13,7 +13,6 @@
 import Feature from '../Feature';
 
 export default {
-
     /**
      * This feature is loaded at configuration stage
      * @member {string}
@@ -23,10 +22,10 @@ export default {
     /**
      * Load the feature
      * @param {App} app - The cli app module object
-     * @param {object} registry - Feature loading source registry     
+     * @param {object} registry - Feature loading source registry
      * @returns {Promise.<*>}
      */
     load_: (app, registry) => {
         app.addFeatureRegistry(registry);
-    }
+    },
 };

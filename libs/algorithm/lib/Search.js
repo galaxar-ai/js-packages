@@ -59,7 +59,7 @@ export function dfs(root, visit, getChildren) {
                 continue;
             }
 
-            const [ leftNode, ...right ] = children;            
+            const [leftNode, ...right] = children;
 
             right.reverse().forEach((child) => {
                 stack.push(child);

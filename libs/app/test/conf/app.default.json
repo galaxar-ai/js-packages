@@ -2,7 +2,7 @@
     "serviceGroup": {
         "superAgent": {
             "test1": {
-                "endpoint": "https://dummyjson.com"            
+                "endpoint": "https://dummyjson.com"
             },
             "test2": "https://reqres.in"
         }

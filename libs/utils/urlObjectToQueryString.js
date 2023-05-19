@@ -8,7 +8,7 @@ function objectToQueryString(obj, excludeNullValue) {
     let parts = [];
 
     for (let k in obj) {
-        const v = obj[k];       
+        const v = obj[k];
         let part;
 
         if (v != null) {
@@ -18,8 +18,8 @@ function objectToQueryString(obj, excludeNullValue) {
         } else {
             part = encodeURIComponent(k);
         }
-        
-        parts.push(part);    
+
+        parts.push(part);
     }
 
     return parts.join('&');

@@ -435,7 +435,7 @@ config.addTransformerToMap(OP_INTERPOLATE, (left, right) => {
         }
 
         return template(left, right[0], right[1] === 'es6' ? esTemplateSetting : right[1]);
-    }       
+    }
 
     return template(left, right);
 });

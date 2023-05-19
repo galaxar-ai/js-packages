@@ -1,5 +1,5 @@
-import { _, text } from "@galaxar/utils";
-import { InvalidConfiguration } from "@galaxar/types";
+import { _, text } from '@galaxar/utils';
+import { InvalidConfiguration } from '@galaxar/types';
 import { supportedMethods } from '../helpers';
 
 /**
@@ -44,21 +44,21 @@ import { supportedMethods } from '../helpers';
  * }
  */
 function load_(app, baseRoute, options) {
-    const Router = app.tryRequire("@koa/router");
+    const Router = app.tryRequire('@koa/router');
 
-    let router = baseRoute === "/" ? new Router() : new Router({ prefix: text.dropIfEndsWith(baseRoute, "/") });
+    let router = baseRoute === '/' ? new Router() : new Router({ prefix: text.dropIfEndsWith(baseRoute, '/') });
 
     if (options.middlewares) {
         app.useMiddlewares(router, options.middlewares);
     }
 
     _.forOwn(options.rules || {}, (methods, subRoute) => {
-        let pos = subRoute.indexOf(":/");
+        let pos = subRoute.indexOf(':/');
 
         if (pos !== -1) {
             if (pos === 0) {
                 throw new InvalidConfiguration(
-                    "Invalid route rule syntax: " + subRoute,
+                    'Invalid route rule syntax: ' + subRoute,
                     app,
                     `routing[${baseRoute}].rule.rules`
                 );
@@ -72,16 +72,16 @@ function load_(app, baseRoute, options) {
             methods = { [embeddedMethod]: methods };
         }
 
-        subRoute = text.ensureStartsWith(subRoute, "/");
+        subRoute = text.ensureStartsWith(subRoute, '/');
 
-        if (typeof methods === "string" || Array.isArray(methods)) {
+        if (typeof methods === 'string' || Array.isArray(methods)) {
             methods = { get: methods };
         }
 
         _.forOwn(methods, (middlewares, method) => {
-            if (!supportedMethods.has(method) && method !== "all") {
+            if (!supportedMethods.has(method) && method !== 'all') {
                 throw new InvalidConfiguration(
-                    "Unsupported http method: " + method,
+                    'Unsupported http method: ' + method,
                     app,
                     `routing[${baseRoute}].rule.rules[${subRoute}]`
                 );

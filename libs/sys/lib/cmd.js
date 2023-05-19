@@ -10,17 +10,13 @@ import { consoleLog, consoleError } from './functions';
  */
 export const run_ = (cmd, options) =>
     new Promise((resolve, reject) =>
-        childProcess.exec(
-            cmd,
-            { windowsHide: true, ...options },
-            (error, stdout, stderr) => {
-                if (error) {
-                    return reject(error);
-                }
-
-                return resolve({ stdout, stderr });
+        childProcess.exec(cmd, { windowsHide: true, ...options }, (error, stdout, stderr) => {
+            if (error) {
+                return reject(error);
             }
-        )
+
+            return resolve({ stdout, stderr });
+        })
     );
 
 /**
@@ -59,5 +55,4 @@ export const runLive_ = (cmd, args, onStdOut, onStdErr, options) =>
  * @param {string} cmd - Command line to execute
  * @returns {string}
  */
-export const runSync = (cmd, options) =>
-    childProcess.execSync(cmd, { windowsHide: true, ...options }).toString();
+export const runSync = (cmd, options) => childProcess.execSync(cmd, { windowsHide: true, ...options }).toString();

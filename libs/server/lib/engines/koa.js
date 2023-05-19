@@ -50,7 +50,7 @@ class KoaEngine {
                 } else {
                     ctx.appModule.log('warn', 'REQUEST ERROR', info);
                 }
-                
+
                 return;
             }
 
@@ -58,7 +58,7 @@ class KoaEngine {
                 ctx.log.error(info);
             } else {
                 ctx.appModule.log('error', 'SERVER ERROR', info);
-            }            
+            }
         });
 
         server.httpServer = http.createServer(koa.callback());

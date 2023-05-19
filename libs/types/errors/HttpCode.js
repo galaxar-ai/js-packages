@@ -54,7 +54,7 @@ const StatusCodes = {
     UNPROCESSABLE_ENTITY: 422,
     UNSUPPORTED_MEDIA_TYPE: 415,
     USE_PROXY: 305,
-    MISDIRECTED_REQUEST: 421
+    MISDIRECTED_REQUEST: 421,
 };
 
 export default StatusCodes;

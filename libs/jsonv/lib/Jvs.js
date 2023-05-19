@@ -2,18 +2,23 @@ import config from './config';
 import validate from './validators';
 
 /**
- * JSON Validation Syntax 
+ * JSON Validation Syntax
  * @class
  */
 class Jvs {
     static config = config;
     static match = (value, jvs, options, context) => {
-        const reason = validate(value, jvs, {
-            throwError: false,
-            abortEarly: true,
-            plainError: true,
-            ...options
-        }, context);
+        const reason = validate(
+            value,
+            jvs,
+            {
+                throwError: false,
+                abortEarly: true,
+                plainError: true,
+                ...options,
+            },
+            context
+        );
         if (reason === true) {
             return [true];
         }

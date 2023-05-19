@@ -1,4 +1,4 @@
-// JSON Validation Syntax 
+// JSON Validation Syntax
 import { isPlainObject, get as _get } from '@galaxar/utils';
 import JsvError from './JvsError';
 import config, { getChildContext } from './config';
@@ -59,20 +59,20 @@ function validate(actual, jvs, options = { throwError: true, abortEarly: true },
         }
 
         if (jvs.startsWith('$$')) {
-            return validate(actual, { $equal: jvs }, options, context); 
+            return validate(actual, { $equal: jvs }, options, context);
         }
 
         return validate(actual, { [jvs]: null }, options, context);
     }
 
-    const { throwError, abortEarly, asPredicate, plainError } = options;    
+    const { throwError, abortEarly, asPredicate, plainError } = options;
 
     if (Array.isArray(jvs)) {
-        return validate(actual, { $match: jvs }, options, context); 
+        return validate(actual, { $match: jvs }, options, context);
     }
 
     if (type !== 'object') {
-        return validate(actual, { $equal: jvs }, options, context); 
+        return validate(actual, { $equal: jvs }, options, context);
     }
 
     let { path } = context;
@@ -80,7 +80,7 @@ function validate(actual, jvs, options = { throwError: true, abortEarly: true },
     const _options = !abortEarly && throwError ? { ...options, throwError: false } : options;
 
     for (let operator in jvs) {
-        let op, left, _context; 
+        let op, left, _context;
 
         const opValue = jvs[operator];
 

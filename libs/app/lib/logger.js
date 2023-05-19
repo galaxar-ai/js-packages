@@ -25,15 +25,7 @@ const mapLogLevels = {
     disable: ERROR + 1,
 };
 
-const levelText = [
-    LOG_UNKNOWN,
-    LOG_DEBUG,
-    LOG_VERBOSE,
-    LOG_INFO,
-    LOG_WARNING,
-    LOG_ERROR,
-    LOG_DISABLE,
-];
+const levelText = [LOG_UNKNOWN, LOG_DEBUG, LOG_VERBOSE, LOG_INFO, LOG_WARNING, LOG_ERROR, LOG_DISABLE];
 
 export const getLogLevel = () => logLevel;
 

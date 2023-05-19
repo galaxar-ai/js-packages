@@ -5,7 +5,7 @@ import Runnable from './Runnable';
  * Cli app.
  * @class
  * @mixes {Runnable}
- * @extends {ServiceContainer}     
+ * @extends {ServiceContainer}
  */
 class App extends Runnable(ServiceContainer) {
     constructor(name, options) {

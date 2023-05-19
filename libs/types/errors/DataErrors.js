@@ -16,7 +16,7 @@ export class ValidationError extends ExposableError {
 
         this.inner = inner;
     }
-};
+}
 
 /**
  * Referenced entity not found.
@@ -26,7 +26,7 @@ export class ReferencedNotExist extends ExposableError {
     constructor(message, info) {
         super(message, info, HttpCode.BAD_REQUEST, 'E_REFERENCED_NOT_EXIST');
     }
-};
+}
 
 /**
  * Duplicate error.
@@ -36,7 +36,7 @@ export class DuplicateError extends ExposableError {
     constructor(message, info) {
         super(message, info, HttpCode.BAD_REQUEST, 'E_DUPLICATE');
     }
-};
+}
 
 /**
  * Unexpected data/state error.
@@ -46,7 +46,7 @@ export class UnexpectedState extends ApplicationError {
     constructor(message, info) {
         super(message, info, 'E_UNEXPECTED');
     }
-};
+}
 
 /**
  * Database operation error.
@@ -56,4 +56,4 @@ export class DatabaseError extends ApplicationError {
     constructor(message, info) {
         super(message, info, 'E_DATABASE');
     }
-};
+}

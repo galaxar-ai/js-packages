@@ -1,4 +1,4 @@
-import isFinite from "lodash/isFinite";
+import isFinite from 'lodash/isFinite';
 
 function toFloat(value) {
     return isFinite(value) ? value : parseFloat(value);

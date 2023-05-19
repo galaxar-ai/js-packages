@@ -31,8 +31,8 @@
             "test",
             "**/*.spec.js"
         ]
-    },    
-    "dependencies": {        
+    },
+    "dependencies": {
         "@galaxar/utils": "workspace:*",
         "@galaxar/types": "workspace:*"
     },

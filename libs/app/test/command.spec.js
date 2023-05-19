@@ -2,25 +2,27 @@ import { startCommand } from '../lib';
 import capcon from 'capture-console';
 
 describe('starters:command', function () {
-
-    it('start', async function () {            
+    it('start', async function () {
         let output = '';
 
         capcon.startCapture(process.stdout, function (stdout) {
             output += stdout;
         });
 
-        await startCommand(() => {
-            console.log('Hello CLI');
-        }, {        
-            commandName: 'testcli',    
-            loadConfigFromOptions: true,
-            config: {
-                "commandLine": {
-                    "banner": 'Test'
-                }                
+        await startCommand(
+            () => {
+                console.log('Hello CLI');
+            },
+            {
+                commandName: 'testcli',
+                loadConfigFromOptions: true,
+                config: {
+                    commandLine: {
+                        banner: 'Test',
+                    },
+                },
             }
-        });
+        );
 
         capcon.stopCapture(process.stdout);
 

@@ -1,4 +1,4 @@
-import { ApplicationError } from "@galaxar/types";
+import { ApplicationError } from '@galaxar/types';
 
 class Controller {
     constructor(app) {
@@ -16,9 +16,9 @@ class Controller {
 
     /**
      * Try to send back data from time-to-live cache
-     * @param {*} ctx 
-     * @param {*} key 
-     * @returns {boolean} 
+     * @param {*} ctx
+     * @param {*} key
+     * @returns {boolean}
      */
     trySendWithCache(ctx, key) {
         if (ctx.query['no-cache']) {
@@ -27,7 +27,9 @@ class Controller {
 
         const ttlCache = this.app.getService('ttlMemCache');
         if (!ttlCache) {
-            throw new ApplicationError('"ttlMemCache" service is required. Please check npm module "@genx/app-feat-commons".');
+            throw new ApplicationError(
+                '"ttlMemCache" service is required. Please check npm module "@genx/app-feat-commons".'
+            );
         }
 
         const _cache = ttlCache.get(key);
@@ -57,8 +59,8 @@ class Controller {
 
     /**
      * Immutable cache, suitable for long-term unchanged dictionary data
-     * @param {*} key 
-     * @param {*} factory 
+     * @param {*} key
+     * @param {*} factory
      * @returns {object}
      */
     cache(key, factory) {

@@ -18,8 +18,8 @@ async function eachAsync_(obj, iterator) {
         }
 
         return r;
-    } 
-    
+    }
+
     if (isPlainObject(obj)) {
         let r = {};
 
@@ -30,7 +30,7 @@ async function eachAsync_(obj, iterator) {
         }
 
         return r;
-    }  
+    }
 
     return Promise.reject('Invalid argument!');
 }

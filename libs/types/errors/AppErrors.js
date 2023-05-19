@@ -6,10 +6,10 @@ import HttpCode from './HttpCode';
  */
 
 /**
-* General errors with error info, http status and error code.
-* @class
-* @extends Error  
-*/
+ * General errors with error info, http status and error code.
+ * @class
+ * @extends Error
+ */
 export class GeneralError extends Error {
     constructor(message, info, status, code) {
         super(message);
@@ -57,59 +57,59 @@ export class GeneralError extends Error {
          */
         this.code = code;
     }
-};
+}
 
 /**
  * Application errors.
  * @class
- * @extends GeneralError  
+ * @extends GeneralError
  */
 export class ApplicationError extends GeneralError {
-    /**     
-     * @param {string} message - Error message     
+    /**
+     * @param {string} message - Error message
      * @param {*} info
-     * @param {*} code 
+     * @param {*} code
      */
     constructor(message, info, code) {
         super(message, info, HttpCode.INTERNAL_SERVER_ERROR, code || 'E_APP');
     }
-};
+}
 
 /**
  * Error caused by invalid configuration.
  * @class
- * @extends ApplicationError  
+ * @extends ApplicationError
  */
 export class InvalidConfiguration extends ApplicationError {
     /**
      * @param {string} message - Error message
      * @param {App} [app] - The related app module
-     * @param {string} [item] - The related config item   
+     * @param {string} [item] - The related config item
      */
     constructor(message, app, item) {
         super(message, { app: app.name, item }, 'E_INVALID_CONF');
     }
-};
+}
 
 /**
  * Error caused by invalid function argument. Not suitable for http request, which should use BadRequest
  * @class
- * @extends InvalidArgument  
+ * @extends InvalidArgument
  */
 export class InvalidArgument extends ApplicationError {
     /**
      * @param {string} message - Error message
      * @param {*} [info] - Extra info
-     * @param {string} [item] - The related config item   
+     * @param {string} [item] - The related config item
      */
     constructor(message, info) {
         super(message, info, 'E_INVALID_ARG');
     }
-};
+}
 
 /**
  * Error which will expose the detailed error message to end-users.
  */
 export class ExposableError extends GeneralError {
     expose = true;
-};
+}

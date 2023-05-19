@@ -32,7 +32,7 @@ const Feature = {
      */
     validate(featureObject) {
         return featureObject && featureObject.hasOwnProperty('stage') && typeof featureObject.load_ === 'function';
-    }    
+    },
 };
 
 export default Feature;

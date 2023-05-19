@@ -15,6 +15,6 @@
 function views({ viewPath = 'views', ...options }, app) {
     const views = app.tryRequire('koa-views');
     return views(app.toAbsolutePath(viewPath), options);
-};
+}
 
 export default views;

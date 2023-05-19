@@ -1,6 +1,6 @@
 import _reduce from 'lodash/reduce';
 
-const filterNull = obj =>
+const filterNull = (obj) =>
     _reduce(
         obj,
         (result, v, k) => {
@@ -10,7 +10,7 @@ const filterNull = obj =>
 
             return result;
         },
-        {},
+        {}
     );
 
 export default filterNull;

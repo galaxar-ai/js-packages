@@ -9,7 +9,6 @@ import { JsonConfigProvider } from '@galaxar/jsonc';
 import Feature from '../Feature';
 
 export default {
-
     /**
      * This feature is loaded at configuration stage
      * @member {string}
@@ -25,7 +24,7 @@ export default {
      */
     load_: async (app, options) => {
         let hostName;
-        
+
         try {
             hostName = (await run_('hostname')).trim();
         } catch (e) {
@@ -34,8 +33,8 @@ export default {
 
         if (!hostName) {
             throw new Error('Unable to read "hostname" from environment.');
-        }         
-        
+        }
+
         let hostSpecConfigFile = path.join(app.configPath, app.configName + '.' + hostName + '.json');
         if (!fs.existsSync(hostSpecConfigFile)) {
             if (options.fallbackName) {
@@ -43,18 +42,22 @@ export default {
                 let hostSpecConfigFileFb = path.join(app.configPath, app.configName + '.' + hostName + '.json');
 
                 if (!fs.existsSync(hostSpecConfigFileFb)) {
-                    throw new Error(`The specific config file for host [${hostName}] not found and the fallback config [${hostSpecConfigFileFb}] not found either.`);
+                    throw new Error(
+                        `The specific config file for host [${hostName}] not found and the fallback config [${hostSpecConfigFileFb}] not found either.`
+                    );
                 }
 
                 hostSpecConfigFile = hostSpecConfigFileFb;
             } else {
-                app.log('warn', `The specific config file for host [${hostName}] not found and no fallback setting. Use defaults.`);
+                app.log(
+                    'warn',
+                    `The specific config file for host [${hostName}] not found and no fallback setting. Use defaults.`
+                );
                 return;
-            }          
-            
+            }
         }
 
         app.configLoader.provider = new JsonConfigProvider(hostSpecConfigFile);
         return app.loadConfig_();
-    }
+    },
 };

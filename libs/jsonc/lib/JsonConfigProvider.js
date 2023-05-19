@@ -25,7 +25,7 @@ class JsonConfigProvider {
      */
     async load_(logger, noThrow) {
         try {
-            this.config = JSON.parse(await readFile(this.filePath, 'utf-8'));            
+            this.config = JSON.parse(await readFile(this.filePath, 'utf-8'));
         } catch (error) {
             if (noThrow) {
                 return undefined;
@@ -34,10 +34,7 @@ class JsonConfigProvider {
             throw error;
         }
 
-        logger?.log(
-            'info',
-            `Configuration is loaded from "${path.relative(process.cwd(), this.filePath)}"`
-        );
+        logger?.log('info', `Configuration is loaded from "${path.relative(process.cwd(), this.filePath)}"`);
 
         return this.config;
     }

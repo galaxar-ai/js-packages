@@ -3,8 +3,8 @@ import _ from 'lodash';
 
 describe('unit:zipAndFlat', function () {
     it('bvt', async function () {
-        const a1 = [ 'a', 'b', 'c', 'd' ];
-        const a2 = [ 1, 2, 3, 4 ];
+        const a1 = ['a', 'b', 'c', 'd'];
+        const a2 = [1, 2, 3, 4];
 
         const r = zipAndFlat(a1, a2);
 
@@ -14,8 +14,8 @@ describe('unit:zipAndFlat', function () {
     });
 
     it('diff length', async function () {
-        const a1 = [ 'a', 'b' ];
-        const a2 = [ 1, 2, 3 ];
+        const a1 = ['a', 'b'];
+        const a2 = [1, 2, 3];
 
         const r = zipAndFlat(a1, a2);
 
@@ -24,7 +24,7 @@ describe('unit:zipAndFlat', function () {
 
     it('a1 empty', async function () {
         const a1 = [];
-        const a2 = [ 1, 2, 3, 4 ];
+        const a2 = [1, 2, 3, 4];
 
         const r = zipAndFlat(a1, a2);
 
@@ -32,8 +32,8 @@ describe('unit:zipAndFlat', function () {
     });
 
     it('a2 empty', async function () {
-        const a1 = [ 'a', 'b', 'c', 'd' ];
-        const a2 = [ ];
+        const a1 = ['a', 'b', 'c', 'd'];
+        const a2 = [];
 
         const r = zipAndFlat(a1, a2);
 
@@ -42,7 +42,7 @@ describe('unit:zipAndFlat', function () {
 
     it('a1 null', async function () {
         const a1 = null;
-        const a2 = [ 1, 2, 3, 4 ];
+        const a2 = [1, 2, 3, 4];
 
         const r = zipAndFlat(a1, a2);
 

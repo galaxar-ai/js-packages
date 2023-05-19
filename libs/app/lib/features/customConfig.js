@@ -8,7 +8,6 @@ import { JsonConfigProvider } from '@galaxar/jsonc';
 import Feature from '../Feature';
 
 export default {
-
     /**
      * This feature is loaded at configuration stage
      * @member {string}
@@ -24,5 +23,5 @@ export default {
     load_: async (app, configPath) => {
         app.configLoader.provider = new JsonConfigProvider(path.resolve(configPath));
         return app.loadConfig_();
-    }
+    },
 };

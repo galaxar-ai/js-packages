@@ -18,8 +18,8 @@ async function batchAsync_(obj, iterator) {
         }
 
         return Promise.all(r);
-    } 
-    
+    }
+
     if (isPlainObject(obj)) {
         const keys = [];
         const values = [];
@@ -36,7 +36,7 @@ async function batchAsync_(obj, iterator) {
             r[k] = result[i];
             return r;
         }, {});
-    } 
+    }
 
     return Promise.reject('Invalid argument!');
 }

@@ -1,13 +1,8 @@
 {
     "compilerOptions": {
-        "baseUrl": ".",        
+        "baseUrl": ".",
         "target": "es2020"
     },
-    "include": [
-        "**/*.js"
-    ],
-    "exclude": [
-        "node_modules",
-        "cjs"
-    ]
+    "include": ["**/*.js"],
+    "exclude": ["node_modules", "cjs"]
 }

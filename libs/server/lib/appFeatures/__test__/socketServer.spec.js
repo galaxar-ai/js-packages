@@ -15,50 +15,55 @@ describe('unit:features:socketServer', function () {
         fs.emptyDirSync(WORKING_DIR);
         let controllerPath = path.join(WORKING_DIR, 'server/events');
         fs.ensureDirSync(controllerPath);
-        fs.copyFileSync(path.resolve(__dirname, '../../../test/fixtures/files/heartbeat.js'), path.join(controllerPath, 'heartbeat.js'));
-        fs.copyFileSync(path.resolve(__dirname, '../../../test/fixtures/files/welcome.js'), path.join(controllerPath, 'welcome.js'));
+        fs.copyFileSync(
+            path.resolve(__dirname, '../../../test/fixtures/files/heartbeat.js'),
+            path.join(controllerPath, 'heartbeat.js')
+        );
+        fs.copyFileSync(
+            path.resolve(__dirname, '../../../test/fixtures/files/welcome.js'),
+            path.join(controllerPath, 'welcome.js')
+        );
 
-        webServer = new WebServer('test server', { 
-            workingPath: WORKING_DIR
+        webServer = new WebServer('test server', {
+            workingPath: WORKING_DIR,
         });
 
         webServer.once('configLoaded', () => {
-            webServer.config = {                
-                "koa": {                    
+            webServer.config = {
+                koa: {},
+                socketServer: {
+                    path: '/ws-api',
+                    routes: {
+                        '/heartbeat': {
+                            controller: 'heartbeat',
+                            onConnect: 'welcome.send',
+                        },
+                    },
                 },
-                "socketServer": {
-                    "path": "/ws-api",                    
-                    "routes": {    
-                        "/heartbeat": {
-                            "controller": "heartbeat",
-                            "onConnect": "welcome.send"
-                        }
-                    }        
-                }
             };
         });
 
         return webServer.start_();
     });
 
-    after(async function () {        
-        await webServer.stop_();    
+    after(async function () {
+        await webServer.stop_();
         fs.removeSync(WORKING_DIR);
     });
 
-    it('welcome message', function (done) {              
+    it('welcome message', function (done) {
         const { Manager } = require('socket.io-client');
-        const mgr = new Manager('http://'+ webServer.host, { path: '/ws-api' });
-        let heartbeatWs = mgr.socket('/heartbeat')
+        const mgr = new Manager('http://' + webServer.host, { path: '/ws-api' });
+        let heartbeatWs = mgr.socket('/heartbeat');
 
-        heartbeatWs.on('welcome', data => {
+        heartbeatWs.on('welcome', (data) => {
             data.should.be.equal(WelcomeMessage);
 
-            heartbeatWs.emit('echo', 'hello', (echo) => {                    
+            heartbeatWs.emit('echo', 'hello', (echo) => {
                 echo.should.be.equal('hello');
                 heartbeatWs.close();
                 done();
-            });                    
+            });
         });
 
         heartbeatWs.on('connect_error', (error) => {

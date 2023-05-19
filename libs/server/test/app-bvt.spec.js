@@ -10,7 +10,7 @@ import WebServer from '../lib';
 
 const WORKING_DIR = path.resolve(__dirname, 'fixtures/app-bvt');
 
-describe.only('app-bvt', function () {
+describe('app-bvt', function () {
     let webServer;
 
     before(async function () {
@@ -46,7 +46,7 @@ describe.only('app-bvt', function () {
         });
     });
 
-    describe.only('router:module', function () {
+    describe('router:module', function () {
         it('should return action1', function (done) {
             request(webServer.httpServer)
                 .get('/test/module/action-1')

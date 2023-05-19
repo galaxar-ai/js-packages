@@ -9,7 +9,6 @@ import { JsonConfigProvider } from '@galaxar/jsonc';
 import Feature from '../Feature';
 
 export default {
-
     /**
      * This feature is loaded at configuration stage
      * @member {string}
@@ -19,18 +18,18 @@ export default {
     /**
      * Load the feature
      * @param {App} app - The cli app module object
-     * @param {object} options - Options for the feature     
+     * @param {object} options - Options for the feature
      * @property {string} [options.fallbackName] - Fallback username for git user not available
      * @returns {Promise.<*>}
      */
     load_: async (app, options) => {
         let devName;
-        
+
         try {
-            devName = (await run_('git config --global user.email')).trim();            
+            devName = (await run_('git config --global user.email')).trim();
         } catch (e) {
             app.log('warn', e.message || e);
-        }        
+        }
 
         if (!devName || devName === '') {
             if (options.fallbackName) {
@@ -38,8 +37,8 @@ export default {
             } else {
                 app.log('warn', 'Unable to read "user.email" of git config and no fallback option is configured.');
                 return;
-            }            
-        }            
+            }
+        }
 
         devName = devName.substring(0, devName.indexOf('@'));
 
@@ -51,5 +50,5 @@ export default {
 
         app.configLoader.provider = new JsonConfigProvider(devConfigFile);
         return app.loadConfig_();
-    }
+    },
 };

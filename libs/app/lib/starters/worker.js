@@ -2,14 +2,14 @@ import App from '../App';
 
 /**
  * Start a worker app
- * @param {Function} worker 
- * @param {object} [workerOptions] 
+ * @param {Function} worker
+ * @param {object} [workerOptions]
  * @property {string} [workerOptions.workerName]
- * @property {boolean} [workerOptions.dontStop] - Don't stop after worker done 
- * @property {Function} [workerOptions.initializer] 
+ * @property {boolean} [workerOptions.dontStop] - Don't stop after worker done
+ * @property {Function} [workerOptions.initializer]
  */
 async function startWorker(worker, options) {
-    const { workerName, dontStop, initializer, uninitializer, throwOnError, verbose, ...appOptions } = (options || {});
+    const { workerName, dontStop, initializer, uninitializer, throwOnError, verbose, ...appOptions } = options || {};
 
     if (verbose) {
         appOptions.logLevel = 'verbose';
@@ -20,18 +20,18 @@ async function startWorker(worker, options) {
 
     try {
         await app.start_();
-    
+
         if (initializer) {
             await initializer(app);
-        }    
-        
+        }
+
         const result = await worker(app);
-        
+
         if (dontStop) {
             process.on('SIGINT', () => {
                 app.stop_();
-            });     
-        } else {           
+            });
+        } else {
             await app.stop_();
         }
 
@@ -44,11 +44,11 @@ async function startWorker(worker, options) {
         if (throwOnError) {
             throw error;
         }
-        
+
         console.error(verbose ? error : error.message);
 
         process.exit(1);
-    } 
+    }
 }
 
 export default startWorker;

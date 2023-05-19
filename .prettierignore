@@ -1,0 +1,11 @@
+.*
+*.yaml
+node_modules
+/coverage
+/cjs
+/test
+/patches
+/docs
+/allure-results
+/public
+/libs

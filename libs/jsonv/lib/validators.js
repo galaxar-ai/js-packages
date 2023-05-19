@@ -164,7 +164,7 @@ config.addValidatorToMap(OP_MATCH, (left, right, options, context) => {
 
         right.every((rule) => {
             const reason = validate(left, rule, { ...options, asPredicate: false }, context);
-            
+
             if (reason !== true) {
                 errors.push(..._castArray(reason));
 

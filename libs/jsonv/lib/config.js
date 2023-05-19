@@ -37,7 +37,9 @@ export const messages = {
     INVALID_TRANSFORMER_HANDLER: (tag) => `Handler for transformer "${tag}" not found.`,
     INVALID_TEST_HANLDER: (tag) => `Handler for validator "${tag}" not found.`,
 
-    INVALID_OP_EXPR: (op, right, expected) => `Invalid "${op}" expression: ${JSON.stringify(right)}` + (expected ? `, expected: ${JSON.stringify(expected)}.` : '.'),
+    INVALID_OP_EXPR: (op, right, expected) =>
+        `Invalid "${op}" expression: ${JSON.stringify(right)}` +
+        (expected ? `, expected: ${JSON.stringify(expected)}.` : '.'),
     INVALID_COLLECTION_OP_EXPR: (collectionOp, op, right) =>
         `Invalid "${op}" expression for collection "${collectionOp}" traversing: ${JSON.stringify(right)}.`,
     UNSUPPORTED_TYPE: (type) => `Supported type "${type}".`,
@@ -95,10 +97,10 @@ const config = {
         return config;
     },
     setLocale: (locale) => {
-        if (locale in messagesCache) {            
+        if (locale in messagesCache) {
             Object.assign(messages, messagesCache[locale]);
         }
-    }
+    },
 };
 
 export default config;

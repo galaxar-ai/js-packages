@@ -1,9 +1,9 @@
-import path from "node:path";
-import { _, batchAsync_, isPlainObject } from "@galaxar/utils";
-import { Runnable, ServiceContainer } from "@galaxar/app";
+import path from 'node:path';
+import { _, batchAsync_, isPlainObject } from '@galaxar/utils';
+import { Runnable, ServiceContainer } from '@galaxar/app';
 
-import Routable from "./Routable";
-import defaultOpts from "./defaultOpts";
+import Routable from './Routable';
+import defaultOpts from './defaultOpts';
 
 /**
  * Web server class.
@@ -24,12 +24,12 @@ class WebServer extends Routable(Runnable(ServiceContainer)) {
      * @property {string} [options.appModulesPath=app_modules] - Relative path of child modules
      */
     constructor(name, options) {
-        if (typeof options === "undefined" && isPlainObject(name)) {
+        if (typeof options === 'undefined' && isPlainObject(name)) {
             options = name;
             name = undefined;
         }
 
-        super(name || "server", {
+        super(name || 'server', {
             ...defaultOpts,
             ...options,
         });
@@ -56,9 +56,9 @@ class WebServer extends Routable(Runnable(ServiceContainer)) {
          * Base route.
          * @member {string}
          */
-        this.route = "/";
+        this.route = '/';
 
-        this.on("configLoaded", () => {
+        this.on('configLoaded', () => {
             // load builtin middlewares
             this.loadMiddlewaresFrom(path.resolve(__dirname, 'middlewares'));
         });
@@ -86,7 +86,7 @@ class WebServer extends Routable(Runnable(ServiceContainer)) {
             });
 
             delete this.httpServer;
-            this.log("info", `The http service is stopped.`);
+            this.log('info', `The http service is stopped.`);
         }
 
         return super.stop_();
@@ -129,7 +129,7 @@ class WebServer extends Routable(Runnable(ServiceContainer)) {
             this.appModulesByAlias[app.name] = app;
         }
 
-        this.log("verbose", `All routes from app [${app.name}] are mounted under "${app.route}".`);
+        this.log('verbose', `All routes from app [${app.name}] are mounted under "${app.route}".`);
     }
 
     /**
@@ -180,7 +180,7 @@ class WebServer extends Routable(Runnable(ServiceContainer)) {
      *  // e.g const service = app.getService('admin:mysql.mydb');
      */
     getService(name) {
-        let pos = name.indexOf(":");
+        let pos = name.indexOf(':');
         if (pos === -1) {
             return super.getService(name);
         }
@@ -194,11 +194,7 @@ class WebServer extends Routable(Runnable(ServiceContainer)) {
 
     _getFeatureFallbackPath() {
         let pathArray = super._getFeatureFallbackPath();
-        pathArray.splice(
-            1,
-            0,
-            path.resolve(__dirname, 'serverFeatures')
-        );
+        pathArray.splice(1, 0, path.resolve(__dirname, 'serverFeatures'));
 
         return pathArray;
     }

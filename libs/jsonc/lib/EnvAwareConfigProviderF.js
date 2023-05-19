@@ -26,18 +26,14 @@ const EnvAwareConfigProviderF = (EXT, PROVIDER, DEFAULT_FLAG = 'default') =>
              * @type {object}
              * @private
              */
-            this._defConfigProvider = new PROVIDER(
-                path.join(configDir, baseName + '.' + DEFAULT_FLAG + EXT)
-            );
+            this._defConfigProvider = new PROVIDER(path.join(configDir, baseName + '.' + DEFAULT_FLAG + EXT));
 
             /**
              * The environment specific config
              * @type {object}
              * @public
              */
-            this._envConfigProvider = new PROVIDER(
-                path.join(configDir, baseName + '.' + envFlag + EXT)
-            );
+            this._envConfigProvider = new PROVIDER(path.join(configDir, baseName + '.' + envFlag + EXT));
 
             this._envFlag = envFlag;
 

@@ -6,7 +6,6 @@
 import Feature from '../Feature';
 
 export default {
-
     /**
      * This feature is loaded at init stage
      * @member {string}
@@ -21,6 +20,5 @@ export default {
      */
     load_: function (app, envSettings) {
         Object.assign(process.env, envSettings);
-        
-    }
-}
+    },
+};

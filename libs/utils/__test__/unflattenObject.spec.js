@@ -16,13 +16,16 @@ describe('unflattenObject', () => {
     };
 
     it('unflattenObject 1', () => {
-        const obj2 = unflattenObject({
-            'a-b-c-d': 10,
-            'a-b-c-e': 20,
-            'a-b-f': 30,
-            'a-g': 40,
-            'h': 50,
-        }, '-');
+        const obj2 = unflattenObject(
+            {
+                'a-b-c-d': 10,
+                'a-b-c-e': 20,
+                'a-b-f': 30,
+                'a-g': 40,
+                'h': 50,
+            },
+            '-'
+        );
 
         obj2.should.be.eql(obj1);
     });
@@ -51,8 +54,8 @@ describe('unflattenObject', () => {
                 },
                 g: 40,
             },
-            h: [ { i: 1, j: 2 }, 50 ],
-        }
+            h: [{ i: 1, j: 2 }, 50],
+        };
 
         const obj2 = unflattenObject({
             'a.b.c.d': 10,
@@ -66,5 +69,4 @@ describe('unflattenObject', () => {
 
         obj2.should.be.eql(obj3);
     });
-
 });

@@ -57,7 +57,7 @@ const restRouter = (app, baseRoute, options) => {
         );
         let singleUrl = batchUrl + '/:id';
 
-        let controller = esmCheck(require(file));        
+        let controller = esmCheck(require(file));
 
         if (typeof controller === 'function') {
             controller = new controller(app);

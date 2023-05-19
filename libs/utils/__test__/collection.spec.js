@@ -107,8 +107,6 @@ describe('collection', () => {
         r.should.be.exactly('k4');
     });
 
-   
-
     it('batchAsync_:array', async () => {
         const r = await batchAsync_(array, async (a) => {
             await sleep_(50);

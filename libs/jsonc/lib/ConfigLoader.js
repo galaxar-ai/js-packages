@@ -5,10 +5,7 @@ import EnvAwareConfigProviderF from './EnvAwareConfigProviderF.js';
 
 import defaultSyntax from './defaultSyntax';
 
-const EnvAwareJsonConfigProvider = EnvAwareConfigProviderF(
-    '.json',
-    JsonConfigProvider
-);
+const EnvAwareJsonConfigProvider = EnvAwareConfigProviderF('.json', JsonConfigProvider);
 
 class ConfigLoader {
     /**
@@ -20,14 +17,7 @@ class ConfigLoader {
      * @param {function} overrider
      * @param {object} postProcessors
      */
-    static createEnvAwareJsonLoader(
-        configDir,
-        baseName,
-        envFlag,        
-        logger,
-        overrider,
-        postProcessors,        
-    ) {
+    static createEnvAwareJsonLoader(configDir, baseName, envFlag, logger, overrider, postProcessors) {
         return new ConfigLoader(
             new EnvAwareJsonConfigProvider(configDir, baseName, envFlag, overrider),
             logger,
@@ -91,10 +81,7 @@ class ConfigLoader {
          * Post processors
          * @private
          */
-        this.postProcessors =
-            postProcessors != null
-                ? _.defaultsDeep(postProcessors, defaultSyntax)
-                : defaultSyntax;
+        this.postProcessors = postProcessors != null ? _.defaultsDeep(postProcessors, defaultSyntax) : defaultSyntax;
     }
 
     /**

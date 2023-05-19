@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 /**
  * Enable oauth2 feature
@@ -10,7 +10,6 @@ const { Feature } = require('..').Enums;
 const { dependsOn } = require('@genx/app/lib/utils/Helpers');
 
 module.exports = {
-
     /**
      * This feature is loaded at service stage
      * @member {string}
@@ -38,11 +37,11 @@ module.exports = {
 
         /**
          * Module dependencies.
-         */        
-        const oauth2orize = app.tryRequire('oauth2orize-koa');        
+         */
+        const oauth2orize = app.tryRequire('oauth2orize-koa');
 
         // create OAuth 2.0 server
-        const server = oauth2orize.createServer();        
+        const server = oauth2orize.createServer();
 
         let strategy, strategyScript;
 
@@ -56,7 +55,7 @@ module.exports = {
             }
         } catch (error) {
             if (error.code === 'MODULE_NOT_FOUND') {
-                throw new Error(`oauth2 strategy file "${strategyScript}" not found.`)
+                throw new Error(`oauth2 strategy file "${strategyScript}" not found.`);
             }
 
             throw error;
@@ -117,12 +116,12 @@ module.exports = {
         // the application's responsibility to authenticate the user and render a dialog
         // to obtain their approval (displaying details about the client requesting
         // authorization).  We accomplish that here by routing through `ensureLoggedIn()`
-        // first, and rendering the `dialog` view. 
+        // first, and rendering the `dialog` view.
 
         app.registerMiddlewareFactory('oauth2Authorization', () => [
-            "passportCheck",
-             server.authorize(strategy.authorize)
-        ]);        
+            'passportCheck',
+            server.authorize(strategy.authorize),
+        ]);
 
         // user decision endpoint
         //
@@ -131,10 +130,7 @@ module.exports = {
         // client, the above grant middleware configured above will be invoked to send
         // a response.
 
-        app.registerMiddlewareFactory('oauth2Decision', () => [
-            "passportCheck",
-             server.decision()
-        ]);        
+        app.registerMiddlewareFactory('oauth2Decision', () => ['passportCheck', server.decision()]);
 
         // token endpoint
         //
@@ -144,14 +140,15 @@ module.exports = {
         // authenticate when making requests to this endpoint.
 
         app.registerMiddlewareFactory('oauth2Token', () => [
-            [ 
-                "passportAuth", { 
-                    "strategy": ['basic', 'oauth2-client-password'], 
-                    "options":  { session: false }
-                }
+            [
+                'passportAuth',
+                {
+                    strategy: ['basic', 'oauth2-client-password'],
+                    options: { session: false },
+                },
             ],
             server.token(),
-            server.errorHandler()
-        ]);   
-    }
+            server.errorHandler(),
+        ]);
+    },
 };

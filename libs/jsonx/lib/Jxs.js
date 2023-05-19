@@ -2,11 +2,11 @@ import config from './config';
 import transform from './transformers';
 
 /**
- * JSON eXpression Syntax 
+ * JSON eXpression Syntax
  * @class
  */
 class Jxs {
-    static config = config;    
+    static config = config;
     static evaluate = transform;
 
     /**

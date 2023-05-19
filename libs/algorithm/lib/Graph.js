@@ -54,10 +54,7 @@ class Graph {
     calcStartEnd() {
         const seq = this.topo.sort();
         this.startNodes = _.takeWhile(seq, (e) => !this.topo.hasDependency(e));
-        this.endNodes = _.takeRightWhile(
-            seq,
-            (e) => !this.topo.hasDependent(e)
-        );
+        this.endNodes = _.takeRightWhile(seq, (e) => !this.topo.hasDependent(e));
 
         if (this.startNodes.length === 0) {
             this.startNodes = Object.keys(this.nodes);
@@ -73,9 +70,7 @@ class Graph {
     toJSON() {
         return {
             nodes: this.nodes,
-            edges: _.mapValues(this.topo.mapOfDependents, (nodes) =>
-                Array.from(nodes)
-            ),
+            edges: _.mapValues(this.topo.mapOfDependents, (nodes) => Array.from(nodes)),
             startNodes: this.startNodes,
             endNodes: this.endNodes,
         };

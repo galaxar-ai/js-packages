@@ -15,12 +15,7 @@ describe('unit:insertBetween', function () {
         const after_insert5 = insertBetween(arr5, 1);
 
         after_insert1.should.be.eql([[1, 1], [2, 1], [3, 1], [4]]);
-        after_insert2.should.be.eql([
-            [{ 1: 1 }, 1],
-            [{ 2: 2 }, 1],
-            [3, 1],
-            [4],
-        ]);
+        after_insert2.should.be.eql([[{ 1: 1 }, 1], [{ 2: 2 }, 1], [3, 1], [4]]);
         after_insert3.should.be.eql([[1, { a: 1 }], [2, { a: 1 }], [3]]);
         after_insert4.should.be.eql([[1]]);
         after_insert5.should.be.eql([]);

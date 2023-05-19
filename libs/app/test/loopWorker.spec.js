@@ -37,10 +37,7 @@ describe('startLoopWorker', () => {
             throw new Error('test error');
         };
 
-        await testShouldThrow_(
-            () => startLoopWorker(worker2, { interval: 100, initializer: init }),
-            '/test error/'
-        );
+        await testShouldThrow_(() => startLoopWorker(worker2, { interval: 100, initializer: init }), '/test error/');
 
         await app.stop_();
     });

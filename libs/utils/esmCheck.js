@@ -4,6 +4,6 @@ const esmCheck = (obj) => {
     }
 
     return obj;
-}
+};
 
 export default esmCheck;
