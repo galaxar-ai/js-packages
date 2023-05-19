@@ -1,6 +1,6 @@
 {
     "name": "@galaxar/algo",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Galaxar algorithm",
     "main": "cjs/index.js",
     "module": "lib/index.js",

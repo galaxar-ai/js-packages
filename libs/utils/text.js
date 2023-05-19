@@ -18,5 +18,6 @@ export { default as ensureEndsWith } from './ensureEndsWith';
 export { default as ensureStartsWith } from './ensureStartsWith';
 export { default as csvLineParse } from './csvLineParse';
 export { default as baseName } from './baseName';
+export { default as countOfChar } from './countOfChar';
 export * from './trim';
 export * from './padding';

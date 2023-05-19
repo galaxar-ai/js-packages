@@ -1,0 +1,2 @@
+"use strict";Object.defineProperty(exports,"__esModule",{value:true});Object.defineProperty(exports,"default",{enumerable:true,get:function(){return _default}});const splitCount=(str,char)=>str.split(char).length-1;const _default=splitCount;
+//# sourceMappingURL=countOfChar.js.map

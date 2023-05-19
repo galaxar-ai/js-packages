@@ -73,7 +73,6 @@ const Routable = (T) =>
          */
         loadMiddlewaresFrom(dir) {
             let files = globSync(path.join(dir, '**/*.{js,ts,mjs,cjs}'), { nodir: true });
-            console.log(dir, files);
             files.forEach((file) => this.registerMiddlewareFactory(text.baseName(file), esmCheck(require(file))));
         }
 

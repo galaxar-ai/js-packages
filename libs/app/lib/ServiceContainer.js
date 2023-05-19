@@ -333,14 +333,14 @@ class ServiceContainer extends AsyncEmitter {
     }
 
     featureConfig(config, typeInfo, name) {
-        this.sanitize(config, typeInfo, name, 'feature');
+        return this.sanitize(config, typeInfo, name);
     }
 
     sanitize(config, typeInfo, name, category) {
         try {
             return Types.sanitize(config, { type: 'object', ...typeInfo }, undefined, name);
         } catch (err) {
-            throw new InvalidConfiguration(err.message, this, { category, name });
+            throw new InvalidConfiguration(err.message, this, category ? `${category}::${name}` : name);
         }
     }
 
@@ -402,6 +402,7 @@ class ServiceContainer extends AsyncEmitter {
                 feature = this._loadFeature(name);
             } catch (err) {
                 //ignore the first trial
+                //this.log('warn', err.message, { err });
             }
 
             if (feature && feature.stage === Feature.CONF) {
@@ -429,6 +430,10 @@ class ServiceContainer extends AsyncEmitter {
 
         await this.emit_('configFinalized', this.config);
 
+        if (this.options.logLevel === 'debug' || this.options.logLevel === 'verbose') {
+            this.log('verbose', 'Finalized config:', this.config);
+        }
+
         let featureGroups = {
             [Feature.INIT]: [],
             [Feature.SERVICE]: [],
@@ -446,7 +451,7 @@ class ServiceContainer extends AsyncEmitter {
             let feature = this._loadFeature(name);
 
             if (!(feature.stage in featureGroups)) {
-                throw new Error(`Invalid feature type. Feature: ${name}, type: ${feature.stage}`);
+                throw new Error(`Invalid feature stage. Feature: ${name}, type: ${feature.stage}`);
             }
 
             featureGroups[feature.stage].push([feature, featureOptions]);
@@ -470,7 +475,7 @@ class ServiceContainer extends AsyncEmitter {
 
             await feature.load_(this, options, name);
             this.features[name].enabled = true;
-            -this.log('verbose', `Feature "${name}" loaded. [OK]`);
+            this.log('verbose', `Feature "${name}" loaded. [OK]`);
 
             await this.emit_('after:load:' + name);
         });
@@ -509,7 +514,7 @@ class ServiceContainer extends AsyncEmitter {
                 }
 
                 featurePath = loadOption[0];
-                featureObject = this.tryRequire(featurePath, true);
+                featureObject = this.tryRequire(featurePath);
 
                 if (loadOption.length > 1) {
                     //one module may contains more than one feature
@@ -517,7 +522,7 @@ class ServiceContainer extends AsyncEmitter {
                 }
             } else {
                 featurePath = loadOption;
-                featureObject = this.tryRequire(featurePath, true);
+                featureObject = this.tryRequire(featurePath);
             }
         } else {
             //load by fallback paths
@@ -538,7 +543,7 @@ class ServiceContainer extends AsyncEmitter {
                 });
             }
 
-            featureObject = this.tryRequire(featurePath, true);
+            featureObject = this.tryRequire(featurePath);
         }
 
         if (!Feature.validate(featureObject)) {

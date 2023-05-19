@@ -62,7 +62,15 @@ const Runnable = (T) =>
 
             process.on('exit', this._onExit);
 
-            await super.start_();
+            try {
+                await super.start_();
+            } catch (error) {
+                if (error.code === 'E_INVALID_CONF') {
+                    throw new Error(`Invalid configuration. Reason: ${error.message} Info: ${JSON.stringify(error.info)}`);
+                }
+
+                throw error;
+            }           
 
             if (this.options.logLevel === 'verbose' || this.options.logLevel === 'debug') {
                 const childModules = {};

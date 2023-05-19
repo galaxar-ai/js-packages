@@ -17,7 +17,7 @@
     },
     "scripts": {
         "test": "pnpm build && mocha --recursive ./__test__/*.spec.js",
-        "benchmark": "mocha --recursive test/*.spec.js",
+        "benchmark": "mocha --recursive ./test/*.spec.js",
         "cover": "nyc --reporter=html --reporter=text mocha --recursive ./__test__/*.spec.js && open ./coverage/index.html",
         "prettier": "prettier --write .",
         "lint": "eslint \"**/*.js\"",
@@ -33,6 +33,7 @@
     "license": "MIT",
     "devDependencies": {
         "@genx/test": "^2.1.5",
+        "benchmark": "^2.1.4",
         "csv-parse": "^5.0.4",
         "mobx": "^6.9.0"
     },

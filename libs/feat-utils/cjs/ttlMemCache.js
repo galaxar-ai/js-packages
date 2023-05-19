@@ -1,0 +1,2 @@
+"use strict";Object.defineProperty(exports,"__esModule",{value:true});Object.defineProperty(exports,"default",{enumerable:true,get:function(){return _default}});const _app=require("@galaxar/app");const _default={stage:_app.Feature.SERVICE,groupable:true,load_:async function(app,options,name){const NodeCache=app.tryRequire("node-cache");const nodeCache=new NodeCache({useClones:false,...options});app.registerService(name,nodeCache)}};
+//# sourceMappingURL=ttlMemCache.js.map

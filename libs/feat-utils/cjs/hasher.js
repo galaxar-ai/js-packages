@@ -1,0 +1,2 @@
+"use strict";Object.defineProperty(exports,"__esModule",{value:true});Object.defineProperty(exports,"default",{enumerable:true,get:function(){return _default}});const _app=require("@galaxar/app");const _default={stage:_app.Feature.SERVICE,load_:async function(app,options,name){const hasha=app.tryRequire("hasha");app.registerService(name,hasha)}};
+//# sourceMappingURL=hasher.js.map

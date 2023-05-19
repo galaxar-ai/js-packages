@@ -1,2 +1,0 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:true});Object.defineProperty(exports,"default",{enumerable:true,get:function(){return _default}});const _utils=require("@galaxar/utils");const _app=require("@galaxar/app");const _types=require("@galaxar/types");const _default={stage:_app.Feature.INIT,load_:(app,middlewares)=>{_utils._.each(middlewares,(options,name)=>{(void 0).registerMiddlewareFactory(text.baseName(file),require(file))})}};
-//# sourceMappingURL=middlewareRegistry.js.map

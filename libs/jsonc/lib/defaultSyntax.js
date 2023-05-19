@@ -1,4 +1,4 @@
-import { _ } from '@galaxar/utils';
+import _ from 'lodash';
 
 const PROCESSOR_PREFIX = '#!';
 

@@ -54,16 +54,22 @@ function tryRequireBy(packageName, mainModule, throwWhenNotFound) {
  * @returns {object}
  */
 function tryRequire(packageName, basePath) {
-    // eslint-disable-next-line no-undef
-    basePath != null || (basePath = process.cwd());
-
-    try {
-        return require(packageName);
-    } catch (error) {
-        if (error.code !== 'MODULE_NOT_FOUND') {
-            throw error;
+    if (
+        packageName.startsWith('@') ||
+        path.isAbsolute(packageName) ||
+        // not a path
+        (packageName.indexOf(path.sep) === -1 && !packageName.startsWith('.'))
+    ) {
+        try {
+            return require(packageName);
+        } catch (error) {
+            if (error.code !== 'MODULE_NOT_FOUND') {
+                throw error;
+            }
         }
     }
+
+    basePath != null || (basePath = process.cwd());
 
     return tryRequireBy(packageName, require.main, basePath == null) || tryRequireBy(packageName, basePath, true);
 }

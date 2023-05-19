@@ -5,12 +5,17 @@
     "main": "index.js",
     "scripts": {
         "build": "pnpm -r build",
-        "prettier": "pnpm -r prettier"
+        "prettier": "pnpm -r prettier",
+        "lint": "pnpm -r lint",
+        "lint-fix": "pnpm -r lint-fix",
+        "bump": "changeset version",
+        "release-all": "changeset publish && pnpm -r publish"
     },
     "keywords": [],
     "author": "",
     "license": "MIT",
     "devDependencies": {
+        "@babel/eslint-parser": "^7.21.8",
         "@changesets/cli": "^2.26.1",
         "@swc-node/register": "^1.6.5",
         "@swc/cli": "^0.1.62",
