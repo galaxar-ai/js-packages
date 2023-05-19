@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { fs, isDir } from '@galaxar/sys';
 import { globSync } from 'glob';
-import { _, url as urlUtil, text, esmCheck } from '@galaxar/utils';
+import { _, url as urlUtil, text, esmCheck, isPlainObject } from '@galaxar/utils';
 import { ApplicationError, InvalidConfiguration, InvalidArgument } from '@galaxar/types';
 import { defaultRoutableOpts } from './defaultOpts';
 
@@ -24,6 +24,8 @@ const Routable = (T) =>
             this.publicPath = this.toAbsolutePath(this.options.publicPath);
 
             this.controllersPath = this.toAbsolutePath(this.options.controllersPath);
+
+            this.middlewaresPath = this.toAbsolutePath(this.options.middlewaresPath);
 
             this.routable = true;
 
@@ -71,7 +73,8 @@ const Routable = (T) =>
          */
         loadMiddlewaresFrom(dir) {
             let files = globSync(path.join(dir, '**/*.{js,ts,mjs,cjs}'), { nodir: true });
-            files.forEach((file) => this.registerMiddlewareFactory(text.baseName(file), require(file)));
+            console.log(dir, files);
+            files.forEach((file) => this.registerMiddlewareFactory(text.baseName(file), esmCheck(require(file))));
         }
 
         /**
@@ -129,7 +132,7 @@ const Routable = (T) =>
             let middlewareFactory, middleware;
             let middlewareFunctions = [];
 
-            if (_.isPlainObject(middlewares)) {
+            if (isPlainObject(middlewares)) {
                 _.forOwn(middlewares, (options, name) => {
                     middlewareFactory = this.getMiddlewareFactory(name);
                     middleware = middlewareFactory(options, this);
@@ -165,7 +168,7 @@ const Routable = (T) =>
                         middleware = middlewareFactory(middlewareEntry.length > 1 ? middlewareEntry[1] : null, this);
                         middlewareFunctions.push({ name: middlewareEntry[0], middleware });
                     } else {
-                        if (!_.isPlainObject(middlewareEntry) || !('name' in middlewareEntry)) {
+                        if (!isPlainObject(middlewareEntry) || !('name' in middlewareEntry)) {
                             throw new InvalidConfiguration('Invalid middleware entry!', this, 'middlewares');
                         }
 
@@ -198,7 +201,7 @@ const Routable = (T) =>
             let handlers = [],
                 middlewareFactory;
 
-            if (_.isPlainObject(actions)) {
+            if (isPlainObject(actions)) {
                 _.each(actions, (options, name) => {
                     middlewareFactory = this.getMiddlewareFactory(name);
                     handlers.push(this._wrapMiddlewareTracer(middlewareFactory(options, this), name));
@@ -246,7 +249,7 @@ const Routable = (T) =>
                     } else if (Array.isArray(action)) {
                         if (action.length === 0 || action.length > 2) {
                             throw new InvalidConfiguration('Invalid middleware entry!', this, 'middlewares');
-                        } 
+                        }
 
                         middlewareFactory = this.getMiddlewareFactory(action[0]);
                         handlers.push(
@@ -277,8 +280,8 @@ const Routable = (T) =>
         }
 
         requireFeatures(features, middleware) {
-            let hasNotEnabled = _.find(_.castArray(features), feature => !this.enabled(feature));
-        
+            let hasNotEnabled = _.find(_.castArray(features), (feature) => !this.enabled(feature));
+
             if (hasNotEnabled) {
                 throw new InvalidConfiguration(
                     `Middleware "${middleware}" requires "${hasNotEnabled}" feature to be enabled.`,
@@ -286,7 +289,7 @@ const Routable = (T) =>
                     `middlewares.${middleware}`
                 );
             }
-        };
+        }
 
         /**
          * Attach a router to this app module, skipped while the server running in deaf mode
@@ -331,7 +334,7 @@ const Routable = (T) =>
             if (typeof middleware !== 'function') {
                 throw new InvalidArgument('Invalid middleware.', { name, middleware });
             }
-            
+
             router.use(this._wrapMiddlewareTracer(middleware, name));
             this.log('verbose', `Attached middleware [${name}].`);
         }
@@ -351,7 +354,7 @@ const Routable = (T) =>
 
         _createEngine() {
             try {
-                let Engine = esmCheck(require(`./engines/${this.options.engine}`));                
+                let Engine = esmCheck(require(`./engines/${this.options.engine}`));
                 return new Engine(this);
             } catch (err) {
                 if (err.code === 'MODULE_NOT_FOUND') {
@@ -363,9 +366,9 @@ const Routable = (T) =>
         }
 
         _getFeatureFallbackPath() {
-            let pathArray = super._getFeatureFallbackPath();            
+            let pathArray = super._getFeatureFallbackPath();
             pathArray.splice(1, 0, path.resolve(__dirname, 'appFeatures'));
-            
+
             return pathArray;
         }
     };

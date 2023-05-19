@@ -1,7 +1,6 @@
 const defaultOpts = {
     configName: 'server',
     appModulesPath: 'apps',
-    middlewaresPath: 'middlewares',
 };
 
 export const defaultRoutableOpts = {
@@ -9,6 +8,7 @@ export const defaultRoutableOpts = {
     traceMiddlewares: false,
     publicPath: 'public',
     controllersPath: 'actions',
+    middlewaresPath: 'middlewares',
 };
 
 export default defaultOpts;

@@ -1,4 +1,4 @@
-const { _ } = require("@galaxar/utils");
+const { _, isPlainObject } = require("@galaxar/utils");
 
 /**
  * Decorator for http method
@@ -50,7 +50,7 @@ function httpMethod(method, middlewares) {
             targetFunction.__metaHttpMethod = method;
 
             if (middlewares) {
-                if (_.isPlainObject(middlewares)) {
+                if (isPlainObject(middlewares)) {
                     targetFunction.__metaMiddlewares = _.map(middlewares, (options, name) => ({ name, options }));
                 } else {
                     targetFunction.__metaMiddlewares = _.castArray(middlewares);

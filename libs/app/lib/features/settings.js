@@ -14,7 +14,7 @@
  */
 
 import { InvalidConfiguration } from '@galaxar/types';
-import { _ } from '@galaxar/utils';
+import { _, isPlainObject } from '@galaxar/utils';
 import Feature from '../Feature';
 
 const KEY_ENV = 'env:';
@@ -44,7 +44,7 @@ export default {
                 let envKey = key.substring(KEY_ENV.length);
                 if (envKey === app.env) {
                     envSettings = value;
-                    if (!_.isPlainObject(value)) {
+                    if (!isPlainObject(value)) {
                         throw new InvalidConfiguration('Invalid env settings', app, `settings.${key}`);
                     }
                 }
@@ -52,7 +52,7 @@ export default {
                 let stageKey = key.substring(KEY_ENV.length);
                 if (stageKey === Stage) {
                     stageSettings = value;
-                    if (!_.isPlainObject(value)) {
+                    if (!isPlainObject(value)) {
                         throw new InvalidConfiguration('Invalid stage settings', app, `settings.${key}`);
                     }
                 }

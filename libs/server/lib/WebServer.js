@@ -1,5 +1,5 @@
 import path from "node:path";
-import { _, eachAsync_ } from "@galaxar/utils";
+import { _, batchAsync_, isPlainObject } from "@galaxar/utils";
 import { Runnable, ServiceContainer } from "@galaxar/app";
 
 import Routable from "./Routable";
@@ -24,7 +24,7 @@ class WebServer extends Routable(Runnable(ServiceContainer)) {
      * @property {string} [options.appModulesPath=app_modules] - Relative path of child modules
      */
     constructor(name, options) {
-        if (typeof options === "undefined" && _.isPlainObject(name)) {
+        if (typeof options === "undefined" && isPlainObject(name)) {
             options = name;
             name = undefined;
         }
@@ -52,8 +52,6 @@ class WebServer extends Routable(Runnable(ServiceContainer)) {
          */
         this.appModulesPath = this.toAbsolutePath(this.options.appModulesPath);
 
-        this.middlewaresPath = this.toAbsolutePath(this.options.middlewaresPath);
-
         /**
          * Base route.
          * @member {string}
@@ -73,7 +71,7 @@ class WebServer extends Routable(Runnable(ServiceContainer)) {
             stopByThis = true;
 
             if (this.appModules) {
-                await eachAsync_(this.appModules, (app) => app.stop_());
+                await batchAsync_(this.appModules, (app) => app.stop_());
                 delete this.appModules;
                 delete this.appModulesByAlias;
             }

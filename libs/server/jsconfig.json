@@ -5,7 +5,7 @@
     },
     "include": [
         "**/*.js"
-, "test/index.js"    ],
+, "test/index.js", "test/gaml-module.spec.js.bak", "test/gaml-class.spec.js.bak", "test/load-router-folder.spec.js.bak"    ],
     "exclude": [
         "node_modules",
         "cjs"
