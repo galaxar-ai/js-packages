@@ -3,9 +3,9 @@
 ### Features
 
 * Support coverage test of @galaxar/server applicaiton 
-* Support allure report
+* [x] Support allure report
 * [x] Support async dump for debugging application hanging issue caused by pending async event
-* Support @galaxar/app 
+* Support @galaxar/app worker 
 * Support JSON Validation Syntax
 * [x] Support configurable test case on/off switches
 * Support profiling and benchmark

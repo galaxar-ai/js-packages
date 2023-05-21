@@ -43,7 +43,11 @@ export default {
             const newValue = {};
             _each(schema, (validationObject, fieldName) => {
                 const fieldValue = value[fieldName];
-                newValue[fieldName] = Types.sanitize(fieldValue, validationObject, i18n, makePath(path, fieldName));
+
+                const _fieldValue = Types.sanitize(fieldValue, validationObject, i18n, makePath(path, fieldName));
+                if (_fieldValue != null || (fieldName in value)) {
+                    newValue[fieldName] = _fieldValue;
+                }
             });
 
             if (meta.keepUnsanitized) {

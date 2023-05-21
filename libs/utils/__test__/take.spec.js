@@ -1,6 +1,6 @@
 'use strict';
 
-import diff from '../diff';
+import diff from '../lib/diff';
 
 const obj1 = {
     'id': 108,

@@ -21,5 +21,6 @@ docs
 coverage
 .nyc_output
 __test__
-lib/**/*.spec.js
+__tests__
+**/*.spec.js
 allure-results

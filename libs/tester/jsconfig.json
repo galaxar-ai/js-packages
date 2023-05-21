@@ -3,6 +3,6 @@
         "baseUrl": ".",
         "target": "es2020"
     },
-    "include": ["**/*.js"],
+    "include": ["**/*.js", "test/test.spec.js"],
     "exclude": ["node_modules", "cjs"]
 }

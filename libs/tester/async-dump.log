@@ -78,46 +78,162 @@ Error:
     at Function.Module._load (node:internal/modules/cjs/loader:958:12)
     at Module.require (node:internal/modules/cjs/loader:1141:19)
     at require (node:internal/modules/cjs/helpers:110:18)
-    at bootstrap (lib/bootstrap.js:30:9)
-    at Object.<anonymous> (lib/bootstrap.js:59:5)
-    at Module._compile (node:internal/modules/cjs/loader:1254:14)
-    at Module._compile (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/pirates@4.0.5/node_modules/pirates/lib/index.js:136:24)
-    at Module._extensions..js (node:internal/modules/cjs/loader:1308:10)
-    at Object.newLoader [as .js] (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/pirates@4.0.5/node_modules/pirates/lib/index.js:141:7)
-    at Module.load (node:internal/modules/cjs/loader:1117:32)
-    at Function.Module._load (node:internal/modules/cjs/loader:958:12)
-    at ModuleWrap.<anonymous> (node:internal/modules/esm/translators:169:29)
-    at ModuleJob.run (node:internal/modules/esm/module_job:194:25)
+    at safeRequire (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/mocha-multi@1.1.7_mocha@10.2.0/node_modules/mocha-multi/mocha-multi.js:124:12)
+    at resolveReporter (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/mocha-multi@1.1.7_mocha@10.2.0/node_modules/mocha-multi/mocha-multi.js:137:5)
+    at /Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/mocha-multi@1.1.7_mocha@10.2.0/node_modules/mocha-multi/mocha-multi.js:220:26
+    at withReplacedStdout (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/mocha-multi@1.1.7_mocha@10.2.0/node_modules/mocha-multi/mocha-multi.js:147:12)
+    at /Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/mocha-multi@1.1.7_mocha@10.2.0/node_modules/mocha-multi/mocha-multi.js:219:14
+    at Array.map (<anonymous>)
+    at initReportersAndStreams (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/mocha-multi@1.1.7_mocha@10.2.0/node_modules/mocha-multi/mocha-multi.js:211:6)
+    at mochaMulti (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/mocha-multi@1.1.7_mocha@10.2.0/node_modules/mocha-multi/mocha-multi.js:270:31)
+    at new MochaMulti (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/mocha-multi@1.1.7_mocha@10.2.0/node_modules/mocha-multi/mocha-multi.js:296:25)
 
 
-Type: Immediate
+Type: FILEHANDLE
+Error: 
+    at AsyncHook.init (lib/asyncDump.js:12:66)
+    at FileHandle.emitInitNative (node:internal/async_hooks:202:43)
+
+
+Type: WORKER
+Error: 
+    at AsyncHook.init (lib/asyncDump.js:12:66)
+    at Worker.emitInitNative (node:internal/async_hooks:202:43)
+    at new Worker (node:internal/worker:195:21)
+    at createWorker (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/thread-stream@2.3.0/node_modules/thread-stream/index.js:52:18)
+    at new ThreadStream (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/thread-stream@2.3.0/node_modules/thread-stream/index.js:224:19)
+    at buildStream (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/pino@8.14.1/node_modules/pino/lib/transport.js:21:18)
+    at transport (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/pino@8.14.1/node_modules/pino/lib/transport.js:114:10)
+    at normalizeArgs (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/pino@8.14.1/node_modules/pino/lib/tools.js:311:16)
+    at pino (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/pino@8.14.1/node_modules/pino/pino.js:87:28)
+    at Object.load_ (/Users/rockie/Documents/GitHub/Galaxar/js-packages/libs/app/cjs/features/logger.js:79:24)
+    at /Users/rockie/Documents/GitHub/Galaxar/js-packages/libs/app/cjs/ServiceContainer.js:392:27
+    at eachAsync_ (/Users/rockie/Documents/GitHub/Galaxar/js-packages/libs/utils/cjs/eachAsync_.js:29:20)
+    at WebServer._loadFeatureGroup_ (/Users/rockie/Documents/GitHub/Galaxar/js-packages/libs/app/cjs/ServiceContainer.js:387:9)
+    at eachAsync_ (/Users/rockie/Documents/GitHub/Galaxar/js-packages/libs/utils/cjs/eachAsync_.js:37:24)
+    at WebServer.start_ (/Users/rockie/Documents/GitHub/Galaxar/js-packages/libs/app/cjs/ServiceContainer.js:146:13)
+    at WebServer.start_ (/Users/rockie/Documents/GitHub/Galaxar/js-packages/libs/app/cjs/Runnable.js:45:17)
+    at GxTester.startServer_ (lib/testerCore.js:74:9)
+    at /Users/rockie/Documents/GitHub/Galaxar/js-packages/libs/tester/lib/bootstrap.js:138:13
+    at async Promise.all (index 0)
+    at Runner.mochaGlobalSetup (lib/bootstrap.js:137:20)
+
+
+Type: MESSAGEPORT
+Error: 
+    at AsyncHook.init (lib/asyncDump.js:12:66)
+    at MessagePort.emitInitNative (node:internal/async_hooks:202:43)
+    at new Worker (node:internal/worker:195:21)
+    at createWorker (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/thread-stream@2.3.0/node_modules/thread-stream/index.js:52:18)
+    at new ThreadStream (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/thread-stream@2.3.0/node_modules/thread-stream/index.js:224:19)
+    at buildStream (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/pino@8.14.1/node_modules/pino/lib/transport.js:21:18)
+    at transport (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/pino@8.14.1/node_modules/pino/lib/transport.js:114:10)
+    at normalizeArgs (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/pino@8.14.1/node_modules/pino/lib/tools.js:311:16)
+    at pino (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/pino@8.14.1/node_modules/pino/pino.js:87:28)
+    at Object.load_ (/Users/rockie/Documents/GitHub/Galaxar/js-packages/libs/app/cjs/features/logger.js:79:24)
+    at /Users/rockie/Documents/GitHub/Galaxar/js-packages/libs/app/cjs/ServiceContainer.js:392:27
+    at eachAsync_ (/Users/rockie/Documents/GitHub/Galaxar/js-packages/libs/utils/cjs/eachAsync_.js:29:20)
+    at WebServer._loadFeatureGroup_ (/Users/rockie/Documents/GitHub/Galaxar/js-packages/libs/app/cjs/ServiceContainer.js:387:9)
+    at eachAsync_ (/Users/rockie/Documents/GitHub/Galaxar/js-packages/libs/utils/cjs/eachAsync_.js:37:24)
+    at WebServer.start_ (/Users/rockie/Documents/GitHub/Galaxar/js-packages/libs/app/cjs/ServiceContainer.js:146:13)
+    at WebServer.start_ (/Users/rockie/Documents/GitHub/Galaxar/js-packages/libs/app/cjs/Runnable.js:45:17)
+    at GxTester.startServer_ (lib/testerCore.js:74:9)
+    at /Users/rockie/Documents/GitHub/Galaxar/js-packages/libs/tester/lib/bootstrap.js:138:13
+    at async Promise.all (index 0)
+    at Runner.mochaGlobalSetup (lib/bootstrap.js:137:20)
+
+
+Type: MESSAGEPORT
+Error: 
+    at AsyncHook.init (lib/asyncDump.js:12:66)
+    at MessagePort.emitInitNative (node:internal/async_hooks:202:43)
+    at new Worker (node:internal/worker:234:30)
+    at createWorker (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/thread-stream@2.3.0/node_modules/thread-stream/index.js:52:18)
+    at new ThreadStream (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/thread-stream@2.3.0/node_modules/thread-stream/index.js:224:19)
+    at buildStream (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/pino@8.14.1/node_modules/pino/lib/transport.js:21:18)
+    at transport (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/pino@8.14.1/node_modules/pino/lib/transport.js:114:10)
+    at normalizeArgs (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/pino@8.14.1/node_modules/pino/lib/tools.js:311:16)
+    at pino (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/pino@8.14.1/node_modules/pino/pino.js:87:28)
+    at Object.load_ (/Users/rockie/Documents/GitHub/Galaxar/js-packages/libs/app/cjs/features/logger.js:79:24)
+    at /Users/rockie/Documents/GitHub/Galaxar/js-packages/libs/app/cjs/ServiceContainer.js:392:27
+    at eachAsync_ (/Users/rockie/Documents/GitHub/Galaxar/js-packages/libs/utils/cjs/eachAsync_.js:29:20)
+    at WebServer._loadFeatureGroup_ (/Users/rockie/Documents/GitHub/Galaxar/js-packages/libs/app/cjs/ServiceContainer.js:387:9)
+    at eachAsync_ (/Users/rockie/Documents/GitHub/Galaxar/js-packages/libs/utils/cjs/eachAsync_.js:37:24)
+    at WebServer.start_ (/Users/rockie/Documents/GitHub/Galaxar/js-packages/libs/app/cjs/ServiceContainer.js:146:13)
+    at WebServer.start_ (/Users/rockie/Documents/GitHub/Galaxar/js-packages/libs/app/cjs/Runnable.js:45:17)
+    at GxTester.startServer_ (lib/testerCore.js:74:9)
+    at /Users/rockie/Documents/GitHub/Galaxar/js-packages/libs/tester/lib/bootstrap.js:138:13
+    at async Promise.all (index 0)
+    at Runner.mochaGlobalSetup (lib/bootstrap.js:137:20)
+
+
+Type: Timeout
 Error: 
     at AsyncHook.init (lib/asyncDump.js:12:66)
     at emitInitNative (node:internal/async_hooks:202:43)
     at emitInitScript (node:internal/async_hooks:505:3)
     at initAsyncResource (node:internal/timers:164:5)
-    at new Immediate (node:internal/timers:620:5)
-    at Function.setImmediate [as immediately] (node:timers:302:10)
+    at new Timeout (node:internal/timers:198:5)
+    at setUnrefTimeout (node:internal/timers:386:17)
+    at cache (node:internal/http:27:3)
+    at utcDate (node:internal/http:20:18)
+    at ServerResponse._storeHeader (node:_http_outgoing:459:26)
+    at ServerResponse.writeHead (node:_http_server:417:8)
+    at ServerResponse._implicitHeader (node:_http_server:335:8)
+    at write_ (node:_http_outgoing:912:9)
+    at ServerResponse.end (node:_http_outgoing:1019:5)
+    at respond (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/koa@2.14.2/node_modules/koa/lib/application.js:302:44)
+    at handleResponse (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/koa@2.14.2/node_modules/koa/lib/application.js:184:34)
+
+
+Type: RANDOMBYTESREQUEST
+Error: 
+    at AsyncHook.init (lib/asyncDump.js:12:66)
+    at RandomBytesJob.emitInitNative (node:internal/async_hooks:202:43)
+    at Object.randomFillSync (node:internal/crypto/random:140:15)
+    at rng (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/uuid@8.3.2/node_modules/uuid/dist/rng.js:18:21)
+    at v4 (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/uuid@8.3.2/node_modules/uuid/dist/v4.js:17:63)
+    at testResult (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/allure-js-commons@2.3.0/node_modules/allure-js-commons/src/constructors.ts:37:21)
+    at new AllureTest (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/allure-js-commons@2.3.0/node_modules/allure-js-commons/src/AllureTest.ts:11:21)
+    at AllureGroup.startTest (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/allure-js-commons@2.3.0/node_modules/allure-js-commons/src/AllureGroup.ts:21:18)
+    at AllureReporter.startCase (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/allure-mocha@2.3.0_mocha@10.2.0/node_modules/allure-mocha/src/AllureReporter.ts:100:42)
+    at AllureReporter.pendingTestCase (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/allure-mocha@2.3.0_mocha@10.2.0/node_modules/allure-mocha/src/AllureReporter.ts:139:10)
+    at MochaAllureReporter.onPending (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/allure-mocha@2.3.0_mocha@10.2.0/node_modules/allure-mocha/src/MochaAllureReporter.ts:80:4)
+    at EventEmitter.emit (node:events:513:28)
+    at /Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/mocha-multi@1.1.7_mocha@10.2.0/node_modules/mocha-multi/mocha-multi.js:201:14
+    at withReplacedStdout (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/mocha-multi@1.1.7_mocha@10.2.0/node_modules/mocha-multi/mocha-multi.js:147:12)
+    at Runner.<anonymous> (/Users/rockie/Documents/GitHub/Galaxar/js-packages/node_modules/.pnpm/mocha-multi@1.1.7_mocha@10.2.0/node_modules/mocha-multi/mocha-multi.js:200:7)
+    at Runner.emit (node:events:525:35)
+    at Context.beforeEach (lib/bootstrap.js:86:26)
     at processImmediate (node:internal/timers:476:21)
 
 
-Type: TickObject
+Type: PROMISE
 Error: 
     at AsyncHook.init (lib/asyncDump.js:12:66)
     at emitInitNative (node:internal/async_hooks:202:43)
     at emitInitScript (node:internal/async_hooks:505:3)
-    at process.nextTick (node:internal/process/task_queues:132:5)
-    at onwrite (node:internal/streams/writable:477:17)
-    at afterWriteDispatched (node:internal/stream_base_commons:163:9)
-    at writeGeneric (node:internal/stream_base_commons:151:3)
-    at WriteStream.Socket._writeGeneric (node:net:930:11)
-    at WriteStream.Socket._write (node:net:942:8)
-    at writeOrBuffer (node:internal/streams/writable:392:12)
-    at _write (node:internal/streams/writable:333:10)
-    at WriteStream.Writable.write (node:internal/streams/writable:337:10)
-    at console.value (node:internal/console/constructor:300:16)
-    at console.log (node:internal/console/constructor:377:26)
-    at Object.onceWrapper (node:events:627:28)
-    at Runner.emit (node:events:525:35)
-    at processImmediate (node:internal/timers:476:21)
+    at promiseInitHook (node:internal/async_hooks:324:3)
+    at closeAllServers_ (node:internal/async_hooks:328:3)
+    at Runner.mochaGlobalTeardown (lib/bootstrap.js:146:15)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+
+
+Type: Timeout
+Error: 
+    at AsyncHook.init (lib/asyncDump.js:12:66)
+    at emitInitNative (node:internal/async_hooks:202:43)
+    at emitInitScript (node:internal/async_hooks:505:3)
+    at initAsyncResource (node:internal/timers:164:5)
+    at new Timeout (node:internal/timers:198:5)
+    at setTimeout (node:timers:164:19)
+    at /Users/rockie/Documents/GitHub/Galaxar/js-packages/libs/utils/cjs/sleep_.js:18:9
+    at new Promise (<anonymous>)
+    at sleep_ (/Users/rockie/Documents/GitHub/Galaxar/js-packages/libs/utils/cjs/sleep_.js:17:22)
+    at WebServer.stop_ (/Users/rockie/Documents/GitHub/Galaxar/js-packages/libs/app/cjs/Runnable.js:83:35)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at /Users/rockie/Documents/GitHub/Galaxar/js-packages/libs/tester/lib/testerCore.js:92:13
+    at async Promise.all (index 0)
+    at GxTester.closeAllServers_ (lib/testerCore.js:91:9)
+    at Runner.mochaGlobalTeardown (lib/bootstrap.js:146:5)
 

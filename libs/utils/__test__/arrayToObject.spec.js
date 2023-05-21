@@ -1,4 +1,4 @@
-import arrayToObject from '../arrayToObject.js';
+import arrayToObject from '../lib/arrayToObject.js';
 
 describe('arrayToObject', () => {
     const obj1 = { key: 'a', value1: 10, value2: 100 };

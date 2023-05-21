@@ -1,5 +1,5 @@
-import get from '../get';
-import pushIntoBucket from '../pushIntoBucket';
+import get from '../lib/get';
+import pushIntoBucket from '../lib/pushIntoBucket';
 
 describe('pushIntoBucket', () => {
     it('put into a bucket', function () {

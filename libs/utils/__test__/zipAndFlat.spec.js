@@ -1,4 +1,4 @@
-import zipAndFlat from '../zipAndFlat';
+import zipAndFlat from '../lib/zipAndFlat';
 import _ from 'lodash';
 
 describe('unit:zipAndFlat', function () {

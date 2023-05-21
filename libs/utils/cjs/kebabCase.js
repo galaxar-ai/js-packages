@@ -1,2 +1,23 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:true});Object.defineProperty(exports,"default",{enumerable:true,get:function(){return _kebabCase.default}});const _kebabCase=_interop_require_default(require("lodash/kebabCase"));function _interop_require_default(obj){return obj&&obj.__esModule?obj:{default:obj}}
+/**
+ * Convert a string to kebab case, 'foo-bar'
+ * @function string.kebabCase
+ * @param {String} str
+ * @returns {String}
+ */ "use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "default", {
+    enumerable: true,
+    get: function() {
+        return _kebabCase.default;
+    }
+});
+const _kebabCase = /*#__PURE__*/ _interop_require_default(require("lodash/kebabCase"));
+function _interop_require_default(obj) {
+    return obj && obj.__esModule ? obj : {
+        default: obj
+    };
+}
+
 //# sourceMappingURL=kebabCase.js.map

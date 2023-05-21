@@ -5,6 +5,8 @@ global.expect = chai.expect;
 chai.should();
 
 module.exports = {
-    timeout: 60000,
-    require: [ './lib/bootstrap.js' ],
+    timeout: 300000,
+    require: ['./lib/bootstrap.js'],
+    reporter: 'mocha-multi',
+    reporterOptions: 'mocha-multi=test/mocha-multi-reporters.json',
 };

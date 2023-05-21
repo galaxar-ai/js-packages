@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/index.js"],"sourcesContent":["export { default as superagent } from './superagent';\nexport { default as supertest } from './supertest';\n"],"names":["superagent","supertest"],"mappings":";;;;;;;;;;;IAAoBA,UAAU;eAAVA,mBAAU;;IACVC,SAAS;eAATA,kBAAS;;;mEADS;kEACD"}

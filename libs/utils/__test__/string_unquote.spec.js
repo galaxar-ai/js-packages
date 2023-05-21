@@ -1,4 +1,4 @@
-import unquote from '../unquote';
+import unquote from '../lib/unquote';
 describe('unquote', () => {
     it('Unquote a string', () => {
         const quoteset = new Set();

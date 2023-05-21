@@ -1,1 +1,1 @@
-{"version":3,"sources":["../lib/index.js"],"sourcesContent":["export { default } from './Jxs';\n"],"names":["default"],"mappings":"oGAASA,iDAAAA,YAAO,gDAAQ"}
+{"version":3,"sources":["../lib/index.js"],"sourcesContent":["export { default } from './Jxs';\n"],"names":["default"],"mappings":";;;;+BAASA;;;eAAAA,YAAO;;;4DAAQ"}

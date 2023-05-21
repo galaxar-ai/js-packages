@@ -1,12 +1,13 @@
 import path from 'node:path';
 import fs from 'node:fs';
 import _ from 'lodash';
-import { esmCheck } from '@galaxar/utils';
+import { esmCheck, batchAsync_ } from '@galaxar/utils';
+
+import GxTester from './testerCore';
 
 let _initialized = false;
 let _config = null;
 let _asyncDump = null;
-let _allure = null;
 
 const bootstrap = () => {
     let configPath = path.resolve(process.cwd(), 'test.config.json');
@@ -24,13 +25,9 @@ const bootstrap = () => {
 
     if (_config.enableAsyncDump) {
         _asyncDump = esmCheck(require('./asyncDump'));
-    }
+    }    
 
-    if (_config.enableAllureReport) {
-        require('allure-mocha');
-        global.allure = _allure = esmCheck(require('allure-mocha/runtime')).allure;
-    }
-    
+    global.gxt = new GxTester(_config);
 };
 
 const processConfigSection = (section) => {
@@ -59,8 +56,6 @@ if (!_initialized) {
     bootstrap();
 }
 
-const _suiteVisited = new Set();
-
 export const mochaHooks = {
     beforeEach(done) {
         const testCaseTitle = this.currentTest.title;
@@ -68,17 +63,11 @@ export const mochaHooks = {
         const testSuiteTitle = this.currentTest.parent.title;
 
         const _done = () => {
-            if (_allure) {
-                if (!_suiteVisited.has(testSuiteTitle)) {
-                    _suiteVisited.add(testSuiteTitle);
-                    _allure.suite(testSuiteTitle);
-                }
-                _allure.story(testCaseTitle);
-            }
+            // do something if needed
             done();
         };
 
-        if (_config.only) {
+        if (!_.isEmpty(_config.only)) {
             // only mode
             const { files, suites } = _config.only;
 
@@ -92,6 +81,7 @@ export const mochaHooks = {
 
             if (suites) {
                 const suiteInfo = suites[testSuiteTitle];
+
                 if (suiteInfo == null) {
                     this.skip();
                     return done();
@@ -106,7 +96,7 @@ export const mochaHooks = {
                     return done();
                 }
             }
-        } else if (_config.skip) {
+        } else if (!_.isEmpty(_config.skip)) {
             // skip mode
             const { files, suites } = _config.skip;
 
@@ -137,7 +127,22 @@ export const mochaHooks = {
     },
 };
 
+export const mochaGlobalSetup = async function () {
+    if (_config.enableAllure) {
+        global.allure = esmCheck(require('allure-mocha/runtime')).allure;
+    }
+
+    if (process.env.COVER) {
+        const { servers } = _config;
+        servers && await batchAsync_(Object.keys(servers), async (serverName) => {
+            await gxt.startServer_(serverName);
+        });
+    }
+};
+
 export const mochaGlobalTeardown = async function () {
+    await gxt.closeAllServers_();
+
     if (_config.enableAsyncDump) {
         _asyncDump();
     }

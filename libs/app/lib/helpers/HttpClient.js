@@ -28,19 +28,9 @@ class HttpClient {
      *
      * @param {*} endpoint
      */
-    constructor(agent, endpointOrOptions) {
-        this.agent = agent;
+    constructor(adapter, endpointOrOptions) {
+        this.adapter = adapter;
         this.options = typeof endpointOrOptions === 'string' ? { endpoint: endpointOrOptions } : endpointOrOptions;
-    }
-
-    /**
-     * Initialize a request instance
-     * @param {string} httpMethod
-     * @param {string} url
-     * @returns {Request}
-     */
-    initReq(httpMethod, url) {
-        return this.agent[httpMethod](url);
     }
 
     /**
@@ -73,7 +63,7 @@ class HttpClient {
 
         let url = path.startsWith('http:') || path.startsWith('https:') ? path : urlUtil.join(_options.endpoint, path);
 
-        let req = this.initReq(httpMethod, url);
+        let req = this.adapter.createRequest(this, httpMethod, url);
 
         if (this.onSending) {
             this.onSending(req);
@@ -125,11 +115,11 @@ class HttpClient {
             const result = res.type.startsWith('text/') ? res.text : res.body;
 
             if (this.onResponse) {
-                this.onResponse(req, res);
+                this.onResponse(result, req, res);
             }
 
             if (_options.onResponse) {
-                _options.onResponse(req, res);
+                _options.onResponse(result, req, res);
             }
 
             return result;

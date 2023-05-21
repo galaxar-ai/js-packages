@@ -1,10 +1,24 @@
 {
     "name": "@galaxar/jsonv",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "JSON Validation Syntax",
     "main": "cjs/index.js",
     "module": "lib/index.js",
     "react-native": "lib/index.js",
+    "exports": {
+        ".": {
+            "import": "./lib/index.js",
+            "require": "./cjs/index.js"
+        },
+        "./*": {
+            "import": "./lib/*.js",
+            "require": "./cjs/*.js"
+        },
+        "./locale/*": {
+            "import": "./lib/locale/*.js",
+            "require": "./cjs/locale/*.js"
+        }
+    },
     "publishConfig": {
         "access": "public"
     },

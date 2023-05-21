@@ -1,4 +1,4 @@
-import '@galaxar/jsonv/lib/bundle';
+import '@galaxar/jsonv/bundle';
 
 export * from './index';
 export { default } from './index';

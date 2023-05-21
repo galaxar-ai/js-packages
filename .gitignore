@@ -24,3 +24,6 @@ Thumbs.db
 test/temp
 .nyc_output
 coverage
+allure-report
+allure-results
+async-dump.log

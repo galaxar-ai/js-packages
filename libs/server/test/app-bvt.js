@@ -3,7 +3,7 @@
  */
 
 import path from "node:path";
-import WebServer from "../lib";
+import WebServer from "..";
 
 const WORKING_DIR = path.resolve(__dirname, 'fixtures/app-bvt');
 

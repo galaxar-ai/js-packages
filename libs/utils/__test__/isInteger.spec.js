@@ -1,4 +1,4 @@
-import isInteger, { RANGE_POSITIVE, RANGE_NEGATIVE, RANGE_NON_ZERO, RANGE_INDEX } from '../isInteger';
+import isInteger, { RANGE_POSITIVE, RANGE_NEGATIVE, RANGE_NON_ZERO, RANGE_INDEX } from '../lib/isInteger';
 
 describe('isInteger', function () {
     it('number', function () {

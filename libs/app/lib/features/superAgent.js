@@ -21,9 +21,9 @@ export default {
      * @returns {Promise.<*>}
      */
     load_: async function (app, settings, name) {
-        const agent = app.tryRequire('superagent').agent();
+        const adapter = app.tryRequire('@galaxar/adapters/superagent');
 
-        let client = new HttpClient(agent, settings);
+        let client = new HttpClient(adapter(), settings);
 
         app.registerService(name, client);
     },

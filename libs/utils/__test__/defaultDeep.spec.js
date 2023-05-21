@@ -1,4 +1,4 @@
-import defaultDeep from '../defaultDeep';
+import defaultDeep from '../lib/defaultDeep';
 
 describe('defaultDeep', () => {
     it('should return the first non-null value for a key', () => {

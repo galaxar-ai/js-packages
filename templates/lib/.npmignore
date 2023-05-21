@@ -23,3 +23,4 @@ coverage
 __test__
 lib/**/*.spec.js
 allure-results
+allure-report

@@ -1,4 +1,4 @@
-import dbgGetCallerFile from '../dbgGetCallerFile';
+import dbgGetCallerFile from '../lib/dbgGetCallerFile';
 
 function mockFn() {
     const file = dbgGetCallerFile();

@@ -1,21 +1,33 @@
 {
     "name": "@galaxar/tester",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Node application unit test framework",
     "main": "cjs/index.js",
     "module": "lib/index.js",
     "react-native": "lib/index.js",
+    "exports": {
+        ".": {
+            "import": "./lib/index.js",
+            "require": "./cjs/index.js"
+        },
+        "./*": {
+            "import": "./lib/*.js",
+            "require": "./cjs/*.js"
+        }
+    },
     "publishConfig": {
         "access": "public"
     },
     "scripts": {
-        "test": "pnpm build && mocha --recursive test/**/*.spec.js",
-        "cover": "nyc --reporter=html --reporter=text mocha --recursive test/**/*.spec.js && open ./coverage/index.html",
         "prettier": "prettier --write .",
         "lint": "eslint \"**/*.js\"",
         "lint-fix": "eslint \"**/*.js\" --fix",
         "clean": "shx rm -rf cjs",
-        "build": "pnpm clean && swc lib/**/*.js -d ./cjs"
+        "build": "pnpm clean && swc lib/**/*.js -d ./cjs",
+        "clean-test": "shx rm -rf allure-results allure-report",
+        "test": "mocha --recursive test/**/*.spec.js",
+        "cover": "COVER=1 nyc --reporter=html --reporter=text mocha --recursive test/**/*.spec.js && open ./coverage/index.html",
+        "report": "allure generate allure-results --clean -o allure-report && serve ./allure-report"
     },
     "keywords": [
         "galaxar",
@@ -31,12 +43,33 @@
         ]
     },
     "dependencies": {
+        "@galaxar/adapters": "workspace:*",
+        "@galaxar/app": "workspace:*",
         "@galaxar/jsonv": "workspace:*",
         "@galaxar/sys": "workspace:*",
         "@galaxar/types": "workspace:*",
         "@galaxar/utils": "workspace:*",
+        "allure-commandline": "^2.22.0",
+        "allure-js-commons": "^2.3.0",
         "allure-mocha": "^2.3.0",
-        "mocha": "^10.0.0"
+        "benchmark": "^2.1.4",
+        "lodash": "^4.17.21",
+        "microtime": "^3.1.1",
+        "mocha": "^10.0.0",
+        "mocha-multi": "^1.1.7",
+        "pino": "^8.14.1",
+        "pino-pretty": "^10.0.0",
+        "serve": "^14.2.0"
+    },
+    "devDependencies": {
+        "@galaxar/server": "workspace:*",
+        "@koa/router": "^12.0.0",
+        "bun": "^0.6.2",
+        "koa-compress": "^5.1.1",
+        "koa-etag": "^4.0.0",
+        "koa-static": "^5.0.0",
+        "pino-http": "^8.3.3",
+        "request-ip": "^3.3.0"
     },
     "prettier": {
         "quoteProps": "consistent",

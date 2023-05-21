@@ -1,10 +1,20 @@
 {
     "name": "@galaxar/feat-utils",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Node common application utility features",
     "main": "cjs/index.js",
     "module": "lib/index.js",
     "react-native": "lib/index.js",
+    "exports": {
+        ".": {
+            "import": "./lib/index.js",
+            "require": "./cjs/index.js"
+        },
+        "./*": {
+            "import": "./lib/*.js",
+            "require": "./cjs/*.js"
+        }
+    },
     "publishConfig": {
         "access": "public"
     },

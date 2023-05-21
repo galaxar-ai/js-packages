@@ -1,4 +1,4 @@
-import { move, swap, insert, copyArrayLike, uniqPush } from '../arrayImmutable';
+import { move, swap, insert, copyArrayLike, uniqPush } from '../lib/arrayImmutable';
 
 describe('arrayImmutable', () => {
     describe('move', () => {

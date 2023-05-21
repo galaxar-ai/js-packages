@@ -1,5 +1,5 @@
 import Jvs, { config } from '@galaxar/jsonv';
-import enUS from '@galaxar/jsonv/lib/locale/en-US';
+import enUS from '@galaxar/jsonv/locale/en-US';
 import Jxs from '../lib';
 
 config.loadMessages('en-US', enUS).setLocale('en-US');

@@ -1,4 +1,4 @@
-import objectToArray from '../objectToArray';
+import objectToArray from '../lib/objectToArray';
 
 describe('objectToArray', () => {
     const obj = {

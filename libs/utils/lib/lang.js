@@ -9,3 +9,4 @@ export { default as toInteger } from './toInteger';
 export { default as toBoolean } from './toBoolean';
 export { default as toFloat } from './toFloat';
 export { default as esmCheck } from './esmCheck';
+export { default as esmIsMain } from './esmIsMain';

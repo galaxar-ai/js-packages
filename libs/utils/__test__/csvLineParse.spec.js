@@ -1,4 +1,4 @@
-import simpleCsvParser from '../csvLineParse';
+import simpleCsvParser from '../lib/csvLineParse';
 
 describe('csv parser', function () {
     it('bvt', async function () {

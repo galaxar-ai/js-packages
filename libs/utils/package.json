@@ -1,10 +1,20 @@
 {
     "name": "@galaxar/utils",
-    "version": "1.0.2",
+    "version": "1.0.4",
     "description": "Galaxar JavaScript Utility Library for both Node.js and browser",
     "main": "cjs/index",
-    "module": "index.js",
-    "react-native": "index.js",
+    "module": "lib/index.js",
+    "react-native": "lib/index.js",
+    "exports": {
+        ".": {
+            "import": "./lib/index.js",
+            "require": "./cjs/index.js"
+        },
+        "./*": {
+            "import": "./lib/*.js",
+            "require": "./cjs/*.js"
+        }
+    },
     "publishConfig": {
         "access": "public"
     },
@@ -23,7 +33,7 @@
         "lint": "eslint \"**/*.js\"",
         "lint-fix": "eslint \"**/*.js\" --fix",
         "clean": "shx rm -rf cjs",
-        "build": "pnpm clean && swc *.js -d ./cjs"
+        "build": "pnpm clean && swc ./lib/*.js -d ./cjs"
     },
     "keywords": [
         "galaxar",
@@ -32,7 +42,6 @@
     ],
     "license": "MIT",
     "devDependencies": {
-        "@genx/test": "^2.1.5",
         "benchmark": "^2.1.4",
         "csv-parse": "^5.0.4",
         "mobx": "^6.9.0"
