@@ -307,7 +307,18 @@ const configOverrider = (defConf, envConf)=>{
         });
         const groups = (0, _utils.arrayToObject)(features, ([feature])=>feature.name);
         const keys = topoSort.sort();
-        return keys.map((key)=>groups[key]);
+        const sorted = [];
+        keys.forEach((key)=>{
+            const feature = groups[key];
+            if (feature) {
+                sorted.push(feature);
+            } else {
+                if (!this.features[key]?.enabled) {
+                    throw new _types.InvalidConfiguration(`A prerequisite feature "${key}" is not enabled.`, this);
+                }
+            }
+        });
+        return sorted;
     }
     /**
      * Load features

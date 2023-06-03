@@ -1,5 +1,11 @@
 # @galaxar/app
 
+## 1.0.4
+
+### Patch Changes
+
+-   Fix: sort features with dependencies
+
 ## 1.0.3
 
 ### Patch Changes

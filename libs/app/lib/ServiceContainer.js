@@ -373,12 +373,24 @@ class ServiceContainer extends AsyncEmitter {
         const topoSort = new TopoSort();
         features.forEach(([feature]) => {
             topoSort.depends(feature.name, feature.depends);
-        });
+        });        
 
         const groups = arrayToObject(features, ([feature]) => feature.name);
         const keys = topoSort.sort();
 
-        return keys.map((key) => groups[key]);
+        const sorted = [];
+        keys.forEach((key) => {
+            const feature = groups[key];
+            if (feature) {
+                sorted.push(feature);
+            } else {
+                if (!this.features[key]?.enabled) {
+                    throw new InvalidConfiguration(`A prerequisite feature "${key}" is not enabled.`, this);
+                }
+            }
+        });
+
+        return sorted;
     }
 
     /**
