@@ -33,6 +33,20 @@ export default {
             ...options,
         });
 
+        nodeCache.get_ = async (key, getter, ttl) => {
+            const value = nodeCache.get(key);
+
+            if (value !== undefined) {
+                return value;
+            }
+
+            const newValue = await getter();
+
+            nodeCache.set(key, newValue, ttl);
+
+            return newValue;
+        };
+
         app.registerService(name, nodeCache);
     },
 };

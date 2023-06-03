@@ -1,5 +1,11 @@
 # @galaxar/feat-utils
 
+## 1.0.2
+
+### Patch Changes
+
+-   Add cache get or fetch helper
+
 ## 1.0.1
 
 ### Patch Changes
