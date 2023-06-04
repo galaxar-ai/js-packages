@@ -1,5 +1,12 @@
 # @galaxar/tester
 
+## 1.0.2
+
+### Patch Changes
+
+-   Updated dependencies
+    -   @galaxar/app@1.0.5
+
 ## 1.0.1
 
 ### Patch Changes

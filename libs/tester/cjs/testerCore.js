@@ -150,10 +150,24 @@ class GxTester {
             }
             const { authentication: authConfig  } = this.config;
             const getHttpClient_ = async ()=>{
-                const agentCreatorModule = this.config.httpAgent?.[this.isCoverMode ? 'coverage' : 'normal'] ?? (this.isCoverMode ? 'supertest' : 'superagent');
+                let agentClientSetting = this.config.httpAgent?.[this.isCoverMode ? 'coverage' : 'normal'];
+                if (typeof agentClientSetting === 'string') {
+                    agentClientSetting = {
+                        adapter: agentClientSetting
+                    };
+                } else if (Array.isArray(agentClientSetting)) {
+                    agentClientSetting = {
+                        adapter: agentClientSetting[0],
+                        options: agentClientSetting[1]
+                    };
+                }
+                const agentCreatorModule = agentClientSetting?.adapter ?? (this.isCoverMode ? 'supertest' : 'superagent');
                 const agentCreator = (0, _utils.esmCheck)(require(`@galaxar/adapters/${agentCreatorModule}`));
                 const agent = agentCreator();
-                const client = new _app.HttpClient(agent, clientOptions);
+                const client = new _app.HttpClient(agent, {
+                    ...agentClientSetting.options,
+                    ...clientOptions
+                });
                 if (this.isCoverMode) {
                     console.log('set server', '--------------------', server != null);
                     client.server = server.httpServer;

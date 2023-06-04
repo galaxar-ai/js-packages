@@ -35,7 +35,7 @@ function _interop_require_default(obj) {
         }
         const result = await worker(app);
         if (dontStop) {
-            process.on('SIGINT', ()=>{
+            process.once('SIGINT', ()=>{
                 app.stop_();
             });
         } else {

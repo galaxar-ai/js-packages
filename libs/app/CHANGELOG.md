@@ -1,5 +1,11 @@
 # @galaxar/app
 
+## 1.0.5
+
+### Patch Changes
+
+-   Fix worker stopping bug.
+
 ## 1.0.4
 
 ### Patch Changes
