@@ -1,6 +1,6 @@
 {
     "name": "@galaxar/tester",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "Node application unit test framework",
     "main": "cjs/index.js",
     "module": "lib/index.js",

@@ -1,9 +1,9 @@
-import url from 'node:url';
+import fileURLToPath from './fileURLToPath';
 
 function esmIsMain() {
     if (import.meta.url.startsWith('file:')) {
         // (A)
-        const modulePath = url.fileURLToPath(import.meta.url);
+        const modulePath = fileURLToPath(import.meta.url);
         if (process.argv[1] === modulePath) {
             // (B)
             return true;

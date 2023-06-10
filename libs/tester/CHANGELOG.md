@@ -1,5 +1,15 @@
 # @galaxar/tester
 
+## 1.0.3
+
+### Patch Changes
+
+-   Updated dependencies
+    -   @galaxar/utils@1.0.5
+    -   @galaxar/app@1.0.6
+    -   @galaxar/jsonv@1.0.4
+    -   @galaxar/types@1.0.4
+
 ## 1.0.2
 
 ### Patch Changes

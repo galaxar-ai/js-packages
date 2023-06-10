@@ -15,6 +15,9 @@ function _export(target, all) {
     });
 }
 _export(exports, {
+    fileURLToPath: function() {
+        return _fileURLToPath.default;
+    },
     appendQuery: function() {
         return _urlAppendQuery.default;
     },
@@ -28,6 +31,7 @@ _export(exports, {
         return _urlQueryStringToObject.default;
     }
 });
+const _fileURLToPath = /*#__PURE__*/ _interop_require_default(require("./fileURLToPath"));
 const _urlAppendQuery = /*#__PURE__*/ _interop_require_default(require("./urlAppendQuery"));
 const _urlJoin = /*#__PURE__*/ _interop_require_default(require("./urlJoin"));
 const _urlObjectToQueryString = /*#__PURE__*/ _interop_require_default(require("./urlObjectToQueryString"));

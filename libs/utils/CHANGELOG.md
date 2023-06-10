@@ -1,5 +1,11 @@
 # @galaxar/utils
 
+## 1.0.5
+
+### Patch Changes
+
+-   Add changeExtName and url.fileURLToPath polyfill
+
 ## 1.0.4
 
 ### Patch Changes

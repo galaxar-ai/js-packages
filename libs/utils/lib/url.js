@@ -6,6 +6,7 @@
  * @borrows string.urlQueryStringToObject as queryStringToObject
  */
 
+export { default as fileURLToPath } from './fileURLToPath';
 export { default as appendQuery } from './urlAppendQuery';
 export { default as join } from './urlJoin';
 export { default as objectToQueryString } from './urlObjectToQueryString';

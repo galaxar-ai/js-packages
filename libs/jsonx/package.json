@@ -1,6 +1,6 @@
 {
     "name": "@galaxar/jsonx",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "JSON Expression Syntax",
     "main": "cjs/index.js",
     "module": "lib/index.js",
