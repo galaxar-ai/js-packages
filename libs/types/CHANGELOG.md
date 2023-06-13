@@ -5,7 +5,7 @@
 ### Patch Changes
 
 -   Updated dependencies
-    -   @galaxar/utils@1.0.6
+    -   @galaxar/utils@1.0.5
 
 ## 1.0.4
 
