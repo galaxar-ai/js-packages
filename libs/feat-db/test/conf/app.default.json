@@ -1,0 +1,13 @@
+{
+    "featureRegistry": {
+        "prisma": "../src/prisma"
+    },
+    "prisma": {
+        "datasources": {
+            "db": {
+                "url": "mysql://root:root@localhost/test-feat-db"
+            }
+        },
+        "log": [ "info", "query" ]
+    }    
+}

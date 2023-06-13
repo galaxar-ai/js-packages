@@ -1,6 +1,6 @@
 {
     "name": "@galaxar/app",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "description": "Node application framework",
     "main": "cjs/index.js",
     "module": "lib/index.js",
@@ -48,6 +48,7 @@
         "@galaxar/utils": "workspace:*",
         "@galaxar/adapters": "workspace:*",
         "inquirer": "^8.2.4",
+        "minimist": "^1.2.8",
         "pino": "^8.14.1",
         "pino-pretty": "^10.0.0"
     },

@@ -1,4 +1,4 @@
-import countOfChar from '../lib/countOfChar';
+import countOfChar from '../src/countOfChar';
 
 describe('countOfChar', () => {
     it('should return the number of occurrences of a character in a string', () => {

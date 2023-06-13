@@ -1,0 +1,16 @@
+{
+  "npmClient": "npm",
+  "packages": [
+    "app_modules/*"
+  ],
+  "version": "independent",
+  "command": {
+    "publish": {
+      "ignoreChanges": [
+        "*.md",        
+        "*.txt",
+        "*.log"
+      ]
+    }
+  }
+}

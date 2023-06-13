@@ -1,4 +1,4 @@
-import remap from '../lib/remap';
+import remap from '../src/remap';
 
 describe('unit:remap', function () {
     it('remap an object', async function () {

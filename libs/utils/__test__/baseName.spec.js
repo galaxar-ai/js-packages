@@ -1,4 +1,4 @@
-import baseName from '../lib/baseName';
+import baseName from '../src/baseName';
 
 describe('baseName', () => {
     it('should return the base name of a file path', () => {

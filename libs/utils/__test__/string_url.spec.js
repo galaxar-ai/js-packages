@@ -1,4 +1,4 @@
-import { join, appendQuery } from '../lib/url';
+import { join, appendQuery } from '../src/url';
 
 describe('url', () => {
     it('manage url', () => {

@@ -1,7 +1,7 @@
 import should from 'should';
-import get from '../lib/get';
-import set from '../lib/set';
-import cowSet from '../lib/cowSet';
+import get from '../src/get';
+import set from '../src/set';
+import cowSet from '../src/cowSet';
 import { observable, toJS } from 'mobx';
 
 describe('get_set', () => {

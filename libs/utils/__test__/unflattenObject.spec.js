@@ -1,4 +1,4 @@
-import unflattenObject from '../lib/unflattenObject';
+import unflattenObject from '../src/unflattenObject';
 
 describe('unflattenObject', () => {
     const obj1 = {

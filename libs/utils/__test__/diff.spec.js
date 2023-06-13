@@ -1,6 +1,6 @@
 'use strict';
 
-import take from '../lib/take';
+import take from '../src/take';
 
 const data = {
     key1: 'value',

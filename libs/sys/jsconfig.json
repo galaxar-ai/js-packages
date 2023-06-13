@@ -1,8 +1,8 @@
 {
     "compilerOptions": {
-        "baseUrl": "./lib",
+        "baseUrl": "src",
         "target": "es2020"
     },
-    "include": ["**/*.js"],
+    "include": ["src"],
     "exclude": ["node_modules", "cjs"]
 }

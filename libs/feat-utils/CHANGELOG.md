@@ -1,5 +1,13 @@
 # @galaxar/feat-utils
 
+## 1.0.4
+
+### Patch Changes
+
+-   Updated dependencies
+    -   @galaxar/utils@1.0.6
+    -   @galaxar/app@1.0.7
+
 ## 1.0.3
 
 ### Patch Changes

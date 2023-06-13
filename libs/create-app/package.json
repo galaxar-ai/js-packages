@@ -1,0 +1,56 @@
+{
+    "name": "@galaxar/create-app",
+    "version": "1.0.1",
+    "main": "cjs/index.js",
+    "module": "src/index.js",
+    "exports": {
+        ".": {
+            "import": "./src/index.js",
+            "require": "./cjs/index.js"
+        },
+        "./*": {
+            "import": "./src/*.js",
+            "require": "./cjs/*.js"
+        }
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "description": "Helper tool to initiate a galaxar application including cli/server/web_module.",
+    "bin": {
+        "gx-init": "bin/create-app.js"
+    },
+    "scripts": {
+        "test": "pnpm build && mocha --recursive test/**/*.spec.js",
+        "cover": "nyc --reporter=html --reporter=text mocha --recursive test/**/*.spec.js && open ./coverage/index.html",
+        "prettier": "prettier --write .",
+        "lint": "eslint \"**/*.js\"",
+        "lint-fix": "eslint \"**/*.js\" --fix",
+        "clean": "shx rm -rf cjs",
+        "build": "pnpm clean && swc src/**/*.js -d ./cjs",
+        "bvt:server": "genx-run --job bvt:server",
+        "bvt:cli-app": "genx-run --job bvt:cli-app",
+        "bvt:server-cli": "genx-run --job bvt:server-cli",
+        "dev": "shx rm -rf temp && node -r @swc-node/register ./src/cli/index.js temp"
+    },
+    "keywords": [
+        "galaxar",
+        "app",
+        "server",
+        "create",
+        "helper",
+        "init"
+    ],
+    "author": "rockie@kitmi.com.au",
+    "license": "MIT",
+    "dependencies": {
+        "@galaxar/app": "workspace:*",
+        "@galaxar/utils": "workspace:*",
+        "@galaxar/sys": "workspace:*",
+        "chalk": "^4.1.2",
+        "minimist": "^1.2.8",
+        "inquirer": "^8.2.4",
+        "shelljs": "0.8.5",
+        "superagent": "^8.0.9"
+    }
+}

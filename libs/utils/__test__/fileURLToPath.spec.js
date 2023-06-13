@@ -1,4 +1,4 @@
-import fileURLToPath from '../lib/fileURLToPath';
+import fileURLToPath from '../src/fileURLToPath';
 import url from 'node:url';
 
 describe('fileURLToPath', () => {

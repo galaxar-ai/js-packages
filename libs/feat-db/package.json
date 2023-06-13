@@ -1,0 +1,68 @@
+{
+    "name": "@galaxar/feat-db",
+    "version": "1.0.1",
+    "description": "Common dbms features",
+    "main": "cjs/index.js",
+    "module": "lib/index.js",
+    "react-native": "lib/index.js",
+    "exports": {
+        ".": {
+            "import": "./src/index.js",
+            "require": "./cjs/index.js"
+        },
+        "./*": {
+            "import": "./src/*.js",
+            "require": "./cjs/*.js"
+        }
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "scripts": {
+        "test": "pnpm build && mocha --recursive test/**/*.spec.js",
+        "cover": "nyc --reporter=html --reporter=text mocha --recursive test/**/*.spec.js && open ./coverage/index.html",
+        "prettier": "prettier . --write --ignore-unknown",
+        "lint": "eslint \"./src/**/*.js\"",
+        "lint-fix": "eslint \"./src/**/*.js\" --fix",
+        "clean": "shx rm -rf cjs",
+        "build": "pnpm clean && swc src/**/*.js -d ./cjs"
+    },
+    "keywords": [
+        "galaxar",
+        "app",
+        "common",
+        "db",
+        "prisma",
+        "mysql",
+        "postgres",
+        "rabbitmq",
+        "mongodb",
+        "feature"
+    ],
+    "nyc": {
+        "exclude": [
+            ".*",
+            "cjs",
+            "test",
+            "**/*.spec.js"
+        ]
+    },
+    "dependencies": {
+        "@galaxar/app": "workspace:*",
+        "@galaxar/utils": "workspace:*",
+        "@prisma/client": "^4.15.0",
+        "rabbitmq-client": "^3.3.2"
+    },
+    "prettier": {
+        "quoteProps": "consistent",
+        "printWidth": 120,
+        "singleQuote": true,
+        "trailingComma": "es5",
+        "tabWidth": 4,
+        "useTabs": false
+    },
+    "license": "MIT",
+    "devDependencies": {
+        "prisma": "^4.15.0"
+    }
+}

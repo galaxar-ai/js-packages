@@ -1,6 +1,6 @@
 {
     "name": "@galaxar/types",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "Galaxar Semantic Data Types",
     "main": "cjs/index.js",
     "module": "lib/index.js",

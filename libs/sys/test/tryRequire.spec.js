@@ -1,4 +1,4 @@
-import tryRequire from '../lib/tryRequire';
+import tryRequire from '../src/tryRequire';
 import path from 'path';
 
 describe('unit:tryRequire', function() {

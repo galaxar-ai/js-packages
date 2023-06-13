@@ -1,4 +1,4 @@
-import { isDir, isDir_, isDirEmpty, isDirEmpty_ } from '../lib/fsUtils';
+import { isDir, isDir_, isDirEmpty, isDirEmpty_ } from '../src/fsUtils';
 import fs from 'fs-extra';
 
 describe('unit:fs', function () {

@@ -1,4 +1,4 @@
-import bin2Hex from '../lib/bin2Hex';
+import bin2Hex from '../src/bin2Hex';
 
 describe('bin2Hex', () => {
     it('bvt', () => {

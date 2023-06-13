@@ -1,5 +1,15 @@
 # @galaxar/server
 
+## 1.0.5
+
+### Patch Changes
+
+-   Updated dependencies
+    -   @galaxar/utils@1.0.6
+    -   @galaxar/algo@1.0.5
+    -   @galaxar/app@1.0.7
+    -   @galaxar/types@1.0.5
+
 ## 1.0.4
 
 ### Patch Changes

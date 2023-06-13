@@ -1,0 +1,49 @@
+{
+    "jobs": {
+        "bvt:clean": {
+            "steps": [
+                {
+                    "task": "exec",
+                    "command": "pnpm shx rm -rf temp"
+                }
+            ]
+        },
+        "bvt:server": {
+            "dependsOn": ["bvt:clean"],
+            "steps": [
+                {
+                    "task": "exec",
+                    "command": "node ./test/create-app.js temp -n test-app -m server --pm=pnpm --lts"
+                },
+                {
+                    "task": "exec",
+                    "cwd": "temp",
+                    "command": "pnpm cover"
+                }
+            ]
+        },        
+        "bvt:cli-app": {
+            "dependsOn": ["bvt:clean"],
+            "steps": [
+                {
+                    "task": "exec",
+                    "command": "node ./test/create-app.js temp -n test-app -m cli --pm=pnpm --lts"
+                },
+                {
+                    "task": "exec",
+                    "cwd": "temp",
+                    "command": "pnpm test"
+                }
+            ]
+        },
+        "bvt:server-cli": {
+            "dependsOn": ["bvt:server"],
+            "steps": [
+                {
+                    "task": "exec",
+                    "command": "echo job3-step1"
+                }
+            ]
+        }
+    }
+}

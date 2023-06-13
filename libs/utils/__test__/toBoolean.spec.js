@@ -1,4 +1,4 @@
-import toBoolean from '../lib/toBoolean';
+import toBoolean from '../src/toBoolean';
 
 describe('toBoolean', () => {
     it('should return true for true boolean input', () => {

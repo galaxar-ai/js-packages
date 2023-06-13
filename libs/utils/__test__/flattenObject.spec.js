@@ -1,4 +1,4 @@
-import flattenObject from '../lib/flattenObject';
+import flattenObject from '../src/flattenObject';
 
 describe('flattenObject', () => {
     const obj1 = {

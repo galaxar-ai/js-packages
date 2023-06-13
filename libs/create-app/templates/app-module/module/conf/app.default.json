@@ -1,0 +1,6 @@
+{
+    "timezone": "Australia/Sydney",    
+    "routing": {
+        "/": "index.home"
+    }
+}

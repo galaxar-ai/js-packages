@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/cli/index.js"],"sourcesContent":["import main from \"../main.js\";\n\nmain();\n"],"names":["main"],"mappings":";;;;6DAAiB;;;;;;AAEjBA,IAAAA,aAAI"}

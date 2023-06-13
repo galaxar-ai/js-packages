@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/builtins/app-feature/config.js"],"sourcesContent":["module.exports = {\n    disablePackageLock: true,\n    \n};"],"names":["module","exports","disablePackageLock"],"mappings":";AAAAA,OAAOC,OAAO,GAAG;IACbC,oBAAoB,IAAI;AAE5B"}

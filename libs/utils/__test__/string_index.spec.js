@@ -1,4 +1,4 @@
-import { ensureEndsWith, ensureStartsWith, dropIfEndsWith, dropIfStartsWith, replaceAll } from '../lib/text';
+import { ensureEndsWith, ensureStartsWith, dropIfEndsWith, dropIfStartsWith, replaceAll } from '../src/text';
 
 describe('string index', () => {
     const a = 'abc';

@@ -61,6 +61,9 @@ _export(exports, {
     },
     countOfChar: function() {
         return _countOfChar.default;
+    },
+    deleteLines: function() {
+        return _deleteLines.default;
     }
 });
 const _quote = /*#__PURE__*/ _interop_require_default(require("./quote"));
@@ -80,6 +83,7 @@ const _ensureStartsWith = /*#__PURE__*/ _interop_require_default(require("./ensu
 const _csvLineParse = /*#__PURE__*/ _interop_require_default(require("./csvLineParse"));
 const _baseName = /*#__PURE__*/ _interop_require_default(require("./baseName"));
 const _countOfChar = /*#__PURE__*/ _interop_require_default(require("./countOfChar"));
+const _deleteLines = /*#__PURE__*/ _interop_require_default(require("./deleteLines"));
 _export_star(require("./trim"), exports);
 _export_star(require("./padding"), exports);
 function _export_star(from, to) {

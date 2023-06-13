@@ -1,10 +1,10 @@
-import batchAsync_ from '../lib/batchAsync_';
-import eachAsync_ from '../lib/eachAsync_';
-import filterAsync_ from '../lib/filterAsync_';
-import findAsync_ from '../lib/findAsync_';
-import findKeyAsync_ from '../lib/findKeyAsync_';
-import findKey from '../lib/findKey';
-import sleep_ from '../lib/sleep_';
+import batchAsync_ from '../src/batchAsync_';
+import eachAsync_ from '../src/eachAsync_';
+import filterAsync_ from '../src/filterAsync_';
+import findAsync_ from '../src/findAsync_';
+import findKeyAsync_ from '../src/findKeyAsync_';
+import findKey from '../src/findKey';
+import sleep_ from '../src/sleep_';
 
 describe('collection', () => {
     const array = [10, 20, 30, 40];

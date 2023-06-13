@@ -1,5 +1,12 @@
 # @galaxar/types
 
+## 1.0.5
+
+### Patch Changes
+
+-   Updated dependencies
+    -   @galaxar/utils@1.0.6
+
 ## 1.0.4
 
 ### Patch Changes

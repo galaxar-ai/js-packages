@@ -1,4 +1,4 @@
-import changeExtName from '../lib/changeExtName';
+import changeExtName from '../src/changeExtName';
 
 describe('changeExtName', () => {
     it('case 1', () => {

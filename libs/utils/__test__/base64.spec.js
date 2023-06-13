@@ -1,5 +1,5 @@
-import base64Encode from '../lib/base64Encode';
-import base64Decode from '../lib/base64Decode';
+import base64Encode from '../src/base64Encode';
+import base64Decode from '../src/base64Decode';
 
 describe('base64', () => {
     it('encode', () => {

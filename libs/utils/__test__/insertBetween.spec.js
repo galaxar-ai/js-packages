@@ -1,4 +1,4 @@
-import insertBetween from '../lib/insertBetween';
+import insertBetween from '../src/insertBetween';
 
 describe('unit:insertBetween', function () {
     it('Insert a separator as element into an array.', async function () {

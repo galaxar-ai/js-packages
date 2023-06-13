@@ -1,0 +1,42 @@
+{
+    "timezone": "Australia/Sydney",
+    "loggers": {
+        "accessLog": {
+            "transports": [
+                {
+                    "type": "console",
+                    "options": {
+                        "level": "verbose",
+                        "format": "#!jsv: log.format.combine(log.format.colorize(), log.format.simple())"
+                    }
+                }
+            ]
+        }
+    },
+    "koa": {
+        "keys": ["cookie", "secret", "to be replaced"],
+        "httpPort": 3000
+    },
+    "middlewares": [
+        ["favicon", "public/favicon.ico"],
+        [
+            "@koa/cors",
+            {
+                "origin": "*"
+            }
+        ],
+        [
+            "accessLog",
+            {
+                "logger": "accessLog"
+            }
+        ],
+        "koa-compress",
+        "koa-etag",
+        "koa-body",
+        "koa-override"
+    ],
+    "routing": {
+        "/": "index.home"
+    }
+}

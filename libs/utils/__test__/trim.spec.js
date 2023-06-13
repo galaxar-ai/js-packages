@@ -1,4 +1,4 @@
-import { trimLeft, trimRight } from '../lib/string';
+import { trimLeft, trimRight } from '../src/string';
 
 describe('trim', () => {
     it('trimLeft', () => {

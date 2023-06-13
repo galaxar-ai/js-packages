@@ -1,0 +1,7 @@
+{
+    "module": "app",
+    "locale": "en-AU",
+    "messages": {
+        "hello": "Hello"
+    }
+}

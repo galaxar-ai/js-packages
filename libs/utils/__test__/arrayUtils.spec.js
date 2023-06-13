@@ -1,4 +1,4 @@
-import { uniqPush } from '../lib/arrayImmutable';
+import { uniqPush } from '../src/arrayImmutable';
 
 describe('array utils', () => {
     const array = [10, 20, 30, 40];

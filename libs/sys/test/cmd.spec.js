@@ -1,4 +1,4 @@
-import { run_, runLive_, runSync } from '../lib/cmd';
+import { run_, runLive_, runSync } from '../src/cmd';
 
 describe('unit:cmd', function () {
     it('should execute a shell command asynchronously', async () => {
