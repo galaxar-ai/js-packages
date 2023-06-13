@@ -320,6 +320,18 @@ const configOverrider = (defConf, envConf)=>{
         });
         return sorted;
     }
+    flushLogCache() {
+        if (this.runnable && this.config.logger == null) {
+            (0, _logger.setLogLevel)(this.options.logLevel);
+            const logging = (0, _logger.makeLogger)(_logger.consoleLogger);
+            this.logger = {
+                log: logging
+            };
+            this.log = logging;
+            this._logCache.forEach((log)=>this.logger.log(...log));
+            this._logCache.length = 0;
+        }
+    }
     /**
      * Load features
      * @private
@@ -354,16 +366,7 @@ const configOverrider = (defConf, envConf)=>{
             return this._loadFeatures_();
         }
         // if no logger in config, use console logger
-        if (this.runnable && this.config.logger == null) {
-            (0, _logger.setLogLevel)(this.options.logLevel);
-            const logging = (0, _logger.makeLogger)(_logger.consoleLogger);
-            this.logger = {
-                log: logging
-            };
-            this.log = logging;
-            this._logCache.forEach((log)=>this.logger.log(...log));
-            this._logCache.length = 0;
-        }
+        this.flushLogCache();
         await this.emit_('configFinalized', this.config);
         if (this.options.logLevel === 'debug' || this.options.logLevel === 'verbose') {
             this.log('verbose', 'Finalized config:', this.config);

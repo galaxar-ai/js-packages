@@ -199,6 +199,9 @@ function _define_property(obj, key, value) {
             });
             _define_property(this, "_onExit", (code)=>{
                 if (this.started) {
+                    if (this._logCache.length) {
+                        this.flushLogCache();
+                    }
                     this.stop_().catch(this.logError);
                 }
             });

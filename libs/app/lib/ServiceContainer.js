@@ -393,6 +393,17 @@ class ServiceContainer extends AsyncEmitter {
         return sorted;
     }
 
+    flushLogCache() {
+        if (this.runnable && this.config.logger == null) {
+            setLogLevel(this.options.logLevel);
+            const logging = makeLogger(consoleLogger);
+            this.logger = { log: logging };
+            this.log = logging;
+            this._logCache.forEach((log) => this.logger.log(...log));
+            this._logCache.length = 0;
+        }
+    }
+
     /**
      * Load features
      * @private
@@ -431,14 +442,7 @@ class ServiceContainer extends AsyncEmitter {
         }
 
         // if no logger in config, use console logger
-        if (this.runnable && this.config.logger == null) {
-            setLogLevel(this.options.logLevel);
-            const logging = makeLogger(consoleLogger);
-            this.logger = { log: logging };
-            this.log = logging;
-            this._logCache.forEach((log) => this.logger.log(...log));
-            this._logCache.length = 0;
-        }
+        this.flushLogCache();
 
         await this.emit_('configFinalized', this.config);
 

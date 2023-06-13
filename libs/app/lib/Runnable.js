@@ -25,6 +25,9 @@ const Runnable = (T) =>
 
         _onExit = (code) => {
             if (this.started) {
+                if (this._logCache.length) {
+                    this.flushLogCache();
+                }
                 this.stop_().catch(this.logError);
             }
         };

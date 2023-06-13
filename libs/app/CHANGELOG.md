@@ -1,5 +1,11 @@
 # @galaxar/app
 
+## 1.0.7
+
+### Patch Changes
+
+-   Fix empty log bug.
+
 ## 1.0.6
 
 ### Patch Changes
