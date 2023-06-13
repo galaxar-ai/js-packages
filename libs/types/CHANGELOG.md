@@ -1,12 +1,17 @@
 # @galaxar/types
 
+## 1.0.6
+
+### Patch Changes
+
+-   Fix: sanitize without meta failed   
+
 ## 1.0.5
 
 ### Patch Changes
 
 -   Updated dependencies
     -   @galaxar/utils@1.0.5
-    -   Fix: sanitize without meta failed
 
 ## 1.0.4
 
