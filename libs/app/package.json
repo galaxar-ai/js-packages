@@ -1,6 +1,6 @@
 {
     "name": "@galaxar/app",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "description": "Node application framework",
     "main": "cjs/index.js",
     "module": "lib/index.js",
