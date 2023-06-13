@@ -16,7 +16,7 @@ export const modesDetail = {
         desc: 'Command line application project based on @galaxar/app',
     },
     [SERVER]: {
-        url: '',
+        url: 'https://github.com/galax-ai/gx-server-template/archive/refs/tags/v0.0.1.tar.gz',
         desc: 'Web service hosting project based on @galaxar/server',
     },
     [APP_MODULE]: {

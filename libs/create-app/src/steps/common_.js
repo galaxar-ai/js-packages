@@ -6,13 +6,7 @@ module.exports = async (app, targetPath, options) => {
         const { registry, ...otherVars } = vars;
 
         if (options.registry !== "npmjs") {
-            let _registry;
-
-            if (options.registry === "genx") {
-                _registry = REGISTRY_GENX;
-            } else {
-                _registry = options.registry;
-            }
+            let _registry = options.registry;
 
             return {
                 ...otherVars,

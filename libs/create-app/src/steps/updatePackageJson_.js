@@ -1,5 +1,5 @@
-const path = require("path");
-const { fs } = require("@genx/sys");
+import path from "node:path";
+import { fs } from "@galaxar/sys";
 
 module.exports = async (app, rootPath, options, updaters) => {
     const packageConfigFileName = 'package.json';

@@ -27,3 +27,4 @@ coverage
 allure-report
 allure-results
 async-dump.log
+libs/create-app/temp

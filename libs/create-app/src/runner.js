@@ -1,11 +1,9 @@
 import { fs } from "@galaxar/sys";
 
-import { appModes, appModeList, modesDetail } from "./modes";
+import { appModes, appModeList } from "./modes";
 import exitWithError from "./utils/exitWithError";
 import tryDo_ from "./utils/tryDo_";
-
-import getTempPath from "./utils/getTempPath";
-import download_ from "./utils/download_";
+import init_ from "./steps/init_";
 
 function overrideOptions(options, cmd, validatedArgs) {
     Object.assign(options, validatedArgs);
@@ -26,22 +24,6 @@ function overrideOptions(options, cmd, validatedArgs) {
     options.registry = cmd.option("registry");
 
     options.workingPath = process.cwd();      
-}
-
-async function getInitiator_(app, appMode) {
-    let templateUrl;
-
-    if (appMode === 'custom') {
-        templateUrl = cmd.option("template");          
-    } else {
-        templateUrl = modesDetail[appMode].url;
-    }
-
-    const templateDir = getTempPath('template');
-    await fs.emptyDir(templateDir);
-    await download_(app, templateUrl, templateDir); 
-
-    return require(path.join(templateDir, 'galaxar-init.js'));
 }
 
 function validateArguments(app, cmd) {
@@ -106,13 +88,10 @@ const run_ = async (app) => {
     //override options with command line arguments
     overrideOptions(options, cmd, validatedArgs);    
 
-    //load initiator by url or app mode
-    const init_ = await getInitiator_(app, validatedArgs.appMode);
-
     //ensure project folder exists
-    return tryDo_(app, () => {
+    //return tryDo_(app, () => {
         return init_(app, options);
-    });
+    //});
 };
 
 export default run_;

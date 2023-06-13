@@ -1,4 +1,6 @@
+import path from "node:path";
 import request from "superagent";
+import { fs } from "@galaxar/sys";
 
 const download_ = async (app, url, saveToPath) => {
     const dirName = path.dirname(saveToPath);

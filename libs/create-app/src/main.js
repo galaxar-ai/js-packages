@@ -10,7 +10,7 @@ import pkg from "../package.json";
 
 function main() {
     return startCommand(runner, {
-        loggerLevel: "verbose",
+        logLevel: "verbose",
         commandName: "gx-init",
         config: {
             version: pkg.version,

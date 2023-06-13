@@ -1,6 +1,6 @@
-const path = require("path");
-const { fs } = require("@genx/sys");
-const { unquote, quote, _ } = require("@genx/july");
+import path from "node:path";
+import { fs } from "@galaxar/sys";
+import { unquote, quote, _ } from "@galaxar/utils";
 
 const fileTypeMapper = {
     ".npmrc": "export",
@@ -30,7 +30,7 @@ function formatExports(vars) {
     return lines.join("\n") + "\n";
 }
 
-module.exports = async (app, targetPath, relativePath, updater) => {
+async function updateFile_(app, targetPath, relativePath, updater) {
     const filePath = path.resolve(targetPath, relativePath);
     const baseName = path.basename(relativePath);
 
@@ -63,3 +63,5 @@ module.exports = async (app, targetPath, relativePath, updater) => {
     await fs.writeFile(filePath, updated, "utf8");
     app.log("info", `Updated file ${relativePath}`);
 };
+
+export default updateFile_;

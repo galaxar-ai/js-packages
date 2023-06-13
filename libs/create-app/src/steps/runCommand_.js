@@ -1,5 +1,5 @@
-const { cmd } = require("@genx/sys");
-const { _ } = require("@genx/july");
+import { cmd } from "@galaxar/sys";
+import { _ } from "@galaxar/utils";
 
 module.exports = async (app, workingPath, command, treatErrorAsInfo) => {
     const lastWd = process.cwd();

@@ -45,12 +45,14 @@
     "license": "MIT",
     "dependencies": {
         "@galaxar/app": "workspace:*",
-        "@galaxar/utils": "workspace:*",
         "@galaxar/sys": "workspace:*",
+        "@galaxar/utils": "workspace:*",
         "chalk": "^4.1.2",
-        "minimist": "^1.2.8",
+        "glob": "10.2.4",
         "inquirer": "^8.2.4",
+        "minimist": "^1.2.8",
         "shelljs": "0.8.5",
-        "superagent": "^8.0.9"
+        "superagent": "^8.0.9",
+        "tar": "6.1.15"
     }
 }

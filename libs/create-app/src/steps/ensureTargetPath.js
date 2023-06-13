@@ -1,9 +1,11 @@
-const path = require("node:path");
-const { fs } = require("@genx/sys");
+import path from "node:path";
+import { fs } from "@galaxar/sys";
 
-module.exports = (options) => {
+function ensureTargetPath(options) {
     const targetPath = path.join(options.workingPath, options.appDir);
     fs.ensureDirSync(targetPath);
 
     return targetPath;
 };
+
+export default ensureTargetPath;
