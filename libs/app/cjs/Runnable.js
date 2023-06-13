@@ -49,7 +49,7 @@ function _define_property(obj, key, value) {
                 }
                 throw error;
             }
-            if (this.options.logLevel === 'verbose' || this.options.logLevel === 'debug') {
+            if (this.options.logFeatures && (this.options.logLevel === 'verbose' || this.options.logLevel === 'debug')) {
                 const childModules = {};
                 this.visitChildModules((childModule, name)=>{
                     childModules[name] = {
@@ -180,6 +180,8 @@ function _define_property(obj, key, value) {
          * @property {string} [options.logLevel='info'] - Logging level
          * @property {object} [options.ignoreUncaught=false] - Whether to skip the handling of uncaught exception
          * @property {object} [options.exitOnUncaught=true] - Whether to exit process on uncaught exception thrown
+         * @property {object} [options.logFeatures=false] - Log enabled features
+         * @property {object} [options.logConfig=false] - Log finalized config
          * @constructs Runnable
          */ constructor(name, options){
             super(name, {

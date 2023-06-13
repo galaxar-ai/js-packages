@@ -64,10 +64,6 @@ const ModuleBase = (Base)=>{
              * Whether it is a server.
              * @member {boolean}
              **/ this.isServer = false;
-            /**
-             * Source files path.
-             * @member {string}
-             **/ this.sourcePath = this.toAbsolutePath(this.options.sourcePath);
             this.featuresPath = _nodepath.default.resolve(this.sourcePath, this.options.featuresPath);
             this.logger = this.host.logger?.child({
                 module: this.name

@@ -18,11 +18,13 @@ _export(exports, {
 });
 const defaultOpts = {
     configName: 'server',
-    appModulesPath: 'apps'
+    appModulesPath: 'apps',
+    sourcePath: 'server'
 };
 const defaultRoutableOpts = {
     engine: 'koa',
     traceMiddlewares: false,
+    sourcePath: 'server',
     publicPath: 'public',
     controllersPath: 'actions',
     middlewaresPath: 'middlewares'

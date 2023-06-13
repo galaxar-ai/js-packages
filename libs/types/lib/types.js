@@ -60,9 +60,9 @@ export const getStringifier = () => {
 
 export const beginSanitize = (value, meta, i18n, path) => {
     if (value == null) {
-        if (meta.default != null) {
+        if (meta?.default != null) {
             return [true, meta.default];
-        } else if (meta.optional) {
+        } else if (meta?.optional) {
             return [true, null];
         }
 
@@ -74,7 +74,7 @@ export const beginSanitize = (value, meta, i18n, path) => {
         });
     }
 
-    if (meta.rawValue) return [true, value];
+    if (meta?.rawValue) return [true, value];
 
     return [false];
 };

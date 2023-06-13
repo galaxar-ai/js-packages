@@ -6,6 +6,7 @@
 
 -   Updated dependencies
     -   @galaxar/utils@1.0.5
+    -   Fix: sanitize without meta failed
 
 ## 1.0.4
 

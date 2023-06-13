@@ -38,6 +38,8 @@ const Runnable = (T) =>
          * @property {string} [options.logLevel='info'] - Logging level
          * @property {object} [options.ignoreUncaught=false] - Whether to skip the handling of uncaught exception
          * @property {object} [options.exitOnUncaught=true] - Whether to exit process on uncaught exception thrown
+         * @property {object} [options.logFeatures=false] - Log enabled features
+         * @property {object} [options.logConfig=false] - Log finalized config
          * @constructs Runnable
          */
         constructor(name, options) {
@@ -69,13 +71,18 @@ const Runnable = (T) =>
                 await super.start_();
             } catch (error) {
                 if (error.code === 'E_INVALID_CONF') {
-                    throw new Error(`Invalid configuration. Reason: ${error.message} Info: ${JSON.stringify(error.info)}`);
+                    throw new Error(
+                        `Invalid configuration. Reason: ${error.message} Info: ${JSON.stringify(error.info)}`
+                    );
                 }
 
                 throw error;
-            }           
+            }
 
-            if (this.options.logLevel === 'verbose' || this.options.logLevel === 'debug') {
+            if (
+                this.options.logFeatures &&
+                (this.options.logLevel === 'verbose' || this.options.logLevel === 'debug')
+            ) {
                 const childModules = {};
                 this.visitChildModules((childModule, name) => {
                     childModules[name] = {

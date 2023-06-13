@@ -137,7 +137,7 @@ function _interop_require_default(obj) {
      * @property {string} [options.workingPath] - App's working path, default to process.cwd()
      * @property {string} [options.configPath] - App's config path, default to "conf" under workingPath
      * @property {string} [options.configName] - App's config basename, default to "app"
-     * @property {string} [options.sourcePath='.'] - Relative path of back-end server source files
+     * @property {string} [options.sourcePath='server'] - Relative path of back-end server source files
      * @property {string} [options.appModulesPath=app_modules] - Relative path of child modules
      */ constructor(name, options){
         if (typeof options === 'undefined' && (0, _utils.isPlainObject)(name)) {

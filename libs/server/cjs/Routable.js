@@ -293,8 +293,8 @@ const Routable = (T)=>{
              * Frontend static files path.
              * @member {string}
              **/ this.publicPath = this.toAbsolutePath(this.options.publicPath);
-            this.controllersPath = this.toAbsolutePath(this.options.controllersPath);
-            this.middlewaresPath = this.toAbsolutePath(this.options.middlewaresPath);
+            this.controllersPath = _nodepath.default.resolve(this.sourcePath, this.options.controllersPath);
+            this.middlewaresPath = _nodepath.default.resolve(this.sourcePath, this.options.middlewaresPath);
             this.routable = true;
             /**
              * Each app has its own router.

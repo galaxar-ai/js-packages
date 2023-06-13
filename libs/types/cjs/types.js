@@ -90,12 +90,12 @@ const getStringifier = ()=>{
 };
 const beginSanitize = (value, meta, i18n, path)=>{
     if (value == null) {
-        if (meta.default != null) {
+        if (meta?.default != null) {
             return [
                 true,
                 meta.default
             ];
-        } else if (meta.optional) {
+        } else if (meta?.optional) {
             return [
                 true,
                 null
@@ -108,7 +108,7 @@ const beginSanitize = (value, meta, i18n, path)=>{
             path
         });
     }
-    if (meta.rawValue) return [
+    if (meta?.rawValue) return [
         true,
         value
     ];

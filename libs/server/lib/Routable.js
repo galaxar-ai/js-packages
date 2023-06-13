@@ -23,9 +23,9 @@ const Routable = (T) =>
              **/
             this.publicPath = this.toAbsolutePath(this.options.publicPath);
 
-            this.controllersPath = this.toAbsolutePath(this.options.controllersPath);
+            this.controllersPath = path.resolve(this.sourcePath, this.options.controllersPath);
 
-            this.middlewaresPath = this.toAbsolutePath(this.options.middlewaresPath);
+            this.middlewaresPath = path.resolve(this.sourcePath, this.options.middlewaresPath);
 
             this.routable = true;
 

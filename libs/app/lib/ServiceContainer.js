@@ -108,9 +108,15 @@ class ServiceContainer extends AsyncEmitter {
         this.configPath = this.toAbsolutePath(this.options.configPath);
 
         /**
+         * Source files path.
+         * @member {string}
+         **/
+        this.sourcePath = this.toAbsolutePath(this.options.sourcePath);
+
+        /**
          * Feature path
          */
-        this.featuresPath = this.toAbsolutePath(this.options.featuresPath);
+        this.featuresPath = path.resolve(this.sourcePath, this.options.featuresPath);
 
         this._logCache = [];
 
@@ -248,7 +254,8 @@ class ServiceContainer extends AsyncEmitter {
      * @returns {string}
      */
     toAbsolutePath(...args) {
-        if (args.length === 0 || args[0] == null) {
+        args = args.filter((arg) => arg != null);
+        if (args.length === 0) {
             return this.workingPath;
         }
 
@@ -446,7 +453,7 @@ class ServiceContainer extends AsyncEmitter {
 
         await this.emit_('configFinalized', this.config);
 
-        if (this.options.logLevel === 'debug' || this.options.logLevel === 'verbose') {
+        if (this.options.logConfig && (this.options.logLevel === 'debug' || this.options.logLevel === 'verbose')) {
             this.log('verbose', 'Finalized config:', this.config);
         }
 
