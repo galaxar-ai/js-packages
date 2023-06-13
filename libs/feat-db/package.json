@@ -1,6 +1,6 @@
 {
     "name": "@galaxar/feat-db",
-    "version": "1.0.1",
+    "version": "1.0.0",
     "description": "Common dbms features",
     "main": "cjs/index.js",
     "module": "lib/index.js",
@@ -50,8 +50,7 @@
     "dependencies": {
         "@galaxar/app": "workspace:*",
         "@galaxar/utils": "workspace:*",
-        "@prisma/client": "^4.15.0",
-        "rabbitmq-client": "^3.3.2"
+        "@prisma/client": "^4.15.0"
     },
     "prettier": {
         "quoteProps": "consistent",
