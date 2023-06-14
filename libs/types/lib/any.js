@@ -1,18 +1,19 @@
-import { everTrue } from './functions';
-import { beginSanitize } from './types';
+import { everTrue, identity } from './functions';
 
-const T_ANY = {
-    name: 'any',
-    alias: ['*'],
-    defaultValue: null,
-    validate: everTrue,
-    sanitize: (value, meta, i18n, path) => {
-        const [isDone, sanitized] = beginSanitize(value, meta, i18n, path);
-        if (isDone) return sanitized;
+class T_ANY {
+    name = 'any';
+    alias = ['*'];
+    defaultValue = null;
+    validate = everTrue;
+    _sanitize = identity;
 
-        return value;
-    },
-    serialize: (value) => (typeof value === 'object' ? JSON.stringify(value) : value),
-};
+    constructor(system) {
+        this.system = system;
+    }
+
+    serialize(value) {
+        return typeof value === 'object' ? JSON.stringify(value) : value;
+    }
+}
 
 export default T_ANY;

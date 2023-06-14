@@ -1,7 +1,7 @@
 import { startCommand } from "@galaxar/app";
 import { _ } from "@galaxar/utils";
 import { appModeList } from "./modes";
-import chalk from "chalk";
+import figlet from "figlet";
 
 import runner from "./runner";
 import appNameToFileName from "./utils/appNameToFileName";
@@ -10,12 +10,17 @@ import pkg from "../package.json";
 
 function main() {
     return startCommand(runner, {
-        logLevel: "verbose",
+        logLevel: process.env.NODE_ENV === 'development' ? "verbose" : "info",
         commandName: "gx-init",
         config: {
             version: pkg.version,
             commandLine: {
-                banner: () => chalk.white.bgBlue.bold(` Galaxar application initiator command line v${pkg.version} `),
+                banner: () => {
+                    return figlet.textSync("Galaxar . ai", {                        
+                        horizontalLayout: 'fitted'
+                      }) + '\n' +
+                     `Galaxar application initiator command line v${pkg.version}`;
+                },
                 program: "npm init @genx/app",
                 arguments: [
                     {

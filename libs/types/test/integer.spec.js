@@ -1,4 +1,4 @@
-import { Types } from "..";
+import { Types } from "../lib";
 
 const { integer } = Types;
 
@@ -53,6 +53,19 @@ describe("integer", () => {
         it("should throw a ValidationError for invalid input", () => {
             const value = {};
             (() => integer.sanitize(value, {}, {}, "")).should.throw('Invalid integer value.');
+        });
+    });
+
+    describe('enum', () => {
+        it('in enumerable', () => {
+            const value = 123;
+            const result = integer.sanitize(value, { enum: [ 123, 100 ] });
+            result.should.equal(value);
+        });
+
+        it('not in enumerable', () => {
+            const value = 123;
+            (() => integer.sanitize(value, { enum: [ 100 ] })).should.throw('Invalid enum value.');
         });
     });
 });

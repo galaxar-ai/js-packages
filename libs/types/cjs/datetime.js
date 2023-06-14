@@ -8,17 +8,24 @@ Object.defineProperty(exports, "default", {
         return _default;
     }
 });
-const _types = require("./types");
 const _errors = require("./errors");
-const _default = {
-    name: 'datetime',
-    alias: [
-        'date',
-        'time',
-        'timestamp'
-    ],
-    defaultValue: new Date(0),
-    validate: (value)=>value instanceof Date,
+function _define_property(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        });
+    } else {
+        obj[key] = value;
+    }
+    return obj;
+}
+class T_DATETIME {
+    validate(value) {
+        return value instanceof Date;
+    }
     /**
      * Transform a value into a JavaScript Date object.
      * @param {*} value
@@ -26,23 +33,20 @@ const _default = {
      * @param {*} i18n
      * @param {string} [path]
      * @returns {Date|null}
-     */ sanitize: (value, meta, i18n, path)=>{
-        const [isDone, sanitized] = (0, _types.beginSanitize)(value, meta, i18n, path);
-        if (isDone) return sanitized;
-        const raw = value;
+     */ _sanitize(value, meta, opts) {
         if (value instanceof Date) {
             return value;
         } else {
             const type = typeof value;
             if (type === 'string') {
                 if (meta.format) {
-                    const parser = _types.Plugins['datetimeParser'];
+                    const parser = this.system.plugins.datetimeParser;
                     if (!parser) {
                         throw new _errors.ApplicationError('Missing datetime parser plugin.');
                     }
                     value = parser(value, {
                         format: meta.format,
-                        timezone: i18n?.timezone
+                        timezone: opts.i18n?.timezone
                     });
                 } else {
                     value = new Date(value);
@@ -54,18 +58,31 @@ const _default = {
             }
             if (isNaN(value)) {
                 throw new _errors.ValidationError('Invalid datetime value.', {
-                    value: raw,
+                    value: null,
                     meta,
-                    i18n,
-                    path
+                    ...opts
                 });
             }
         }
         return value;
-    },
-    serialize: (value)=>{
+    }
+    serialize(value) {
         return value?.toISOString();
     }
-};
+    constructor(system){
+        _define_property(this, "name", 'datetime');
+        _define_property(this, "alias", [
+            'date',
+            'time',
+            'timestamp'
+        ]);
+        _define_property(this, "primitive", true);
+        _define_property(this, "scalar", true);
+        _define_property(this, "defaultValue", new Date(0));
+        this.system = system;
+    }
+}
+;
+const _default = T_DATETIME;
 
 //# sourceMappingURL=datetime.js.map

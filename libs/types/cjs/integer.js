@@ -11,35 +11,51 @@ Object.defineProperty(exports, "default", {
 const _errors = require("./errors");
 const _toInteger = /*#__PURE__*/ _interop_require_default(require("@galaxar/utils/toInteger"));
 const _functions = require("./functions");
-const _types = require("./types");
+function _define_property(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        });
+    } else {
+        obj[key] = value;
+    }
+    return obj;
+}
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
     };
 }
-const _default = {
-    name: 'integer',
-    alias: [
-        'int'
-    ],
-    defaultValue: 0,
-    validate: (value)=>typeof value === 'number' && Number.isInteger(value),
-    sanitize: (value, meta, i18n, path)=>{
-        const [isDone, sanitized] = (0, _types.beginSanitize)(value, meta, i18n, path);
-        if (isDone) return sanitized;
-        const raw = value;
+class T_INTEGER {
+    validate(value) {
+        return typeof value === 'number' && Number.isInteger(value);
+    }
+    _sanitize(value, meta, opts) {
         value = (0, _toInteger.default)(value);
         if (isNaN(value)) {
             throw new _errors.ValidationError('Invalid integer value.', {
-                value: raw,
+                value: null,
                 meta,
-                i18n,
-                path
+                ...opts
             });
         }
         return value;
-    },
-    serialize: _functions.identity
-};
+    }
+    constructor(system){
+        _define_property(this, "name", 'integer');
+        _define_property(this, "alias", [
+            'int'
+        ]);
+        _define_property(this, "primitive", true);
+        _define_property(this, "scalar", true);
+        _define_property(this, "defaultValue", 0);
+        _define_property(this, "serialize", _functions.identity);
+        this.system = system;
+    }
+}
+const _default = T_INTEGER;
 
 //# sourceMappingURL=integer.js.map

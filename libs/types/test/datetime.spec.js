@@ -1,4 +1,4 @@
-import { Types, addPlugin } from "..";
+import { Types, addPlugin } from "../lib";
 import { DateTime } from 'luxon';
 
 const { datetime } = Types;

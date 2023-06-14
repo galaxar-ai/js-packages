@@ -9,31 +9,49 @@ Object.defineProperty(exports, "default", {
     }
 });
 const _errors = require("./errors");
-const _types = require("./types");
-const _default = {
-    name: 'bigint',
-    alias: [
-        'biginteger'
-    ],
-    defaultValue: 0n,
-    validate: (value)=>typeof value === 'bigint',
-    sanitize: (value, meta, i18n, path)=>{
-        const [isDone, sanitized] = (0, _types.beginSanitize)(value, meta, i18n, path);
-        if (isDone) return sanitized;
-        const raw = value;
+function _define_property(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        });
+    } else {
+        obj[key] = value;
+    }
+    return obj;
+}
+class T_BIGINT {
+    validate(value) {
+        return typeof value === 'bigint';
+    }
+    _sanitize(value, meta, opts) {
         try {
             value = BigInt(value);
         } catch (e) {
             throw new _errors.ValidationError('Invalid bigint value.', {
-                value: raw,
+                value,
                 meta,
-                i18n,
-                path
+                ...opts
             }, e);
         }
         return value;
-    },
-    serialize: (value)=>value == null ? null : _types.Plugins['bigintWriter'] ? _types.Plugins['bigintWriter'](value) : value.toString()
-};
+    }
+    serialize(value) {
+        return value == null ? null : this.system.plugins.bigintWriter ? this.system.plugins.bigintWriter(value) : value.toString();
+    }
+    constructor(system){
+        _define_property(this, "name", 'bigint');
+        _define_property(this, "alias", [
+            'biginteger'
+        ]);
+        _define_property(this, "primitive", true);
+        _define_property(this, "scalar", true);
+        _define_property(this, "defaultValue", 0n);
+        this.system = system;
+    }
+}
+const _default = T_BIGINT;
 
 //# sourceMappingURL=bigint.js.map

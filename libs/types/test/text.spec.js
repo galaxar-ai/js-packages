@@ -1,4 +1,4 @@
-import { Types } from "..";
+import { Types } from "../lib";
 
 const { text } = Types;
 
@@ -38,9 +38,27 @@ describe("text", () => {
             should.throws(() => text.sanitize(value, { nonEmpty: true }, {}, ""), 'Value is required.');
         });
 
-        it("should throw a ValidationError for non-string input", () => {
+        it("should return string for numbers", () => {
             const value = 123;
-            (() => text.sanitize(value, {}, {}, "")).should.throw('Invalid text value.');
+            text.sanitize(value, {}, {}, "").should.equal("123");
+        });
+
+        it("should throw a ValidationError for non-string input", () => {
+            const value = {};
+            should.throws(() => text.sanitize(value, {}, {}, ""), 'Invalid text value.');
+        });
+    });
+
+    describe('enum', () => {
+        it('in enumerable', () => {
+            const value = 'ok';
+            const result = text.sanitize(value, { enum: [ 'ok', 'ng' ] });
+            result.should.equal(value);
+        });
+
+        it('not in enumerable', () => {
+            const value = 'ok';
+            (() => text.sanitize(value, { enum: [ 'ng', 'some' ] })).should.throw('Invalid enum value.');
         });
     });
 });

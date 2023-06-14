@@ -1,85 +1,193 @@
-import { InvalidArgument, ValidationError } from './errors';
+import { InvalidArgument, ValidationError, ApplicationError } from './errors';
 
-export const Types = {};
-export const Primitives = new Set();
-export const Plugins = {};
+let counter = 0;
 
-function _addType(name, typeMeta) {
-    if (name in Types) {
-        throw new Error(`Type "${name}" already exist.`);
+const defaultTypeClasses = [];
+const defaultPlugins = [];
+
+export class TypeSystem {
+    primitives = new Set();
+    scalarTypes = new Set();
+    plugins = {};
+    types = {};
+    sanitize = this.callType('sanitize');
+    sanitize_ = this.callType('sanitize_');
+    serialize = this.callType('serialize');
+
+    constructor() {
+        this._counter = counter++;
     }
 
-    Types[name] = typeMeta;
-    Primitives.add(name);
-}
+    static fromDefault() {
+        const ts = new TypeSystem();
 
-export const addType = (name, typeMeta) => {
-    _addType(name, typeMeta);
-    _addType(typeMeta.name, typeMeta);
+        defaultTypeClasses.forEach(({ name, TypeMeta }) => {
+            ts.addType(name, TypeMeta);
+        });
 
-    typeMeta.alias?.forEach((a) => {
-        _addType(a, typeMeta);
-    });
-};
+        defaultPlugins.forEach(({ name, plugin }) => {
+            ts.addPlugin(name, plugin);
+        });
 
-export const addPlugin = (name, plugin) => {
-    Plugins[name] = plugin;
-};
-
-export const callType = (method) => (value, typeInfo, i18n, fieldPath) => {
-    if (!Primitives.has(typeInfo.type)) {
-        throw new InvalidArgument(`Unsuppported primitive type: "${typeInfo.type}".`);
+        return ts;
     }
 
-    const typeObject = Types[typeInfo.type];
-    return typeObject[method](value, typeInfo, i18n, fieldPath);
-};
-
-export const sanitize = callType('sanitize');
-export const serialize = callType('serialize');
-
-export const safeJsonStringify = (value) => {
-    const bigintWriter = Plugins['bigintWriter'];
-    if (bigintWriter) {
-        const replacer = (_, value) => (typeof value === 'bigint' ? bigintWriter(value) : value);
-
-        return JSON.stringify(value, replacer);
+    addPlugin(name, plugin) {
+        this.plugins[name] = plugin;
     }
 
-    return JSON.stringify(value);
-};
-
-export const getStringifier = () => {
-    const bigintWriter = Plugins['bigintWriter'];
-    if (bigintWriter) {
-        return (value) => (typeof value === 'bigint' ? bigintWriter(value) : value.toString());
+    removePlugin(name) {
+        delete this.plugins[name];
     }
 
-    return null;
-};
-
-export const beginSanitize = (value, meta, i18n, path) => {
-    if (value == null) {
-        if (meta?.default != null) {
-            return [true, meta.default];
-        } else if (meta?.optional) {
-            return [true, null];
+    _addType(name, typeMeta) {
+        if (name in this.types) {
+            throw new ApplicationError(`Type "${name}" already exist.`, { name });
         }
 
-        throw new ValidationError('Value ' + (path ? `of "${path}" ` : '') + 'is required.', {
-            value,
-            meta,
-            i18n,
-            path,
+        this.types[name] = typeMeta;
+        if (typeMeta.primitive) {
+            this.primitives.add(name);
+        }
+        if (typeMeta.scalar) {
+            this.scalarTypes.add(name);
+        }
+    }
+
+    addType(name, TypeMeta) {
+        const typeMeta = new TypeMeta(this);
+
+        typeMeta.sanitize = (value, meta, i18n, path) => {
+            meta = { type: typeMeta.name, ...meta };
+            const opts = { rawValue: value, i18n, path };
+            const [isDone, sanitized] = this.beginSanitize(value, meta, opts);
+            return this.endSanitize(isDone ? sanitized : typeMeta._sanitize(value, meta, opts), meta, opts);
+        };
+
+        typeMeta.sanitize_ = async (value, meta, i18n, path) => {
+            meta = { type: typeMeta.name, ...meta };
+            const opts = { rawValue: value, i18n, path };
+            const [isDone, sanitized] = await this.beginSanitize(value, meta, opts);
+            return this.endSanitize(
+                isDone
+                    ? sanitized
+                    : typeMeta._sanitizeAsync
+                    ? await typeMeta._sanitizeAsync(value, meta, opts)
+                    : typeMeta._sanitize(value, meta, opts),
+                meta,
+                opts
+            );
+        };
+
+        this._addType(name, typeMeta);
+        this._addType(typeMeta.name, typeMeta);
+
+        typeMeta.alias?.forEach((a) => {
+            this._addType(a, typeMeta);
         });
     }
 
-    if (meta?.rawValue) return [true, value];
+    callType(method) {
+        return (value, typeInfo, i18n, fieldPath) => {
+            if (!this.primitives.has(typeInfo.type)) {
+                throw new InvalidArgument(`Unsupported primitive type: "${typeInfo.type}".`);
+            }
 
-    return [false];
+            const typeObject = this.types[typeInfo.type];            
+            return typeObject[method](value, typeInfo, i18n, fieldPath);
+        };
+    }
+
+    safeJsonStringify(value) {
+        const bigintWriter = this.plugins['bigintWriter'];
+        if (bigintWriter) {
+            const replacer = (_, value) => (typeof value === 'bigint' ? bigintWriter(value) : value);
+
+            return JSON.stringify(value, replacer);
+        }
+
+        return JSON.stringify(value);
+    }
+
+    getStringifier() {
+        const bigintWriter = this.plugins['bigintWriter'];
+        if (bigintWriter) {
+            return (value) => (typeof value === 'bigint' ? bigintWriter(value) : value.toString());
+        }
+
+        return null;
+    }
+
+    beginSanitize(value, meta, opts) {
+        if (value == null) {
+            if (meta.default != null) {
+                return [true, meta.default];
+            } else if (meta.optional) {
+                return [true, null];
+            }
+
+            throw new ValidationError('Value ' + (opts.path ? `of "${opts.path}" ` : '') + 'is required.', {
+                value,
+                meta,
+                ...opts,
+            });
+        }
+
+        if (meta.rawValue) return [true, value];
+
+        // more prerequisites here ...
+        if (this.plugins.preProcess) {
+            return this.plugins.preProcess(value, meta, opts);
+        }
+
+        return [false];
+    }
+
+    endSanitize(value, meta, opts) {
+        if (this.scalarTypes.has(meta.type)) {
+            this.verifyEnum(value, meta, opts);
+        }
+
+        if (this.plugins.postProcess) {
+            return this.plugins.postProcess(value, meta, opts);
+        }
+
+        return value;
+    }
+
+    verifyEnum(value, meta, opts) {
+        if (meta.enum && !meta.enum.includes(value)) {
+            throw new ValidationError('Invalid enum value.', {
+                value,
+                meta,
+                ...opts,
+            });
+        }
+    }
+}
+
+const defaultTypeSystem = new TypeSystem();
+
+export const addType = (name, TypeMeta) => {
+    defaultTypeSystem.addType(name, TypeMeta);
+    defaultTypeClasses.push({ name, TypeMeta });
 };
 
+export const addPlugin = (name, plugin) => {
+    defaultTypeSystem.addPlugin(name, plugin);
+    defaultPlugins.push({ name, plugin });
+};
+
+export const createTypeSystem = (emptySystem) => {
+    return emptySystem ? new TypeSystem() : TypeSystem.fromDefault();
+};
+
+export const Types = defaultTypeSystem.types;
+
 // compatibility
-Types.sanitize = sanitize;
-Types.serialize = serialize;
-Types.primitives = Primitives;
+Types.sanitize = defaultTypeSystem.sanitize.bind(defaultTypeSystem);
+Types.sanitize_ = defaultTypeSystem.sanitize_.bind(defaultTypeSystem);
+Types.serialize = defaultTypeSystem.serialize.bind(defaultTypeSystem);
+Types.primitives = defaultTypeSystem.primitives;
+
+export default defaultTypeSystem;

@@ -1,34 +1,45 @@
 import { ValidationError } from './errors';
-import { Plugins, beginSanitize } from './types';
 
-export default {
-    name: 'bigint',
-    alias: ['biginteger'],
-    defaultValue: 0n,
-    validate: (value) => typeof value === 'bigint',
-    sanitize: (value, meta, i18n, path) => {
-        const [isDone, sanitized] = beginSanitize(value, meta, i18n, path);
-        if (isDone) return sanitized;
+class T_BIGINT {
+    name = 'bigint';
+    alias = ['biginteger'];
+    primitive = true;
+    scalar = true;
+    defaultValue = 0n;
 
-        const raw = value;
+    constructor(system) {
+        this.system = system;
+    }
+
+    validate(value) {
+        return typeof value === 'bigint';
+    }
+
+    _sanitize(value, meta, opts) {
         try {
             value = BigInt(value);
         } catch (e) {
             throw new ValidationError(
                 'Invalid bigint value.',
                 {
-                    value: raw,
+                    value,
                     meta,
-                    i18n,
-                    path,
+                    ...opts,
                 },
                 e
             );
         }
 
         return value;
-    },
+    }
 
-    serialize: (value) =>
-        value == null ? null : Plugins['bigintWriter'] ? Plugins['bigintWriter'](value) : value.toString(),
-};
+    serialize(value) {
+        return value == null
+            ? null
+            : this.system.plugins.bigintWriter
+            ? this.system.plugins.bigintWriter(value)
+            : value.toString();
+    }
+}
+
+export default T_BIGINT;

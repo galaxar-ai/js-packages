@@ -10,35 +10,64 @@ Object.defineProperty(exports, "default", {
 });
 const _functions = require("./functions");
 const _errors = require("./errors");
-const _types = require("./types");
-const _default = {
-    name: 'text',
-    alias: [
-        'string'
-    ],
-    defaultValue: '',
-    validate: (value)=>typeof value === 'string',
-    sanitize: (value, meta, i18n, path)=>{
-        const isString = typeof value === 'string';
-        if (isString && meta.trim) {
-            value = value.trim();
-        }
-        if (value === '' && meta.nonEmpty) {
-            value = null;
-        }
-        const [isDone, sanitized] = (0, _types.beginSanitize)(value, meta, i18n, path);
-        if (isDone) return sanitized;
-        if (!isString) {
-            throw new _errors.ValidationError('Invalid text value.', {
+function _define_property(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        });
+    } else {
+        obj[key] = value;
+    }
+    return obj;
+}
+class T_TEXT {
+    validate(value) {
+        return typeof value === 'string';
+    }
+    _sanitize(value, meta, opts) {
+        const type = typeof value;
+        const isString = type === 'string';
+        if (isString) {
+            if (meta.trim) {
+                value = value.trim();
+            }
+            if (value === '' && meta.nonEmpty) {
+                value = null;
+                if (!meta.optional) {
+                    throw new _errors.ValidationError('Value ' + (opts.path ? `of "${opts.path}" ` : '') + 'is required.', {
+                        value,
+                        meta,
+                        ...opts
+                    });
+                }
+            }
+        } else {
+            if (type === 'bigint' || type === 'number') {
+                return value.toString();
+            }
+            throw new _errors.ValidationError('Value ' + (opts.path ? `of "${opts.path}" ` : '') + 'is required.', {
                 value,
                 meta,
-                i18n,
-                path
+                ...opts
             });
         }
         return value;
-    },
-    serialize: _functions.identity
-};
+    }
+    constructor(system){
+        _define_property(this, "name", 'text');
+        _define_property(this, "alias", [
+            'string'
+        ]);
+        _define_property(this, "primitive", true);
+        _define_property(this, "scalar", true);
+        _define_property(this, "defaultValue", '');
+        _define_property(this, "serialize", _functions.identity);
+        this.system = system;
+    }
+}
+const _default = T_TEXT;
 
 //# sourceMappingURL=text.js.map

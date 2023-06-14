@@ -1,8 +1,8 @@
 import _each from 'lodash/each';
 import { ValidationError } from './errors';
-import { Types, safeJsonStringify, beginSanitize } from './types';
 import { makePath } from '@galaxar/utils/objectPathUtils';
 import isPlainObject from '@galaxar/utils/isPlainObject';
+import batchAsync_ from '@galaxar/utils/batchAsync_';
 
 const jsonStarter = new Set(['"', '[', '{']);
 const jsonEnding = {
@@ -11,16 +11,21 @@ const jsonEnding = {
     '{': '}',
 };
 
-export default {
-    name: 'object',
-    alias: ['json'],
-    defaultValue: {},
-    validate: (value) => isPlainObject(value),
-    sanitize: (value, meta, i18n, path) => {
-        const [isDone, sanitized] = beginSanitize(value, meta, i18n, path);
-        if (isDone) return sanitized;
+class T_OBJECT {
+    name = 'object';
+    alias = ['json'];
+    primitive = true;
+    defaultValue = {};
 
-        const raw = value;
+    constructor(system) {
+        this.system = system;
+    }
+
+    validate(value) {
+        return isPlainObject(value);
+    }
+
+    _sanitize(value, meta, opts) {
         const type = typeof value;
 
         if (type === 'string') {
@@ -32,10 +37,9 @@ export default {
         if (meta.schema) {
             if (typeof value !== 'object') {
                 throw new ValidationError('Invalid object value.', {
-                    value: raw,
+                    value,
                     meta,
-                    i18n,
-                    path,
+                    ...opts
                 });
             }
 
@@ -44,8 +48,8 @@ export default {
             _each(schema, (validationObject, fieldName) => {
                 const fieldValue = value[fieldName];
 
-                const _fieldValue = Types.sanitize(fieldValue, validationObject, i18n, makePath(path, fieldName));
-                if (_fieldValue != null || (fieldName in value)) {
+                const _fieldValue = this.system.sanitize(fieldValue, validationObject, opts.i18n, makePath(opts.path, fieldName));
+                if (_fieldValue != null || fieldName in value) {
                     newValue[fieldName] = _fieldValue;
                 }
             });
@@ -58,10 +62,51 @@ export default {
         }
 
         return value;
-    },
+    }
 
-    serialize: (value) => {
+    async _sanitizeAsync(value, meta, opts) {
+        const type = typeof value;
+
+        if (type === 'string') {
+            if (value.length > 1 && jsonStarter.has(value[0]) && jsonEnding[value[0]] === value[value.length - 1]) {
+                value = JSON.parse(value);
+            }
+        }
+
+        if (meta.schema) {
+            if (typeof value !== 'object') {
+                throw new ValidationError('Invalid object value.', {
+                    value,
+                    meta,
+                    ...opts
+                });
+            }
+
+            const schema = typeof meta.schema === 'function' ? meta.schema() : meta.schema;
+            const newValue = {};
+            await batchAsync_(schema, async (validationObject, fieldName) => {
+                const fieldValue = value[fieldName];
+
+                const _fieldValue = await this.system.sanitize_(fieldValue, validationObject, opts.i18n, makePath(opts.path, fieldName));
+                if (_fieldValue != null || fieldName in value) {
+                    newValue[fieldName] = _fieldValue;
+                }
+            });
+
+            if (meta.keepUnsanitized) {
+                return { ...value, ...newValue };
+            }
+
+            return newValue;
+        }
+
+        return value;
+    }
+
+    serialize(value) {
         if (value == null) return null;
-        return safeJsonStringify(value);
-    },
+        return this.system.safeJsonStringify(value);
+    }
 };
+
+export default T_OBJECT;

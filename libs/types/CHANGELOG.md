@@ -1,5 +1,13 @@
 # @galaxar/types
 
+## 1.1.0
+
+### Patch Changes
+
+-   Feature: Add separate type system, each type system has their own plugins
+-   Feature: Add async sanitizer
+-   Feature: Add enum values for scalar types
+
 ## 1.0.6
 
 ### Patch Changes

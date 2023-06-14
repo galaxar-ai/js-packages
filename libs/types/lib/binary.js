@@ -1,30 +1,38 @@
 import { ValidationError } from './errors';
-import { beginSanitize } from './types';
 
-module.exports = {
-    name: 'binary',
-    alias: ['blob', 'buffer'],
-    defaultValue: null,
-    validate: (value) => value instanceof Buffer,
-    sanitize: (value, meta, i18n, path) => {
-        const [isDone, sanitized] = beginSanitize(value, meta, i18n, path);
-        if (isDone) return sanitized;
+class T_BINARY {
+    name = 'binary';
+    alias = ['blob', 'buffer'];
+    primitive = true;
+    defaultValue = null;
 
+    constructor(system) {
+        this.system = system;
+    }
+
+    validate(value) {
+        return value instanceof Buffer;
+    }
+
+    _sanitize(value, meta, opts) {
         if (value instanceof Buffer) {
             return value;
         }
-
+    
         if (typeof value === 'string') {
             return Buffer.from(value, meta.encoding || 'base64');
         }
-
+    
         throw new ValidationError('Invalid binary value.', {
             value,
             meta,
-            i18n,
-            path,
+            ...opts
         });
-    },
+    }
 
-    serialize: (value, meta) => (value == null ? null : value.toString(meta.encoding || 'base64')),
+    serialize(value, meta) {
+        return (value == null ? null : value.toString(meta.encoding || 'base64'));
+    }
 };
+
+export default T_BINARY;

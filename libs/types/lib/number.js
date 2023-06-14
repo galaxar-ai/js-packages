@@ -1,31 +1,37 @@
 import { ValidationError } from './errors';
 import toFloat from '@galaxar/utils/toFloat';
 import { identity } from './functions';
-import { beginSanitize } from './types';
 
-export default {
-    name: 'number',
-    alias: ['float', 'double'],
-    defaultValue: 0,
-    validate: (value) => typeof value === 'number',
-    sanitize: (value, meta, i18n, path) => {
-        const [isDone, sanitized] = beginSanitize(value, meta, i18n, path);
-        if (isDone) return sanitized;
+class T_NUMBER {
+    name = 'number';
+    alias = ['float', 'double'];
+    primitive = true;
+    scalar = true;
+    defaultValue = 0;
 
-        const raw = value;
+    constructor(system) {
+        this.system = system;
+    }
+
+    validate(value) {
+        return typeof value === 'number';
+    }
+
+    _sanitize(value, meta, opts) {
         value = toFloat(value);
 
         if (isNaN(value)) {
             throw new ValidationError('Invalid number value.', {
-                value: raw,
+                value: null,
                 meta,
-                i18n,
-                path,
+                ...opts,
             });
         }
 
         return value;
-    },
+    }
 
-    serialize: identity,
-};
+    serialize = identity;
+}
+
+export default T_NUMBER;

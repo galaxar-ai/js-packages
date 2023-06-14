@@ -19,6 +19,13 @@ serialize: (value, meta) => string
 -   {boolean} optional - No error throw if value is null and default is null
 -   {any} default = Default value if value is null
 
+### Enumerable Types
+
+-   bigint
+-   integer
+-   number
+-   text
+
 ### Validation Error
 
 -   message
@@ -30,3 +37,7 @@ serialize: (value, meta) => string
 
 -   datetimeParser
 -   bigintWriter
+-   preProcess - [sync/async] (value, meta, opts: { rawValue, i18n, path }) => [ finished, processedValue ] or [ false ]
+-   postProcess - [sync/async] (value, meta, opts: { rawValue, i18n, path }) => processedValue
+
+Note: if preProcess or postProcess is async function, sanitize_ should be called instead of sanitize

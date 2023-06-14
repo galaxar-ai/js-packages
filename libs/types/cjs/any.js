@@ -9,21 +9,34 @@ Object.defineProperty(exports, "default", {
     }
 });
 const _functions = require("./functions");
-const _types = require("./types");
-const T_ANY = {
-    name: 'any',
-    alias: [
-        '*'
-    ],
-    defaultValue: null,
-    validate: _functions.everTrue,
-    sanitize: (value, meta, i18n, path)=>{
-        const [isDone, sanitized] = (0, _types.beginSanitize)(value, meta, i18n, path);
-        if (isDone) return sanitized;
-        return value;
-    },
-    serialize: (value)=>typeof value === 'object' ? JSON.stringify(value) : value
-};
+function _define_property(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        });
+    } else {
+        obj[key] = value;
+    }
+    return obj;
+}
+class T_ANY {
+    serialize(value) {
+        return typeof value === 'object' ? JSON.stringify(value) : value;
+    }
+    constructor(system){
+        _define_property(this, "name", 'any');
+        _define_property(this, "alias", [
+            '*'
+        ]);
+        _define_property(this, "defaultValue", null);
+        _define_property(this, "validate", _functions.everTrue);
+        _define_property(this, "_sanitize", _functions.identity);
+        this.system = system;
+    }
+}
 const _default = T_ANY;
 
 //# sourceMappingURL=any.js.map

@@ -1,11 +1,19 @@
-import { Plugins, beginSanitize } from './types';
 import { ValidationError, ApplicationError } from './errors';
 
-export default {
-    name: 'datetime',
-    alias: ['date', 'time', 'timestamp'],
-    defaultValue: new Date(0),
-    validate: (value) => value instanceof Date,
+class T_DATETIME {
+    name = 'datetime';
+    alias = ['date', 'time', 'timestamp'];
+    primitive = true;
+    scalar = true;
+    defaultValue = new Date(0);
+    
+    constructor(system) {
+        this.system = system;
+    }
+
+    validate(value) {
+        return value instanceof Date;
+    }
 
     /**
      * Transform a value into a JavaScript Date object.
@@ -15,12 +23,7 @@ export default {
      * @param {string} [path]
      * @returns {Date|null}
      */
-    sanitize: (value, meta, i18n, path) => {
-        const [isDone, sanitized] = beginSanitize(value, meta, i18n, path);
-        if (isDone) return sanitized;
-
-        const raw = value;
-
+    _sanitize(value, meta, opts) {
         if (value instanceof Date) {
             return value;
         } else {
@@ -28,11 +31,11 @@ export default {
 
             if (type === 'string') {
                 if (meta.format) {
-                    const parser = Plugins['datetimeParser'];
+                    const parser = this.system.plugins.datetimeParser;
                     if (!parser) {
                         throw new ApplicationError('Missing datetime parser plugin.');
                     }
-                    value = parser(value, { format: meta.format, timezone: i18n?.timezone });
+                    value = parser(value, { format: meta.format, timezone: opts.i18n?.timezone });
                 } else {
                     value = new Date(value);
                 }
@@ -44,18 +47,19 @@ export default {
 
             if (isNaN(value)) {
                 throw new ValidationError('Invalid datetime value.', {
-                    value: raw,
+                    value: null,
                     meta,
-                    i18n,
-                    path,
+                    ...opts
                 });
             }
         }
 
         return value;
-    },
+    }
 
-    serialize: (value) => {
+    serialize(value) {
         return value?.toISOString();
-    },
+    }
 };
+
+export default T_DATETIME;

@@ -31,7 +31,7 @@
         "bvt:server": "genx-run --job bvt:server",
         "bvt:cli-app": "genx-run --job bvt:cli-app",
         "bvt:server-cli": "genx-run --job bvt:server-cli",
-        "dev": "shx rm -rf temp && node -r @swc-node/register ./src/cli/index.js temp"
+        "dev": "shx rm -rf temp && NODE_ENV=development node -r @swc-node/register ./src/cli/index.js temp"
     },
     "keywords": [
         "galaxar",
@@ -47,7 +47,7 @@
         "@galaxar/app": "workspace:*",
         "@galaxar/sys": "workspace:*",
         "@galaxar/utils": "workspace:*",
-        "chalk": "^4.1.2",
+        "figlet": "^1.6.0",
         "glob": "10.2.4",
         "inquirer": "^8.2.4",
         "minimist": "^1.2.8",

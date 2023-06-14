@@ -1,4 +1,4 @@
-import { Types } from "..";
+import { Types } from "../lib";
 
 describe("hybrid", () => {
 

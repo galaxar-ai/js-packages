@@ -1,31 +1,37 @@
 import { ValidationError } from './errors';
 import toInteger from '@galaxar/utils/toInteger';
 import { identity } from './functions';
-import { beginSanitize } from './types';
 
-export default {
-    name: 'integer',
-    alias: ['int'],
-    defaultValue: 0,
-    validate: (value) => typeof value === 'number' && Number.isInteger(value),
-    sanitize: (value, meta, i18n, path) => {
-        const [isDone, sanitized] = beginSanitize(value, meta, i18n, path);
-        if (isDone) return sanitized;
+class T_INTEGER {
+    name = 'integer';
+    alias = ['int'];
+    primitive = true;
+    scalar = true;
+    defaultValue = 0;
 
-        const raw = value;
+    constructor(system) {
+        this.system = system;
+    }
+
+    validate(value) {
+        return typeof value === 'number' && Number.isInteger(value);
+    }
+
+    _sanitize(value, meta, opts) {
         value = toInteger(value);
 
         if (isNaN(value)) {
             throw new ValidationError('Invalid integer value.', {
-                value: raw,
+                value: null,
                 meta,
-                i18n,
-                path,
+                ...opts,
             });
         }
 
         return value;
-    },
+    }
 
-    serialize: identity,
-};
+    serialize = identity;
+}
+
+export default T_INTEGER;

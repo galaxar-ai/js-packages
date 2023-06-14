@@ -1,5 +1,4 @@
-import { describe } from "mocha";
-import { Types, addPlugin } from "..";
+import { Types, addPlugin } from "../lib";
 
 const { bigint } = Types;
 
@@ -60,6 +59,19 @@ describe("bigint", () => {
             const value = 123n;
             const result = bigint.serialize(value, {}, {}, "");
             result.should.equal('123n');
+        });
+    });
+
+    describe('enum', () => {
+        it('in enumerable', () => {
+            const value = 123n;
+            const result = bigint.sanitize(value, { enum: [ 123n, 100n ] });
+            result.should.equal(value);
+        });
+
+        it('not in enumerable', () => {
+            const value = 123n;            
+            (() => bigint.sanitize(value, { enum: [ 100n ] })).should.throw('Invalid enum value.');
         });
     });
 });
