@@ -16,6 +16,7 @@
     "publishConfig": {
         "access": "public"
     },
+    "author": "Rockie Guo <rockie@kitmi.com.au>",
     "description": "Helper tool to initiate a galaxar application including cli/server/web_module.",
     "bin": {
         "gx-init": "bin/create-app.js"
@@ -41,7 +42,6 @@
         "helper",
         "init"
     ],
-    "author": "rockie@kitmi.com.au",
     "license": "MIT",
     "dependencies": {
         "@galaxar/app": "workspace:*",

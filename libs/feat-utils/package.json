@@ -1,6 +1,6 @@
 {
     "name": "@galaxar/feat-utils",
-    "version": "1.0.3",
+    "version": "1.1.0",
     "description": "Node common application utility features",
     "main": "cjs/index.js",
     "module": "lib/index.js",
@@ -18,6 +18,7 @@
     "publishConfig": {
         "access": "public"
     },
+    "author": "Rockie Guo <rockie@kitmi.com.au>",
     "scripts": {
         "test": "pnpm build && mocha --recursive test/**/*.spec.js",
         "cover": "nyc --reporter=html --reporter=text mocha --recursive test/**/*.spec.js && open ./coverage/index.html",
@@ -31,7 +32,12 @@
         "galaxar",
         "app",
         "common",
-        "feature"
+        "feature",
+        "cipher",
+        "hash",
+        "image processing",
+        "ttl cache",
+        "websocket client"
     ],
     "nyc": {
         "exclude": [
@@ -43,10 +49,12 @@
     },
     "dependencies": {
         "@galaxar/app": "workspace:*",
+        "@galaxar/types": "workspace:*",
         "@galaxar/utils": "workspace:*",
-        "hasha": "^5.2.2",
+        "collections": "^5.1.13",
         "node-cache": "^5.1.2",
-        "sharp": "^0.32.1"
+        "sharp": "^0.32.1",
+        "ws": "^8.13.0"
     },
     "prettier": {
         "quoteProps": "consistent",

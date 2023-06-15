@@ -22,6 +22,7 @@
     "publishConfig": {
         "access": "public"
     },
+    "author": "Rockie Guo <rockie@kitmi.com.au>",
     "scripts": {
         "test": "pnpm build && mocha --recursive test/**/*.spec.js",
         "cover": "nyc --reporter=html --reporter=text mocha --recursive test/**/*.spec.js && open ./coverage/index.html",

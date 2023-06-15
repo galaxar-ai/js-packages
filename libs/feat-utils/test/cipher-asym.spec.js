@@ -1,6 +1,6 @@
 import { startWorker } from '@galaxar/app';
 
-describe.only('cipher-asym', function () {
+describe('cipher-asym', function () {
     it('should generate a key pair with the default algorithm and options', async () => {
         await startWorker(
             async (app) => {
@@ -69,45 +69,46 @@ describe.only('cipher-asym', function () {
             }
         );
     });
+
+    it('should encrypt a message with the public key and decrypt with private key', async () => {
+        await startWorker(
+            async (app) => {
+                const cipher = app.getService('cipher');
+                const algorithm = 'rsa';
+                const options = { modulusLength: 2048 };
+                const { privateKey, publicKey } = cipher.generateKeyPair(algorithm, options);
+                const message = 'hello world';
+                
+                const encrypted = cipher.publicEncrypt(message, publicKey);
+                const result = cipher.privateDecrypt(encrypted, privateKey);
+                result.should.equal(message);
+            },
+            {
+                workingPath: 'test',
+                //logLevel: "debug"
+            }
+        );        
+      });
+
+      it('should sign a message with the private key and verify with private key', async () => {
+        await startWorker(
+            async (app) => {
+                const cipher = app.getService('cipher');
+                const algorithm = 'rsa';
+                const options = { modulusLength: 2048 };
+                const { privateKey, publicKey } = cipher.generateKeyPair(algorithm, options);
+                const message = 'hello world';
+                
+                const signature = cipher.privateSign(message, privateKey);
+                const result = cipher.publicVerify(message, signature, publicKey);
+                result.should.be.true();
+            },
+            {
+                workingPath: 'test',
+                //logLevel: "debug"
+            }
+        );        
+      });
+
 });
 
-/*
-
-describe('publicEncrypt', () => {
-  it('should encrypt a message with the public key', () => {
-    const message = 'hello world';
-    const keypair = crypto.generateKeyPairSync('rsa', { modulusLength: 2048 });
-    const result = cipher.publicEncrypt(message, keypair.publicKey);
-    result.should.not.equal(message);
-  });
-});
-
-describe('privateDecrypt', () => {
-  it('should decrypt a message with the private key', () => {
-    const message = 'hello world';
-    const keypair = crypto.generateKeyPairSync('rsa', { modulusLength: 2048 });
-    const encrypted = cipher.publicEncrypt(message, keypair.publicKey);
-    const result = cipher.privateDecrypt(encrypted, keypair.privateKey);
-    result.should.equal(message);
-  });
-});
-
-describe('privateSign', () => {
-  it('should sign a message with the private key', () => {
-    const message = 'hello world';
-    const keypair = crypto.generateKeyPairSync('rsa', { modulusLength: 2048 });
-    const result = cipher.privateSign(message, keypair.privateKey);
-    result.should.not.equal(message);
-  });
-});
-
-describe('publicVerify', () => {
-  it('should verify a message signature with the public key', () => {
-    const message = 'hello world';
-    const keypair = crypto.generateKeyPairSync('rsa', { modulusLength: 2048 });
-    const signature = cipher.privateSign(message, keypair.privateKey);
-    const result = cipher.publicVerify(message, signature, keypair.publicKey);
-    result.should.be.true();
-  });
-});
-*/

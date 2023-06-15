@@ -1,6 +1,5 @@
 {
     "featureRegistry": {
-        "hasher": ["../lib/index", "hasher"],
         "imageProcessor": ["../lib/index", "imageProcessor"],
         "ttlMemCache": ["../lib/index", "ttlMemCache"],
         "cipher": ["../lib/index", "cipher"]
@@ -8,6 +7,5 @@
     "ttlMemCache": {
     },
     "imageProcessor": {},
-    "hasher": {},
     "cipher": { "key": "0m1pZirDCCjLp8s1hlkjnWVDG6tObEqJ" }    
 }

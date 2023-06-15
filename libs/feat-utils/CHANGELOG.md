@@ -1,5 +1,13 @@
 # @galaxar/feat-utils
 
+## 1.1.0
+
+### Minor Changes
+
+- Remove hasha, use cipher instead
+- Add threadPool and threadWorker
+- Add webSocketClient
+
 ## 1.0.3
 
 ### Patch Changes

@@ -1,6 +1,8 @@
 import { objectToArray } from '@galaxar/utils';
 
+const MONO_REPO = 'monorepo';
 const CLI = 'cli';
+const LIB = 'lib';
 const SERVER = 'server';
 const APP_MODULE = 'app-module';
 const APP_FEATURE = 'app-feature';
@@ -15,8 +17,13 @@ export const modesDetail = {
         url: '',
         desc: 'Command line application project based on @galaxar/app',
     },
+    [LIB]: {
+        url: 'https://github.com/galax-ai/gx-js-lib-template/releases/latest/download/package.tgz',
+        desc: 'Javascript library project (ES-style)',
+    },
+    
     [SERVER]: {
-        url: 'https://github.com/galax-ai/gx-server-template/archive/refs/tags/v0.0.1.tar.gz',
+        url: 'https://github.com/galax-ai/gx-server-template/releases/latest/download/package.tgz',
         desc: 'Web service hosting project based on @galaxar/server',
     },
     [APP_MODULE]: {
@@ -39,14 +46,4 @@ export const modesDetail = {
 
 export const appModeList = objectToArray(modesDetail, (v, k) => ({ name: `[${k}] - ${v.desc}`, value: k }));
 
-export const appModes = [
-    CLI,
-    SERVER,
-    APP_MODULE,
-    APP_FEATURE,
-    REACT_WEB,
-    REACT_NATIVE,
-    DESKTOP_ELECTRON,
-    DESKTOP_TAURI,
-    CUSTOM_TEMPLATE,
-];
+export const appModes = new Set(Object.keys(modesDetail));

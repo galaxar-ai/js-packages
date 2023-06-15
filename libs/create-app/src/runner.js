@@ -43,7 +43,7 @@ function validateArguments(app, cmd) {
         exitWithError(app, 'App name should not contain more than one "/" character.');
     }
 
-    if (!appModes.includes(appMode)) {
+    if (!appModes.has(appMode)) {
         exitWithError(app, `Unsupported app mode: ${appMode}`);
     }
 
