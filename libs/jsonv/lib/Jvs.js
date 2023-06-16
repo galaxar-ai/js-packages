@@ -17,7 +17,7 @@ class Jvs {
                 plainError: true,
                 ...options,
             },
-            context
+            { $$: value, $$ROOT: value, ...context }
         );
         if (reason === true) {
             return [true];
@@ -40,7 +40,7 @@ class Jvs {
      * @returns {Jvs}
      */
     match(expected) {
-        validate(this.value, expected);
+        validate(this.value, expected, { throwError: true, abortEarly: true }, { $$: this.value, $$ROOT: this.value });
         return this;
     }
 }

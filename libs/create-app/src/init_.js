@@ -1,8 +1,8 @@
 import path from 'node:path';
 import { fs } from '@galaxar/sys';
-import { modesDetail } from "../modes";
-import { getTempPath, download_, untar_ } from "../utils";
-import * as steps from "../steps";
+import { modesDetail } from "./modes";
+import { getTempPath, download_, untar_ } from "./utils";
+import * as steps from "./steps";
 
 async function downloadTemplate_(app, options) {
     let templateUrl;
@@ -19,7 +19,7 @@ async function downloadTemplate_(app, options) {
     const tarFile = path.join(tempDir, 'template.tgz');
     await download_(app, templateUrl, tarFile);    
 
-    app.log('info', `Downloaded ${templateUrl} => ${tarFile}`);
+    app.log('info', `Saved to ${tarFile}`);
 
     return { 
         tempDir,
@@ -34,7 +34,8 @@ async function downloadTemplate_(app, options) {
     await fs.emptyDir(tempPath);
     await untar_(tarFile, tempPath);
 
-    const initMeta = require(path.join(tempPath, '.galaxar.init.js'));
+    const initFile = path.join(tempPath, '.galaxar.init.js');
+    const initMeta = require(initFile);
     const targetPath = steps.ensureTargetPath(options);
 
     if (initMeta.newProject) {
@@ -51,7 +52,7 @@ async function downloadTemplate_(app, options) {
         ]);
     }
 
-    //await steps.common_(app, targetPath, options);
+    await steps.common_(app, targetPath, options);
 
     await steps.npmInstall_(app, targetPath, options);
 };

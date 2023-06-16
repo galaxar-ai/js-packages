@@ -86,7 +86,8 @@ class TypeSystem {
             const opts = {
                 rawValue: value,
                 i18n,
-                path
+                path,
+                system: this
             };
             const [isDone, sanitized] = this.beginSanitize(value, meta, opts);
             return this.endSanitize(isDone ? sanitized : typeMeta._sanitize(value, meta, opts), meta, opts);
@@ -99,7 +100,8 @@ class TypeSystem {
             const opts = {
                 rawValue: value,
                 i18n,
-                path
+                path,
+                system: this
             };
             const [isDone, sanitized] = await this.beginSanitize(value, meta, opts);
             return this.endSanitize(isDone ? sanitized : typeMeta._sanitizeAsync ? await typeMeta._sanitizeAsync(value, meta, opts) : typeMeta._sanitize(value, meta, opts), meta, opts);

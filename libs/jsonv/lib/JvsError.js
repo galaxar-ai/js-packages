@@ -1,4 +1,3 @@
-import _castArray from 'lodash/castArray';
 import { messages } from './config';
 
 class JsvError extends Error {
@@ -6,7 +5,7 @@ class JsvError extends Error {
         const errors = [];
         let inner = [];
 
-        _castArray(errorOrErrors).forEach((err) => {
+        (Array.isArray(errorOrErrors) ? errorOrErrors : [errorOrErrors]).forEach((err) => {
             if (err.name === 'JsvError') {
                 errors.push(...err.errors);
                 inner = [...inner, ...(err.inner.length > 0 ? err.inner : [err])];

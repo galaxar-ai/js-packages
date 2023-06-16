@@ -47,10 +47,10 @@
         ]
     },
     "dependencies": {
+        "@galaxar/types": "workspace:*",
         "@galaxar/utils": "workspace:*",
-        "@galaxar/types": "workspace:*"
+        "lodash": "^4.17.21"
     },
-    "devDependencies": {},
     "prettier": {
         "quoteProps": "consistent",
         "printWidth": 120,

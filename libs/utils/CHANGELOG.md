@@ -1,5 +1,11 @@
 # @galaxar/utils
 
+## 1.0.6
+
+### Patch Changes
+
+-   Fix testShouldThrow_ for compatible with chai
+
 ## 1.0.5
 
 ### Patch Changes

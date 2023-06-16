@@ -18,6 +18,8 @@ const TYPE = 'type';
 const HAS_KEYS = 'has';
 const START_WITH = 'start';
 const END_WITH = 'end';
+const MATCH_PATTERN = 'pattern';
+const CONTAINS = 'contains';
 const SAME_AS = 'same';
 
 export default {
@@ -41,5 +43,7 @@ export default {
     HAS_KEYS,
     START_WITH,
     END_WITH,
+    MATCH_PATTERN,
+    CONTAINS,
     SAME_AS,
 };

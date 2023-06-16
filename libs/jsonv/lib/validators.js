@@ -1,5 +1,5 @@
 // JSON Validation Syntax
-import { Types, Primitives } from '@galaxar/types';
+import { Types } from '@galaxar/types';
 import { isPlainObject, get as _get } from '@galaxar/utils';
 
 import _isEqual from 'lodash/isEqual';
@@ -87,6 +87,8 @@ const OP_TYPE = [ops.TYPE, '$is', '$typeOf'];
 const OP_HAS_KEYS = [ops.HAS_KEYS, '$hasKey', '$hasKeys', '$withKey', '$withKeys'];
 const OP_START_WITH = [ops.START_WITH, '$startWith', '$startsWith'];
 const OP_END_WITH = [ops.END_WITH, '$endWith', '$endsWith'];
+const OP_MATCH_PATTERN = [ops.MATCH_PATTERN, '$pattern', '$matchPattern', '$matchRegex'];
+const OP_CONTAINS = [ops.CONTAINS, '$contain', '$contains', '$include', '$includes'];
 const OP_SAME_AS = [ops.SAME_AS, '$sameAs'];
 
 config.addValidatorToMap(OP_EQUAL, (left, right, options, context) =>
@@ -277,7 +279,7 @@ config.addValidatorToMap(OP_TYPE, (left, right, options, context) => {
         throw new Error(MSG.OPERAND_NOT_STRING(ops.TYPE));
     }
 
-    if (!Primitives.has(right)) {
+    if (!Types.primitives.has(right)) {
         throw new Error(MSG.UNSUPPORTED_TYPE(right));
     }
 
@@ -318,6 +320,44 @@ config.addValidatorToMap(OP_END_WITH, (left, right, options, context) => {
     }
 
     return left.endsWith(right);
+});
+
+config.addValidatorToMap(OP_MATCH_PATTERN, (left, right, options, context) => {
+    if (typeof left !== 'string') {
+        return false;
+    }
+
+    right = processRightValue(right, context);
+
+    let pattern = right;
+    let flags;
+
+    if (Array.isArray(right)) {
+        if (right.length > 2) {
+            throw new Error(MSG.OPERAND_NOT_TUPLE(ops.MATCH_PATTERN));
+        }
+
+        pattern = right[0];
+        flags = right[1];
+    } else if (typeof right !== 'string') {
+        throw new Error(MSG.OPERAND_NOT_STRING(ops.MATCH_PATTERN));
+    }
+
+    return new RegExp(pattern, flags).test(left);
+});
+
+config.addValidatorToMap(OP_CONTAINS, (left, right, options, context) => {
+    if (typeof left !== 'string') {
+        return false;
+    }
+
+    right = processRightValue(right, context);
+
+    if (typeof right !== 'string') {
+        throw new Error(MSG.OPERAND_NOT_STRING(ops.CONTAINS));
+    }
+
+    return left.includes(right);
 });
 
 config.addValidatorToMap(OP_SAME_AS, (left, right, options, context) => {

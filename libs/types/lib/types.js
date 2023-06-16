@@ -59,14 +59,14 @@ export class TypeSystem {
 
         typeMeta.sanitize = (value, meta, i18n, path) => {
             meta = { type: typeMeta.name, ...meta };
-            const opts = { rawValue: value, i18n, path };
+            const opts = { rawValue: value, i18n, path, system: this };
             const [isDone, sanitized] = this.beginSanitize(value, meta, opts);
             return this.endSanitize(isDone ? sanitized : typeMeta._sanitize(value, meta, opts), meta, opts);
         };
 
         typeMeta.sanitize_ = async (value, meta, i18n, path) => {
             meta = { type: typeMeta.name, ...meta };
-            const opts = { rawValue: value, i18n, path };
+            const opts = { rawValue: value, i18n, path, system: this };
             const [isDone, sanitized] = await this.beginSanitize(value, meta, opts);
             return this.endSanitize(
                 isDone

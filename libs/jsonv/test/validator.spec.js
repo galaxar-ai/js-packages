@@ -80,7 +80,7 @@ describe('jsv:validator', function () {
 
         Jsv.match(obj, {
             c: { $required: true },
-        }).should.be.eql([false, 'c is required.']);
+        }).should.be.eql([false, '"c" is required.']);
     });
 
     it('not', function () {
@@ -161,11 +161,11 @@ describe('jsv:validator', function () {
 
         Jsv.match(obj, {
             key1: { $hasKey: c.a.b },
-        }).should.be.eql([false, 'key1 must have all of these keys [10].']);
+        }).should.be.eql([false, '"key1" must have all of these keys [10].']);
 
         Jsv.match(obj, {
             key8: { $hasKey: [10] },
-        }).should.be.eql([false, 'key8 must have all of these keys [10].']);
+        }).should.be.eql([false, '"key8" must have all of these keys [10].']);
     });
 
     it('Jsv', function () {
@@ -252,13 +252,13 @@ describe('jsv:validator', function () {
             Jsvo.match({
                 key1: { $gt: 3000 },
             });
-        }, /key1 must be greater than 3000/);
+        }, /"key1" must be greater than 3000/);
 
         should.throws(() => {
             Jsvo.match({
                 key1: { $lt: 1000 },
             });
-        }, /key1 must be less than 1000/);
+        }, /"key1" must be less than 1000/);
 
         should.throws(() => {
             Jsvo.match({

@@ -88,7 +88,7 @@ function main() {
                     c: {
                         desc: "Config path",
                         alias: ["conf", "config"],
-                    },
+                    },           
                     "skip-install": {
                         desc: "Skip dependencies installation",
                         alias: ["skip-npm-install"],

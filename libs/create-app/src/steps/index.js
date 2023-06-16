@@ -1,4 +1,4 @@
-//export { default as common } from './common_';
+export { default as common_ } from './common_';
 export { default as copyFiles_ } from './copyFiles_';
 export { default as ensureSafeToCreateProject } from './ensureSafeToCreateProject';
 export { default as ensureTargetPath } from './ensureTargetPath';

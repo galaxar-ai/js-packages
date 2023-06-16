@@ -1,1 +1,1 @@
-{"version":3,"sources":["../lib/index.js"],"sourcesContent":["export { default } from './Jxs';\n"],"names":["default"],"mappings":";;;;+BAASA;;;eAAAA,YAAO;;;4DAAQ"}
+{"version":3,"sources":["../lib/index.js"],"sourcesContent":["export { default as transform } from './transformers';\nexport { default } from './Jxs';\n"],"names":["transform","default"],"mappings":";;;;;;;;;;;IAAoBA,SAAS;eAATA,qBAAS;;IACpBC,OAAO;eAAPA,YAAO;;;qEADqB;4DACb"}

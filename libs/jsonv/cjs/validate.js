@@ -66,14 +66,22 @@ function _interop_require_wildcard(obj, nodeInterop) {
     return newObj;
 }
 const MSG = _config.default.messages;
+const DEFAULT_LOCALE = 'en';
 function getUnmatchedExplanation(op, leftValue, rightValue, context) {
     if (context.$$ERROR) {
         return context.$$ERROR;
     }
-    if (!MSG.validationErrors) {
-        throw new Error('Please import locale first before using validators.');
+    let getter;
+    if (MSG.validationErrors) {
+        getter = MSG.validationErrors[op];
+    } else {
+        let locale = context.locale || DEFAULT_LOCALE;
+        if (!_config.default.supportedLocales.has(locale)) {
+            locale = DEFAULT_LOCALE;
+        }
+        const messages = (0, _utils.esmCheck)(require('./locale/' + locale));
+        getter = messages.validationErrors[op];
     }
-    const getter = MSG.validationErrors[op];
     return getter(context.name, leftValue, rightValue, context);
 }
 function test(left, op, right, options, context) {
@@ -90,10 +98,7 @@ function test(left, op, right, options, context) {
  * @param {*} options - Validation options
  * @param {*} context - Validation context
  * @returns {array} - [ {boolean} matched, {string} unmatchedReason ]
- */ function validate(actual, jvs, options = {
-    throwError: true,
-    abortEarly: true
-}, context = {}) {
+ */ function validate(actual, jvs, options, context = {}) {
     if (jvs == null) {
         return true;
     }

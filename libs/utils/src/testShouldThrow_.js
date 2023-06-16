@@ -3,9 +3,9 @@ const shouldThrow_ = async (fn, error) => {
         await fn();
         should.not.exist('here');
     } catch (e) {
-        should.throws(() => {
+        (()=>{
             throw e;
-        }, error);
+        }).should.throws(error);
     }
 };
 

@@ -38,7 +38,13 @@ function _interop_require_default(obj) {
      * @throws ValidationError
      * @returns {Jvs}
      */ match(expected) {
-        (0, _validators.default)(this.value, expected);
+        (0, _validators.default)(this.value, expected, {
+            throwError: true,
+            abortEarly: true
+        }, {
+            $$: this.value,
+            $$ROOT: this.value
+        });
         return this;
     }
     /**
@@ -54,7 +60,11 @@ _define_property(Jvs, "match", (value, jvs, options, context)=>{
         abortEarly: true,
         plainError: true,
         ...options
-    }, context);
+    }, {
+        $$: value,
+        $$ROOT: value,
+        ...context
+    });
     if (reason === true) {
         return [
             true

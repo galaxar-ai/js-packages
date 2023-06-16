@@ -161,7 +161,7 @@ importers:
         specifier: workspace:*
         version: link:../app
       '@galaxar/types':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../types
       '@galaxar/utils':
         specifier: workspace:*
@@ -197,6 +197,9 @@ importers:
       '@galaxar/utils':
         specifier: workspace:*
         version: link:../utils
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
 
   libs/jsonx:
     dependencies:
@@ -209,6 +212,9 @@ importers:
       '@galaxar/utils':
         specifier: workspace:*
         version: link:../utils
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
 
   libs/server:
     dependencies:
@@ -390,6 +396,27 @@ importers:
       mobx:
         specifier: ^6.9.0
         version: 6.9.0
+
+  libs/validators:
+    dependencies:
+      '@galaxar/jsonv':
+        specifier: workspace:^
+        version: link:../jsonv
+      '@galaxar/jsonx':
+        specifier: workspace:^
+        version: link:../jsonx
+      '@galaxar/types':
+        specifier: workspace:^
+        version: link:../types
+      '@galaxar/utils':
+        specifier: workspace:^
+        version: link:../utils
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+      validator:
+        specifier: ^13.9.0
+        version: 13.9.0
 
 packages:
 
@@ -5819,6 +5846,11 @@ packages:
       spdx-correct: 3.2.0
       spdx-expression-parse: 3.0.1
     dev: true
+
+  /validator@13.9.0:
+    resolution: {integrity: sha512-B+dGG8U3fdtM0/aNK4/X8CXq/EcxU2WPrPEkJGslb47qyHsxmbggTWK0yEA4qnYVNF+nxNlN88o14hIcPmSIEA==}
+    engines: {node: '>= 0.10'}
+    dev: false
 
   /vary@1.1.2:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}

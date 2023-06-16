@@ -34,6 +34,7 @@ const getChildContext = (context, currentValue, childKey, childValue, extra)=>({
         $$KEY: childKey
     });
 const contextVarKeys = new Set([
+    '$$',
     '$$ROOT',
     '$$PARENT',
     '$$CURRENT',
@@ -99,7 +100,17 @@ const config = {
         if (locale in messagesCache) {
             Object.assign(messages, messagesCache[locale]);
         }
-    }
+    },
+    supportedLocales: new Set([
+        'en',
+        'en-AU',
+        'en-GB',
+        'en-US',
+        'zh',
+        'zh-CN',
+        'zh-HK',
+        'zh-TW'
+    ])
 };
 const _default = config;
 

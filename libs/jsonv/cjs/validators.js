@@ -218,6 +218,19 @@ const OP_END_WITH = [
     '$endWith',
     '$endsWith'
 ];
+const OP_MATCH_PATTERN = [
+    _validateOperators.default.MATCH_PATTERN,
+    '$pattern',
+    '$matchPattern',
+    '$matchRegex'
+];
+const OP_CONTAINS = [
+    _validateOperators.default.CONTAINS,
+    '$contain',
+    '$contains',
+    '$include',
+    '$includes'
+];
 const OP_SAME_AS = [
     _validateOperators.default.SAME_AS,
     '$sameAs'
@@ -367,7 +380,7 @@ _config.default.addValidatorToMap(OP_TYPE, (left, right, options, context)=>{
     if (typeof right !== 'string') {
         throw new Error(MSG.OPERAND_NOT_STRING(_validateOperators.default.TYPE));
     }
-    if (!_types.Primitives.has(right)) {
+    if (!_types.Types.primitives.has(right)) {
         throw new Error(MSG.UNSUPPORTED_TYPE(right));
     }
     return _types.Types[right].validate(left);
@@ -397,6 +410,34 @@ _config.default.addValidatorToMap(OP_END_WITH, (left, right, options, context)=>
         throw new Error(MSG.OPERAND_NOT_STRING(_validateOperators.default.END_WITH));
     }
     return left.endsWith(right);
+});
+_config.default.addValidatorToMap(OP_MATCH_PATTERN, (left, right, options, context)=>{
+    if (typeof left !== 'string') {
+        return false;
+    }
+    right = processRightValue(right, context);
+    let pattern = right;
+    let flags;
+    if (Array.isArray(right)) {
+        if (right.length > 2) {
+            throw new Error(MSG.OPERAND_NOT_TUPLE(_validateOperators.default.MATCH_PATTERN));
+        }
+        pattern = right[0];
+        flags = right[1];
+    } else if (typeof right !== 'string') {
+        throw new Error(MSG.OPERAND_NOT_STRING(_validateOperators.default.MATCH_PATTERN));
+    }
+    return new RegExp(pattern, flags).test(left);
+});
+_config.default.addValidatorToMap(OP_CONTAINS, (left, right, options, context)=>{
+    if (typeof left !== 'string') {
+        return false;
+    }
+    right = processRightValue(right, context);
+    if (typeof right !== 'string') {
+        throw new Error(MSG.OPERAND_NOT_STRING(_validateOperators.default.CONTAINS));
+    }
+    return left.includes(right);
 });
 _config.default.addValidatorToMap(OP_SAME_AS, (left, right, options, context)=>{
     if (typeof left === 'object') {

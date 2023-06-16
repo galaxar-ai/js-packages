@@ -1,7 +1,7 @@
 export const namingFactory = (nameOfValue) => (name, left, context, custom) => {
     const fullName = name == null ? context.path : makePath(name, context?.path);
 
-    return fullName == null ? nameOfValue(custom) : context?.mapOfNames ? context.mapOfNames[fullName] : fullName;
+    return fullName == null ? nameOfValue(custom) : `"${context?.mapOfNames ? context.mapOfNames[fullName] : fullName}"`;
 };
 
 export const formatKey = (key, hasPrefix) => (Number.isInteger(key) ? `[${key}]` : hasPrefix ? '.' + key : key);

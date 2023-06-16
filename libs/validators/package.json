@@ -1,0 +1,64 @@
+{
+    "name": "@galaxar/validators",
+    "version": "1.0.0",
+    "description": "Galaxar validators to be used with @galaxar/types based on @galaxar/jsonv and @galaxar/jsonx",
+    "main": "cjs/index",
+    "module": "src/index.js",
+    "react-native": "src/index.js",
+    "exports": {
+        ".": {
+            "import": "./src/index.js",
+            "require": "./cjs/index.js"
+        },
+        "./**/*": {
+            "import": "./src/**/*.js",
+            "require": "./cjs/**/*.js"
+        }
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "author": "Rockie Guo <rockie@kitmi.com.au>",
+    "nyc": {
+        "exclude": [
+            ".*",
+            "cjs",
+            "__test__"
+        ]
+    },
+    "scripts": {
+        "test": "pnpm build && mocha --recursive ./test/*.spec.js",
+        "cover": "nyc --reporter=html --reporter=text mocha --recursive ./test/*.spec.js && open ./coverage/index.html",
+        "prettier": "prettier . --write --ignore-unknown",
+        "lint": "eslint \"./src/**/*.js\"",
+        "lint-fix": "eslint \"./src/**/*.js\" --fix",
+        "clean": "shx rm -rf cjs",
+        "clean-test": "shx rm -rf .nyc_output coverage",
+        "build": "pnpm clean && swc ./src/*.js -d ./cjs"
+    },
+    "keywords": [
+        "javascript",
+        "library",
+        "validator",
+        "pipeline",
+        "validation",
+        "processing"
+    ],
+    "license": "MIT",
+    "prettier": {
+        "quoteProps": "consistent",
+        "printWidth": 120,
+        "singleQuote": true,
+        "trailingComma": "es5",
+        "tabWidth": 4,
+        "useTabs": false
+    },
+    "dependencies": {
+        "@galaxar/jsonv": "workspace:^",
+        "@galaxar/jsonx": "workspace:^",
+        "@galaxar/types": "workspace:^",
+        "@galaxar/utils": "workspace:^",
+        "lodash": "^4.17.21",
+        "validator": "^13.9.0"
+    }
+}

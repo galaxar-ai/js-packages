@@ -8,15 +8,9 @@ Object.defineProperty(exports, "default", {
         return _default;
     }
 });
-const _nodecrypto = /*#__PURE__*/ _interop_require_default(require("node:crypto"));
-const _nodefs = require("node:fs");
 const _app = require("@galaxar/app");
-const _types = require("@galaxar/types");
-function _interop_require_default(obj) {
-    return obj && obj.__esModule ? obj : {
-        default: obj
-    };
-}
+const _hash = require("./utils/hash");
+const _crypto = require("./utils/crypto");
 const hashes = [
     'rsa-md5',
     'rsa-ripemd160',
@@ -123,106 +117,16 @@ const _default = {
             }
         }, name);
         const service = {
-            hash: (message, salt, encoding = 'hex', _hashAlgorithm)=>{
-                const hash = _nodecrypto.default.createHash(_hashAlgorithm ?? hashAlgorithm);
-                hash.update(message);
-                hash.update(salt);
-                return hash.digest(encoding);
-            },
-            hashFile_: async (filePath, encoding = 'hex', _hashAlgorithm)=>{
-                const hash = _nodecrypto.default.createHash(_hashAlgorithm ?? hashAlgorithm);
-                return new Promise((resolve, reject)=>(0, _nodefs.createReadStream)(filePath).on('error', reject).pipe(hash).on('error', reject).on('finish', ()=>{
-                        if (encoding === 'buffer') {
-                            const { buffer  } = new Uint8Array(hash.read());
-                            resolve(buffer);
-                        } else {
-                            resolve(hash.read().toString(encoding));
-                        }
-                    }));
-            },
-            encrypt: (message, _key, _cipherAlgorithm)=>{
-                if (_key && _key.length !== 32) {
-                    throw new _types.ValidationError('The length of symmetric key should be exactly 32.', {
-                        key: _key
-                    });
-                }
-                const buf = Buffer.alloc(16);
-                _nodecrypto.default.randomFillSync(buf);
-                const cipher = _nodecrypto.default.createCipheriv(_cipherAlgorithm ?? cipherAlgorithm, _key ?? key, buf);
-                let encryptedData = cipher.update(message, 'utf-8', 'base64');
-                encryptedData += cipher.final('base64');
-                encryptedData += buf.toString('hex');
-                return encryptedData;
-            },
-            decrypt: (message, _key, _cipherAlgorithm)=>{
-                if (_key && _key.length !== 32) {
-                    throw new _types.ValidationError('The length of symmetric key should be exactly 32.', {
-                        key: _key
-                    });
-                }
-                const l = message.length - 32;
-                const iv = Buffer.from(message.substring(l), 'hex');
-                const encrypted = message.substring(0, l);
-                const decipher = _nodecrypto.default.createDecipheriv(_cipherAlgorithm ?? cipherAlgorithm, _key ?? key, iv);
-                let decrypted = decipher.update(encrypted, 'base64', 'utf8');
-                decrypted += decipher.final('utf8');
-                return decrypted;
-            },
-            generateKeyPair: (algorithm, _options)=>{
-                const keypair = _nodecrypto.default.generateKeyPairSync(algorithm ?? asymmetricAlgorithm, {
-                    modulusLength: asymmetricBits,
-                    publicKeyEncoding: {
-                        type: 'spki',
-                        format: 'pem'
-                    },
-                    privateKeyEncoding: {
-                        type: 'pkcs8',
-                        format: 'pem'
-                    },
-                    ..._options
-                });
-                return keypair;
-            },
-            generateKeyPair_: async (algorithm, _options)=>{
-                const keypair = await new Promise((resolve, reject)=>_nodecrypto.default.generateKeyPair(algorithm ?? asymmetricAlgorithm, {
-                        modulusLength: asymmetricBits,
-                        publicKeyEncoding: {
-                            type: 'spki',
-                            format: 'pem'
-                        },
-                        privateKeyEncoding: {
-                            type: 'pkcs8',
-                            format: 'pem'
-                        },
-                        ..._options
-                    }, (err, publicKey, privateKey)=>{
-                        if (err) {
-                            reject(err);
-                            return;
-                        }
-                        resolve({
-                            publicKey,
-                            privateKey
-                        });
-                    }));
-                return keypair;
-            },
-            publicEncrypt: (message, publicKey, encoding = 'base64')=>{
-                return _nodecrypto.default.publicEncrypt(publicKey, Buffer.from(message, 'utf8')).toString(encoding);
-            },
-            privateDecrypt: (message, privateKey, encoding = 'base64')=>{
-                return _nodecrypto.default.privateDecrypt(privateKey, Buffer.from(message, encoding)).toString('utf8');
-            },
-            privateSign: (message, privateKey, _signerAlgorithm, encoding = 'base64')=>{
-                const signer = _nodecrypto.default.createSign(_signerAlgorithm ?? signerAlgorithm);
-                signer.update(message);
-                return signer.sign(privateKey, encoding);
-            },
-            publicVerify: (message, signature, publicKey, _signerAlgorithm, encoding = 'base64')=>{
-                const verifier = _nodecrypto.default.createVerify(_signerAlgorithm ?? signerAlgorithm);
-                verifier.update(message);
-                return verifier.verify(publicKey, signature, encoding);
-            }
+            hash: (message, salt, encoding = 'hex', _hashAlgorithm)=>(0, _hash.hash)(_hashAlgorithm ?? hashAlgorithm, message, salt, encoding),
+            hashFile_: (filePath, encoding = 'hex', _hashAlgorithm)=>(0, _hash.hashFile_)(_hashAlgorithm ?? hashAlgorithm, filePath, encoding),
+            encrypt: (message, _key, _cipherAlgorithm)=>(0, _crypto.encrypt)(_cipherAlgorithm ?? cipherAlgorithm, _key ?? key, message),
+            decrypt: (message, _key, _cipherAlgorithm)=>(0, _crypto.decrypt)(_cipherAlgorithm ?? cipherAlgorithm, _key ?? key, message),
+            generateKeyPair: (algorithm, _options)=>(0, _crypto.generateKeyPair)(algorithm ?? asymmetricAlgorithm, asymmetricBits, _options),
+            generateKeyPair_: async (algorithm, _options)=>(0, _crypto.generateKeyPair_)(algorithm ?? asymmetricAlgorithm, asymmetricBits, _options),
+            publicEncrypt: (message, publicKey, encoding = 'base64')=>(0, _crypto.publicEncrypt)(publicKey, message, encoding),
+            privateDecrypt: (message, privateKey, encoding = 'base64')=>(0, _crypto.privateDecrypt)(privateKey, message, encoding),
+            privateSign: (message, privateKey, _signerAlgorithm, encoding = 'base64')=>(0, _crypto.privateSign)(_signerAlgorithm ?? signerAlgorithm, privateKey, message, encoding),
+            publicVerify: (message, signature, publicKey, _signerAlgorithm, encoding = 'base64')=>(0, _crypto.publicVerify)(_signerAlgorithm ?? signerAlgorithm, publicKey, message, signature, encoding)
         };
         app.registerService(name, service);
     }

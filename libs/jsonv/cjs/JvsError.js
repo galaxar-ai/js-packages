@@ -8,18 +8,14 @@ Object.defineProperty(exports, "default", {
         return _default;
     }
 });
-const _castArray = /*#__PURE__*/ _interop_require_default(require("lodash/castArray"));
 const _config = require("./config");
-function _interop_require_default(obj) {
-    return obj && obj.__esModule ? obj : {
-        default: obj
-    };
-}
 class JsvError extends Error {
     constructor(errorOrErrors, value, field){
         const errors = [];
         let inner = [];
-        (0, _castArray.default)(errorOrErrors).forEach((err)=>{
+        (Array.isArray(errorOrErrors) ? errorOrErrors : [
+            errorOrErrors
+        ]).forEach((err)=>{
             if (err.name === 'JsvError') {
                 errors.push(...err.errors);
                 inner = [

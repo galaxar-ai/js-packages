@@ -1,24 +1,29 @@
-const updateFile_ = require("./updateFile_");
-const { REGISTRY_GENX, REGISTRY_NPMJS } = require("../constants");
+import path from 'node:path';
+import { fs } from '@galaxar/sys';
+import updateFile_ from './updateFile_';
 
 module.exports = async (app, targetPath, options) => {
-    await updateFile_(app, targetPath, ".npmrc", (vars) => {
-        const { registry, ...otherVars } = vars;
+    const npmrcPath = path.join(targetPath, '.npmrc');
+    const npmrcExists = await fs.exists(npmrcPath);
 
-        if (options.registry !== "npmjs") {
-            let _registry = options.registry;
+    const needUpdateNpmrc = options.registry !== 'npmjs' || npmrcExists;
 
-            return {
-                ...otherVars,
-                registry: _registry,
-            };
-        } else if (registry) {
-            return {
-                ...otherVars,
-                registry: REGISTRY_NPMJS,
-            };
-        }
+    if (needUpdateNpmrc) {
+        await updateFile_(app, targetPath, '.npmrc', (vars) => {
+            const { registry, ...otherVars } = vars;
 
-        return otherVars;
-    });
+            if (options.registry !== 'npmjs') {
+                let _registry = options.registry;
+
+                return {
+                    ...otherVars,
+                    registry: _registry,
+                };
+            }
+
+            return otherVars;
+        });
+    }
+
+    await fs.remove(path.join(targetPath, '.galaxar.init.js'));
 };

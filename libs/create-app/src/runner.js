@@ -2,8 +2,7 @@ import { fs } from "@galaxar/sys";
 
 import { appModes, appModeList } from "./modes";
 import exitWithError from "./utils/exitWithError";
-import tryDo_ from "./utils/tryDo_";
-import init_ from "./steps/init_";
+import init_ from "./init_";
 
 function overrideOptions(options, cmd, validatedArgs) {
     Object.assign(options, validatedArgs);
@@ -88,10 +87,7 @@ const run_ = async (app) => {
     //override options with command line arguments
     overrideOptions(options, cmd, validatedArgs);    
 
-    //ensure project folder exists
-    //return tryDo_(app, () => {
-        return init_(app, options);
-    //});
+    return init_(app, options);
 };
 
 export default run_;

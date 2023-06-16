@@ -20,7 +20,7 @@ export const getChildContext = (context, currentValue, childKey, childValue, ext
     $$KEY: childKey,
 });
 
-export const contextVarKeys = new Set(['$$ROOT', '$$PARENT', '$$CURRENT', '$$KEY']);
+export const contextVarKeys = new Set(['$$', '$$ROOT', '$$PARENT', '$$CURRENT', '$$KEY']);
 
 export const messages = {
     //Exception messages
@@ -101,6 +101,7 @@ const config = {
             Object.assign(messages, messagesCache[locale]);
         }
     },
+    supportedLocales: new Set(['en', 'en-AU', 'en-GB', 'en-US', 'zh', 'zh-CN', 'zh-HK', 'zh-TW'])
 };
 
 export default config;

@@ -29,7 +29,7 @@ describe('jxs:castArray', function () {
         let a = null;
 
         let transformed = Jxs.evaluate(a, '$castArray');
-        //console.log(transformed)
+        //console.log()
         should.not.exist(transformed);
     });
 });

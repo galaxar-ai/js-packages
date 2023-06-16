@@ -41,11 +41,11 @@
             "**/*.spec.js"
         ]
     },
-    "devDependencies": {},
     "dependencies": {
-        "@galaxar/utils": "workspace:*",
+        "@galaxar/jsonv": "workspace:*",
         "@galaxar/types": "workspace:*",
-        "@galaxar/jsonv": "workspace:*"
+        "@galaxar/utils": "workspace:*",
+        "lodash": "^4.17.21"
     },
     "prettier": {
         "quoteProps": "consistent",
