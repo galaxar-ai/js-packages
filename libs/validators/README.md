@@ -46,12 +46,12 @@ validator.sanitize(obj, {
     type: 'object',
     schema: {
         // key1 field's value should be an integer within the range from 10 to 30
-        key1: { type: 'integer', mod: mod: [
+        key1: { type: 'integer', mod: [
                     ['~max', 30],
                     ['~min', 10],
                 ]  },
         // key2 field's value should be an integer within the range from 20 to 30
-        key2: { type: 'integer', mod: mod: [
+        key2: { type: 'integer', mod: [
                     ['~max', 20],
                     ['~min', 10],
                 ]  },
@@ -92,4 +92,28 @@ validator.addValidator('isEmail', () => [ true or false, reason if false ]);
 validator.addProcessor('escape', () => {});
 validator.addActivator('randomFill', () => {});
 validator.sanitize()
+```
+
+Async mode
+
+```js
+import validator, { Types } from '@galaxar/validator/async';
+validator.addValidator('isEmail', () => [ true or false, reason if false ]);
+validator.addProcessor('escape', () => {});
+validator.addActivator('randomFill', () => {});
+await validator.sanitize_()
+```
+
+Sync mode with all modifiers
+
+```js
+import validator, { Types } from '@galaxar/validator/allSync';
+validator.sanitize()
+```
+
+Async mode with all modifiers
+
+```js
+import validator, { Types } from '@galaxar/validator/allAsync';
+await validator.sanitize_()
 ```
