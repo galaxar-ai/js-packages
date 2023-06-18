@@ -14,10 +14,14 @@ _export(exports, {
     },
     supertest: function() {
         return _supertest.default;
+    },
+    fetchagent: function() {
+        return _fetchagent.default;
     }
 });
 const _superagent = /*#__PURE__*/ _interop_require_default(require("./superagent"));
 const _supertest = /*#__PURE__*/ _interop_require_default(require("./supertest"));
+const _fetchagent = /*#__PURE__*/ _interop_require_default(require("./fetchagent"));
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj

@@ -1,6 +1,9 @@
 "use strict";
-const { cmd  } = require("@genx/sys");
-const { _  } = require("@genx/july");
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+const _sys = require("@galaxar/sys");
+const _utils = require("@galaxar/utils");
 module.exports = async (app, workingPath, command, treatErrorAsInfo)=>{
     const lastWd = process.cwd();
     let cwdChanged = false;
@@ -11,14 +14,14 @@ module.exports = async (app, workingPath, command, treatErrorAsInfo)=>{
     app.log('info', command);
     try {
         const [program, ...args] = command.split(' ');
-        await cmd.runLive_(program, args, (data)=>{
+        await _sys.cmd.runLive_(program, args, (data)=>{
             let output = data.toString();
             if (output.endsWith('\r\n')) {
                 output = output.slice(0, -2);
             } else if (output.endsWith('\n')) {
                 output = output.slice(0, -1);
             }
-            if (_.trimStart(output).substring(0, 4).toLocaleLowerCase() === 'warn') {
+            if (_utils._.trimStart(output).substring(0, 4).toLocaleLowerCase() === 'warn') {
                 app.log('warn', output);
             } else {
                 app.log('info', output);

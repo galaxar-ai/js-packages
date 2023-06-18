@@ -1,0 +1,41 @@
+{
+    "featureRegistry": {
+        "ttlMemCache": ["@galaxar/feat-utils", "ttlMemCache"],
+        "prisma": "@galaxar/feat-db/prisma"
+    },
+    "ttlMemCache": {},
+    "prisma": {
+        "log": ["info", "query"]
+    },
+    "apiWrapper": {},
+    "koa": {
+        "keys": ["key1", "key2", "to be replaced"],
+        "httpPort": 2331
+    },
+    "middlewares": [
+        ["favicon", "public/favicon.ico"],
+        "koa-compress",
+        "koa-etag",
+        "serveStatic",
+        [
+            "koa-body",
+            {
+                "multipart": true,
+                "jsonLimit": "15mb",
+                "formidable": {
+                    "maxFieldsSize": 15728640
+                }
+            }
+        ]
+    ],
+    "routing": {
+        "/": {
+            "rule": {
+                "rules": {
+                    "get:/home": "home.index"
+                }
+            },
+            "gaml": {}
+        }
+    }
+}

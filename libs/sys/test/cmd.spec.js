@@ -22,7 +22,7 @@ describe('unit:cmd', function () {
 
     it('cmd live', async function () {
         const code = await runLive_('ls', ['-l']);
-        code.should.be.exactly(0);
+        code.should.be.eql(0);
     });
 
     it('cmd live 2', async function () {
@@ -44,7 +44,7 @@ describe('unit:cmd', function () {
     });
 
     it('should throw an error if the command fails', () => {
-        should.throws(() => runSync('invalid command'), Error);
+        (() => runSync('invalid command')).should.throws();
     });
 
     it('should accept options to pass to child_process.execSync', () => {

@@ -65,7 +65,7 @@ export default {
                 throw new InvalidConfiguration(
                     `App [${config.name}] not found at ${appPath}`,
                     server,
-                    `appRouting.${baseRoute}.name`
+                    `appRouting[${baseRoute}].name`
                 );
             }
 

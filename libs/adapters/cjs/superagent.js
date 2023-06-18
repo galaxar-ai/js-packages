@@ -17,7 +17,7 @@ function _interop_require_default(obj) {
 const superagentAdapter = ()=>{
     const agent = _superagent.default.agent();
     return {
-        createRequest (client, method, url) {
+        createRequest (method, url) {
             return agent[method](url);
         }
     };

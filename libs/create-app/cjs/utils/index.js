@@ -12,13 +12,13 @@ _export(exports, {
     appNameToFileName: function() {
         return _appNameToFileName.default;
     },
-    copyFileFromTemplate: function() {
+    copyFileFromTemplate_: function() {
         return _createFileFromTemplate_.default;
     },
-    deleteLines: function() {
+    deleteLines_: function() {
         return _deleteLines_.default;
     },
-    download: function() {
+    download_: function() {
         return _download_.default;
     },
     exitWithError: function() {
@@ -27,8 +27,11 @@ _export(exports, {
     getTempPath: function() {
         return _getTempPath.default;
     },
-    tryDo: function() {
+    tryDo_: function() {
         return _tryDo_.default;
+    },
+    untar_: function() {
+        return _untar_.default;
     }
 });
 const _appNameToFileName = /*#__PURE__*/ _interop_require_default(require("./appNameToFileName"));
@@ -38,6 +41,7 @@ const _download_ = /*#__PURE__*/ _interop_require_default(require("./download_")
 const _exitWithError = /*#__PURE__*/ _interop_require_default(require("./exitWithError"));
 const _getTempPath = /*#__PURE__*/ _interop_require_default(require("./getTempPath"));
 const _tryDo_ = /*#__PURE__*/ _interop_require_default(require("./tryDo_"));
+const _untar_ = /*#__PURE__*/ _interop_require_default(require("./untar_"));
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj

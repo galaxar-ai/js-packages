@@ -8,15 +8,15 @@ describe('unit:tryRequire', function() {
     });
 
     it('require a non-exist module',async function () {        
-        should.throws(() => {
+        (() => {
             tryRequire('non-exist');
-        }, /^Error: Module "non-exist" not found. Try run "npm install non-exist" to install the dependency./);        
+        }).should.throws(/Module "non-exist" not found. Try run "npm install non-exist" to install the dependency./);        
     });  
 
     it('require a local non-exist module',async function () {
-        should.throws(() => {
+        (() => {
             tryRequire('./fakeLib');
-        }, /^Error: Cannot find module '.\/fakeLib'/);       
+        }).should.throws(/Cannot find module '.\/fakeLib'/);       
          
     });  
     

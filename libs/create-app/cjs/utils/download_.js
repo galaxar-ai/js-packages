@@ -8,16 +8,18 @@ Object.defineProperty(exports, "default", {
         return _default;
     }
 });
+const _nodepath = /*#__PURE__*/ _interop_require_default(require("node:path"));
 const _superagent = /*#__PURE__*/ _interop_require_default(require("superagent"));
+const _sys = require("@galaxar/sys");
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
     };
 }
 const download_ = async (app, url, saveToPath)=>{
-    const dirName = path.dirname(saveToPath);
-    await fs.ensureDir(dirName);
-    const stream = fs.createWriteStream(saveToPath);
+    const dirName = _nodepath.default.dirname(saveToPath);
+    await _sys.fs.ensureDir(dirName);
+    const stream = _sys.fs.createWriteStream(saveToPath);
     return new Promise((resolve, reject)=>{
         stream.on('close', ()=>{
             resolve();

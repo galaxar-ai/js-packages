@@ -13,6 +13,10 @@ const DESKTOP_TAURI = 'desktop-tauri';
 const CUSTOM_TEMPLATE = 'custom';
 
 export const modesDetail = {
+    [MONO_REPO]: {
+        url: 'https://github.com/galax-ai/gx-monorepo-templates/releases/latest/download/package.tgz',
+        desc: 'Monorepo for apps and packages'
+    },
     [CLI]: {
         url: '',
         desc: 'Command line application project based on @galaxar/app',

@@ -1,8 +1,10 @@
-const getPackageManager = require('./getPackageManager');
+import getPackageManager from "./getPackageManager";
 
-module.exports = async (app, targetPath, options) => {    
+async function npmInstall_(app, targetPath, options) {    
     if (!options.skipNpmInstall) {
         const manager = getPackageManager(options);
         await manager.install_(app, targetPath);
     }
 }
+
+export default npmInstall_;

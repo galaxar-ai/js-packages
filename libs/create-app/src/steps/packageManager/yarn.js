@@ -1,10 +1,14 @@
-const runCommand_ = require('../runCommand_');
-const { cmd } = require('@genx/sys');
+import runCommand_ from '../runCommand_';
+import { cmd } from '@galaxar/sys';
 
-exports.install_ = async (app, targetPath) => {
-    await runCommand_(app, targetPath, 'yarn install');
-}
+const yarn = {
+    install_: async (app, targetPath) => {
+        await runCommand_(app, targetPath, 'yarn install');
+    },
 
-exports.version = () => {
-    return cmd.runSync('yarn -v').trim();
-}
+    version: () => {
+        return cmd.runSync('yarn -v').trim();
+    },
+};
+
+export default yarn;

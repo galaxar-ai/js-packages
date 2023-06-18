@@ -5,13 +5,14 @@ import figlet from "figlet";
 
 import runner from "./runner";
 import appNameToFileName from "./utils/appNameToFileName";
-
 import pkg from "../package.json";
+
+const cliName = Object.keys(pkg.bin)[0];
 
 function main() {
     return startCommand(runner, {
         logLevel: process.env.NODE_ENV === 'development' ? "verbose" : "info",
-        commandName: "gx-init",
+        commandName: cliName,
         config: {
             version: pkg.version,
             commandLine: {
@@ -21,7 +22,7 @@ function main() {
                       }) + '\n' +
                      `Galaxar application initiator command line v${pkg.version}`;
                 },
-                program: "npm init @genx/app",
+                program: cliName,
                 arguments: [
                     {
                         name: "app-directory",

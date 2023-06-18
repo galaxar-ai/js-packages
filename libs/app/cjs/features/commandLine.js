@@ -40,7 +40,7 @@ function translateMinimistOptions(opts) {
 function optionDecorator(name) {
     return name.length == 1 ? '-' + name : '--' + name;
 }
-const gArgv = process.argv.slice(2);
+let gArgv = process.argv.slice(2);
 /**
  * Error caused by command line arguments.
  * @class
@@ -67,17 +67,6 @@ const gArgv = process.argv.slice(2);
         const minimist = this.app.tryRequire('minimist');
         const minimistOpts = translateMinimistOptions(options);
         this.argv = minimist(gArgv, minimistOpts);
-        // fix: non-default arg has default value
-        minimistOpts.boolean?.forEach((bn)=>{
-            if (!(bn in minimistOpts.default)) {
-                delete this.argv[bn];
-            }
-        });
-        minimistOpts.string?.forEach((sn)=>{
-            if (!(sn in minimistOpts.default)) {
-                delete this.argv[sn];
-            }
-        });
     }
     option(name) {
         return this.argv[name];
@@ -392,7 +381,19 @@ const _default = {
      *   } }
      *
      * @returns {Promise.<*>}
-     */ load_: async (app, usageOptions)=>{
+     */ load_: async (app, options, name)=>{
+        const { testArgs , ...usageOptions } = app.featureConfig(options, {
+            schema: {
+                testArgs: {
+                    type: 'array',
+                    optional: true
+                }
+            },
+            keepUnsanitized: true
+        }, name);
+        if (testArgs) {
+            gArgv = testArgs;
+        }
         app.commandLine = new CommandLine(app, usageOptions);
         let silentMode = usageOptions.silentMode;
         if (silentMode && typeof silentMode === 'function') {

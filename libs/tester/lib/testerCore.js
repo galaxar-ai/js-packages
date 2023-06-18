@@ -184,12 +184,11 @@ class GxTester {
                 const agentCreator = esmCheck(require(`@galaxar/adapters/${agentCreatorModule}`));
 
                 const agent = agentCreator();
-
-                const client = new HttpClient(agent, {  ...agentClientSetting.options , ...clientOptions });
-                if (this.isCoverMode) {
-                    console.log('set server', '--------------------', server != null);
-                    client.server = server.httpServer;
+                if (this.isCoverMode) {                    
+                    agent.server = server.httpServer;
                 }
+
+                const client = new HttpClient(agent, {  ...agentClientSetting.options , ...clientOptions });                
 
                 client.onResponse = (result, req, res) => {
                     this.attach(`${req.method} ${req.url}`, { headers: res.header, response: result });

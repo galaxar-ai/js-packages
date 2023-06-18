@@ -1,10 +1,26 @@
 "use strict";
-const path = require("node:path");
-const { fs  } = require("@genx/sys");
-module.exports = (options)=>{
-    const targetPath = path.join(options.workingPath, options.appDir);
-    fs.ensureDirSync(targetPath);
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "default", {
+    enumerable: true,
+    get: function() {
+        return _default;
+    }
+});
+const _nodepath = /*#__PURE__*/ _interop_require_default(require("node:path"));
+const _sys = require("@galaxar/sys");
+function _interop_require_default(obj) {
+    return obj && obj.__esModule ? obj : {
+        default: obj
+    };
+}
+function ensureTargetPath(options) {
+    const targetPath = _nodepath.default.join(options.workingPath, options.appDir);
+    _sys.fs.ensureDirSync(targetPath);
     return targetPath;
-};
+}
+;
+const _default = ensureTargetPath;
 
 //# sourceMappingURL=ensureTargetPath.js.map

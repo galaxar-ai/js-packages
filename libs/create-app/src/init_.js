@@ -19,7 +19,7 @@ async function downloadTemplate_(app, options) {
     const tarFile = path.join(tempDir, 'template.tgz');
     await download_(app, templateUrl, tarFile);    
 
-    app.log('info', `Saved to ${tarFile}`);
+    app.log('verbose', `Saved to ${tarFile}`);
 
     return { 
         tempDir,
@@ -35,24 +35,26 @@ async function downloadTemplate_(app, options) {
     await untar_(tarFile, tempPath);
 
     const initFile = path.join(tempPath, '.galaxar.init.js');
-    const initMeta = require(initFile);
+    const templateMetadata = require(initFile);
     const targetPath = steps.ensureTargetPath(options);
 
-    if (initMeta.newProject) {
+    if (templateMetadata.newProject) {
         steps.ensureSafeToCreateProject(app, targetPath, ["package.json"]);        
     }
 
-    await steps.copyFiles_(app, tempPath, targetPath, !initMeta.newProject && initMeta.noOverriding);
+    await steps.copyFiles_(app, tempPath, targetPath, !templateMetadata.newProject && templateMetadata.noOverriding);
 
-    if (initMeta.newProject) {
-        await steps.updatePackageJson_(app, targetPath, options, [
-            (packageConfig, options) => {
+    if (templateMetadata.newProject) {
+        // For new project, update the name in package.json
+        await steps.updatePackageJson_(app, targetPath, templateMetadata, options, [
+            (packageConfig, $_, options) => {
                 packageConfig.name = options.appName;
             }
         ]);
     }
 
-    await steps.common_(app, targetPath, options);
+    // update npmrc, remove unused files
+    await steps.common_(app, targetPath, templateMetadata, options);
 
     await steps.npmInstall_(app, targetPath, options);
 };

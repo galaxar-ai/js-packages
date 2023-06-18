@@ -4,8 +4,8 @@ import supertest from 'supertest';
 const supertestAdapter = () => {
     const agent = supertest;
 
-    return {
-        createRequest(client, httpMethod, url) {
+    const agentWrapper = {
+        createRequest(httpMethod, url) {
             let testUrl = url;
 
             if (url.startsWith('http://') || url.startsWith('https://')) {
@@ -17,13 +17,15 @@ const supertestAdapter = () => {
                 }
             }
 
-            if (!client.server) {
-                throw new Error('"server" is required before sending test request.');
+            if (!agentWrapper.server) {
+                throw new Error('"server" of the agent is required before sending test request.');
             }
 
-            return agent(client.server)[httpMethod](testUrl);
+            return agent(agentWrapper.server)[httpMethod](testUrl);
         },
     };
+
+    return agentWrapper;
 };
 
 export default supertestAdapter;

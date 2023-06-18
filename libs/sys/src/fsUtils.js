@@ -1,8 +1,8 @@
 import fs from 'fs-extra';
 
-export const isDir = (path) => fs.lstatSync(path).isDirectory();
+export const isDir = (path) => fs.statSync(path).isDirectory();
 
-export const isDir_ = async (path) => (await fs.lstat(path)).isDirectory();
+export const isDir_ = async (path) => (await fs.stat(path)).isDirectory();
 
 export const isDirEmpty = (path) => fs.readdirSync(path).length === 0;
 

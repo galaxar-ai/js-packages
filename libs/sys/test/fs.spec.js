@@ -3,27 +3,27 @@ import fs from 'fs-extra';
 
 describe('unit:fs', function () {
     it('fs isDir', function () {
-        isDir(__filename).should.not.be.ok();
-        isDir(__dirname).should.be.ok();
+        assert.isNotOk(isDir(__filename));
+        assert.isOk(isDir(__dirname));
     });
 
     it('fs isDir_', async function () {
-        (await isDir_(__filename)).should.not.be.ok();
-        (await isDir_(__dirname)).should.be.ok();
+        assert.isNotOk(await isDir_(__filename));
+        assert.isOk(await isDir_(__dirname));
     });
 
     it('fs isDirEmpty', function () {
-        isDirEmpty(__dirname).should.not.be.ok();
+        assert.isNotOk(isDirEmpty(__dirname));
 
         fs.mkdirSync(__dirname + '/test');
-        isDirEmpty(__dirname + '/test').should.be.ok();
+        assert.isOk(isDirEmpty(__dirname + '/test'));
         fs.rmdirSync(__dirname + '/test');
     });
 
     it('fs isDirEmpty_', async function () {
-        (await isDirEmpty_(__dirname)).should.not.be.ok();
+        assert.isNotOk(await isDirEmpty_(__dirname));
         fs.mkdirSync(__dirname + '/test');
-        (await isDirEmpty_(__dirname + '/test')).should.be.ok();
+        assert.isOk(await isDirEmpty_(__dirname + '/test'));
         fs.rmdirSync(__dirname + '/test');
     });
 });

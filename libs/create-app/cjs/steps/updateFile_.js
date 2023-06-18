@@ -1,7 +1,21 @@
 "use strict";
-const path = require("path");
-const { fs  } = require("@genx/sys");
-const { unquote , quote , _  } = require("@genx/july");
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "default", {
+    enumerable: true,
+    get: function() {
+        return _default;
+    }
+});
+const _nodepath = /*#__PURE__*/ _interop_require_default(require("node:path"));
+const _sys = require("@galaxar/sys");
+const _utils = require("@galaxar/utils");
+function _interop_require_default(obj) {
+    return obj && obj.__esModule ? obj : {
+        default: obj
+    };
+}
 const fileTypeMapper = {
     ".npmrc": "export"
 };
@@ -11,7 +25,7 @@ function parseExports(content) {
         if (line === "") return vars;
         let [key, value] = line.split("=");
         value = value.trim();
-        vars[key.trim()] = unquote(value, true, [
+        vars[key.trim()] = (0, _utils.unquote)(value, true, [
             '"',
             "'"
         ]);
@@ -20,36 +34,38 @@ function parseExports(content) {
 }
 function formatExports(vars) {
     const lines = [];
-    _.each(vars, (v, k)=>{
-        lines.push(`${k} = ${typeof v === "string" ? quote(v) : v}`);
+    _utils._.each(vars, (v, k)=>{
+        lines.push(`${k} = ${typeof v === "string" ? (0, _utils.quote)(v) : v}`);
     });
     return lines.join("\n") + "\n";
 }
-module.exports = async (app, targetPath, relativePath, updater)=>{
-    const filePath = path.resolve(targetPath, relativePath);
-    const baseName = path.basename(relativePath);
-    const fileExists = await fs.exists(filePath);
-    const content = fileExists ? await fs.readFile(filePath, "utf8") : "";
+async function updateFile_(app, targetPath, relativePath, updater) {
+    const filePath = _nodepath.default.resolve(targetPath, relativePath);
+    const baseName = _nodepath.default.basename(relativePath);
+    const fileExists = await _sys.fs.exists(filePath);
+    const content = fileExists ? await _sys.fs.readFile(filePath, "utf8") : "";
     const fileType = fileTypeMapper[baseName];
     let updated;
     let noContent = false;
     switch(fileType){
         case "export":
             updated = await updater(parseExports(content));
-            noContent = _.isEmpty(updated);
+            noContent = _utils._.isEmpty(updated);
             updated = formatExports(updated);
             break;
         case "json":
             updated = await updater(JSON.parse(content));
-            noContent = _.isEmpty(updated);
+            noContent = _utils._.isEmpty(updated);
             updated = JSON.stringify(updated);
             break;
     }
     if (!fileExists && noContent) {
         return;
     }
-    await fs.writeFile(filePath, updated, "utf8");
+    await _sys.fs.writeFile(filePath, updated, "utf8");
     app.log("info", `Updated file ${relativePath}`);
-};
+}
+;
+const _default = updateFile_;
 
 //# sourceMappingURL=updateFile_.js.map

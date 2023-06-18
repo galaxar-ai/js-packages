@@ -20,7 +20,9 @@ _export(exports, {
     }
 });
 const _utils = require("@galaxar/utils");
+const MONO_REPO = 'monorepo';
 const CLI = 'cli';
+const LIB = 'lib';
 const SERVER = 'server';
 const APP_MODULE = 'app-module';
 const APP_FEATURE = 'app-feature';
@@ -30,12 +32,20 @@ const DESKTOP_ELECTRON = 'desktop-electron';
 const DESKTOP_TAURI = 'desktop-tauri';
 const CUSTOM_TEMPLATE = 'custom';
 const modesDetail = {
+    [MONO_REPO]: {
+        url: 'https://github.com/galax-ai/gx-monorepo-templates/releases/latest/download/package.tgz',
+        desc: 'Monorepo for apps and packages'
+    },
     [CLI]: {
         url: '',
         desc: 'Command line application project based on @galaxar/app'
     },
+    [LIB]: {
+        url: 'https://github.com/galax-ai/gx-js-lib-template/releases/latest/download/package.tgz',
+        desc: 'Javascript library project (ES-style)'
+    },
     [SERVER]: {
-        url: '',
+        url: 'https://github.com/galax-ai/gx-server-template/releases/latest/download/package.tgz',
         desc: 'Web service hosting project based on @galaxar/server'
     },
     [APP_MODULE]: {
@@ -55,16 +65,6 @@ const appModeList = (0, _utils.objectToArray)(modesDetail, (v, k)=>({
         name: `[${k}] - ${v.desc}`,
         value: k
     }));
-const appModes = [
-    CLI,
-    SERVER,
-    APP_MODULE,
-    APP_FEATURE,
-    REACT_WEB,
-    REACT_NATIVE,
-    DESKTOP_ELECTRON,
-    DESKTOP_TAURI,
-    CUSTOM_TEMPLATE
-];
+const appModes = new Set(Object.keys(modesDetail));
 
 //# sourceMappingURL=modes.js.map

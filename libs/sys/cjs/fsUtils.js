@@ -28,8 +28,8 @@ function _interop_require_default(obj) {
         default: obj
     };
 }
-const isDir = (path)=>_fsextra.default.lstatSync(path).isDirectory();
-const isDir_ = async (path)=>(await _fsextra.default.lstat(path)).isDirectory();
+const isDir = (path)=>_fsextra.default.statSync(path).isDirectory();
+const isDir_ = async (path)=>(await _fsextra.default.stat(path)).isDirectory();
 const isDirEmpty = (path)=>_fsextra.default.readdirSync(path).length === 0;
 const isDirEmpty_ = async (path)=>{
     const files = await _fsextra.default.readdir(path);

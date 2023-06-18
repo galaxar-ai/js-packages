@@ -1,6 +1,6 @@
-const getPackageManager = require('../getPackageManager');
+import getPackageManager from "../getPackageManager";
 
-module.exports = (config, options) => {
+const addPackageManager = (config, templateMetadata, options) => {
     const manager = getPackageManager(options);
 
     const packageManagerVersion = manager.version();
@@ -9,3 +9,5 @@ module.exports = (config, options) => {
 
     config.packageManager = packageManager;
 };
+
+export default addPackageManager;

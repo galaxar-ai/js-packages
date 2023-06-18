@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/steps/packageManager/index.js"],"sourcesContent":["export { default as npm } from './npm';\nexport { default as pnpm } from './pnpm';\nexport { default as yarn } from './yarn';\n"],"names":["npm","pnpm","yarn"],"mappings":";;;;;;;;;;;IAAoBA,GAAG;eAAHA,YAAG;;IACHC,IAAI;eAAJA,aAAI;;IACJC,IAAI;eAAJA,aAAI;;;4DAFO;6DACC;6DACA"}

@@ -11,7 +11,7 @@ Object.defineProperty(exports, "default", {
 const _app = require("@galaxar/app");
 const _utils = require("@galaxar/utils");
 const _modes = require("./modes");
-const _chalk = /*#__PURE__*/ _interop_require_default(require("chalk"));
+const _figlet = /*#__PURE__*/ _interop_require_default(require("figlet"));
 const _runner = /*#__PURE__*/ _interop_require_default(require("./runner"));
 const _appNameToFileName = /*#__PURE__*/ _interop_require_default(require("./utils/appNameToFileName"));
 const _packagejson = /*#__PURE__*/ _interop_require_default(require("../package.json"));
@@ -22,12 +22,16 @@ function _interop_require_default(obj) {
 }
 function main() {
     return (0, _app.startCommand)(_runner.default, {
-        loggerLevel: "verbose",
+        logLevel: process.env.NODE_ENV === 'development' ? "verbose" : "info",
         commandName: "gx-init",
         config: {
             version: _packagejson.default.version,
             commandLine: {
-                banner: ()=>_chalk.default.white.bgBlue.bold(` Galaxar application initiator command line v${_packagejson.default.version} `),
+                banner: ()=>{
+                    return _figlet.default.textSync("Galaxar . ai", {
+                        horizontalLayout: 'fitted'
+                    }) + '\n' + `Galaxar application initiator command line v${_packagejson.default.version}`;
+                },
                 program: "npm init @genx/app",
                 arguments: [
                     {

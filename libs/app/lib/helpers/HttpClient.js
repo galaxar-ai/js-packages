@@ -54,7 +54,7 @@ class HttpClient {
      */
     async do(method, path, query, body, options) {
         method = method.toLowerCase();
-        const _options = { ...this.options, ...options };
+        const _options = { ...this.options, ...options, _method: method };
 
         let httpMethod = _options.httpMethod ?? DefaultMethods[method];
         if (!httpMethod) {
@@ -63,7 +63,7 @@ class HttpClient {
 
         let url = path.startsWith('http:') || path.startsWith('https:') ? path : urlUtil.join(_options.endpoint, path);
 
-        let req = this.adapter.createRequest(this, httpMethod, url);
+        let req = this.adapter.createRequest(httpMethod, url, _options);
 
         if (this.onSending) {
             this.onSending(req);
@@ -124,24 +124,26 @@ class HttpClient {
 
             return result;
         } catch (error) {
-            const _onError = _options.onError ?? this.onError;
+            const onOtherError = _options.onOtherError ?? this.onOtherError;
+            const onReponseError = _options.onReponseError ?? this.onReponseError;
 
-            if (error.response && error.response.error) {
-                const _responseError = error.response.error;
+            if (error.response) {
+                if (onReponseError) {
+                    let body = error.response.body;
+                    if (!body && error.response.type === 'application/json') {
+                        try {
+                            body = JSON.parse(error.response.text);
+                        } catch (e) {}
+                    }
 
-                if (error.response.type === 'application/json') {
-                    _responseError.body = JSON.parse(error.response.text);
+                    return onReponseError(body, error);
                 }
 
-                if (_onError != null) {
-                    return _onError(_responseError, error);
-                }
-
-                throw _responseError;
+                throw error;
             }
 
-            if (_onError != null) {
-                return _onError(error);
+            if (onOtherError) {
+                return onOtherError(error);
             }
 
             throw error;
@@ -172,7 +174,7 @@ class HttpClient {
         return this.do('upload', resToPath(resource), query, file, options);
     }
 
-    async download(resource, query, options) {
+    async download(resource, query, options) {        
         return this.do('download', resToPath(resource), query, null, options);
     }
 }

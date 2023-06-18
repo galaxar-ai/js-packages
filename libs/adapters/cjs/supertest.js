@@ -17,8 +17,8 @@ function _interop_require_default(obj) {
 const { URL  } = require('node:url');
 const supertestAdapter = ()=>{
     const agent = _supertest.default;
-    return {
-        createRequest (client, httpMethod, url) {
+    const agentWrapper = {
+        createRequest (httpMethod, url) {
             let testUrl = url;
             if (url.startsWith('http://') || url.startsWith('https://')) {
                 const urlObj = new URL(url);
@@ -27,12 +27,13 @@ const supertestAdapter = ()=>{
                     testUrl += '#' + urlObj.hash;
                 }
             }
-            if (!client.server) {
-                throw new Error('"server" is required before sending test request.');
+            if (!agentWrapper.server) {
+                throw new Error('"server" of the agent is required before sending test request.');
             }
-            return agent(client.server)[httpMethod](testUrl);
+            return agent(agentWrapper.server)[httpMethod](testUrl);
         }
     };
+    return agentWrapper;
 };
 const _default = supertestAdapter;
 

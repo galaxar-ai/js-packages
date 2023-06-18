@@ -1,11 +1,7 @@
-let manager;
+import * as packageManagers from './packageManager';
 
-module.exports = (options) => {
-    if (!manager) {
-        const pm = options.packageManager;
-
-        manager = require(`./packageManager/${pm}`);
-    }
-
-    return manager;
+function getPackageManager(options) {
+    return packageManagers[options.packageManager];
 };
+
+export default getPackageManager;

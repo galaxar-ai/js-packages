@@ -4,7 +4,7 @@ const superagentAdapter = () => {
     const agent = superagent.agent();
 
     return {
-        createRequest(client, method, url) {
+        createRequest(method, url) {
             return agent[method](url);
         },
     };
