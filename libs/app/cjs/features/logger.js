@@ -84,12 +84,21 @@ const _default = {
             logger.verbose = logger.debug.bind(logger);
             if (app._logCache.length > 0) {
                 app._logCache.forEach(([level, message, obj])=>logger[level](obj, message));
+                app._logCache.length = 0;
             }
-            app.logger = logger;
-            app.log = (level, message, info)=>{
-                logger[level](info, message);
-                return this;
-            };
+            const makeLogger = (logger)=>({
+                    log: (level, message, info)=>logger[level](info, message),
+                    child: (arg1, arg2)=>{
+                        const _logger = logger.child(arg1, arg2?.level ? {
+                            ...arg2,
+                            level: arg2.level === 'verbose' ? 'debug' : arg2.level
+                        } : arg2);
+                        _logger.verbose = _logger.debug.bind(_logger);
+                        return makeLogger(_logger);
+                    }
+                });
+            app.logger = makeLogger(logger);
+            app.log = app._loggerLog;
         }
         app.registerService(name, logger);
     }

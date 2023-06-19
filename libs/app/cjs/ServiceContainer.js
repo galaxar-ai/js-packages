@@ -323,12 +323,12 @@ const configOverrider = (defConf, envConf)=>{
     }
     flushLogCache() {
         if (this.runnable && this.config.logger == null) {
-            (0, _logger.setLogLevel)(this.options.logLevel);
-            const logging = (0, _logger.makeLogger)(_logger.consoleLogger);
-            this.logger = {
-                log: logging
-            };
-            this.log = logging;
+            const _makeLogger = (logLevel, channel)=>({
+                    log: (0, _logger.makeLogger)(_logger.consoleLogger, logLevel, channel),
+                    child: (arg1, arg2)=>_makeLogger(arg2?.level || logLevel, arg1?.module)
+                });
+            this.logger = _makeLogger(this.options.logLevel);
+            this.log = this._loggerLog;
             this._logCache.forEach((log)=>this.logger.log(...log));
             this._logCache.length = 0;
         }
@@ -481,6 +481,10 @@ const configOverrider = (defConf, envConf)=>{
      * @property {object} [options.config] - Config in options, used only when loadConfigFromOptions
      */ constructor(name, options){
         super();
+        _define_property(this, "_loggerLog", (...args)=>{
+            this.logger.log(...args);
+            return this;
+        });
         _define_property(this, "logError", (error, message)=>{
             return this.logException('error', error, message);
         });

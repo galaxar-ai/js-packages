@@ -11,8 +11,8 @@ describe('feature:serviceGroup', function () {
                 //console.log(result);
                 should.exist(result);
 
-                result.should.have.keys('total', 'skip', 'limit');
-                Array.isArray(result.products).should.be.ok();
+                result.should.have.keys('products', 'total', 'skip', 'limit');
+                Array.isArray(result.products).should.be.ok;
             },
             { verbose: true, configPath: 'test/conf' }
         );

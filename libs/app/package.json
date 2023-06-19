@@ -1,6 +1,6 @@
 {
     "name": "@galaxar/app",
-    "version": "1.0.8",
+    "version": "1.0.9",
     "description": "Node application framework",
     "main": "cjs/index.js",
     "module": "lib/index.js",
@@ -63,7 +63,6 @@
     },
     "license": "MIT",
     "devDependencies": {
-        "@galaxar/server": "workspace:^",
         "capture-console": "^1.0.1"
     }
 }

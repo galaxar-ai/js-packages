@@ -9,7 +9,7 @@ import path from 'node:path';
 import Feature from './Feature';
 import defaultOpts from './defaultOpts';
 import AsyncEmitter from './helpers/AsyncEmitter';
-import { consoleLogger, makeLogger, setLogLevel } from './logger';
+import { consoleLogger, makeLogger } from './logger';
 
 const FILE_EXT = ['.js', '.mjs', '.cjs', '.ts'];
 
@@ -51,6 +51,8 @@ const configOverrider = (defConf, envConf) => {
  * @class
  */
 class ServiceContainer extends AsyncEmitter {
+    _loggerLog = (...args) => { this.logger.log(...args); return this; };
+
     logError = (error, message) => {
         return this.logException('error', error, message);
     };
@@ -380,7 +382,7 @@ class ServiceContainer extends AsyncEmitter {
         const topoSort = new TopoSort();
         features.forEach(([feature]) => {
             topoSort.depends(feature.name, feature.depends);
-        });        
+        });
 
         const groups = arrayToObject(features, ([feature]) => feature.name);
         const keys = topoSort.sort();
@@ -401,11 +403,12 @@ class ServiceContainer extends AsyncEmitter {
     }
 
     flushLogCache() {
-        if (this.runnable && this.config.logger == null) {
-            setLogLevel(this.options.logLevel);
-            const logging = makeLogger(consoleLogger);
-            this.logger = { log: logging };
-            this.log = logging;
+        if (this.runnable && this.config.logger == null) {                        
+            const _makeLogger = (logLevel, channel) => ({
+                log: makeLogger(consoleLogger, logLevel, channel), child: (arg1, arg2) => _makeLogger(arg2?.level || logLevel, arg1?.module)
+            });
+            this.logger = _makeLogger(this.options.logLevel);
+            this.log = this._loggerLog;
             this._logCache.forEach((log) => this.logger.log(...log));
             this._logCache.length = 0;
         }

@@ -31,11 +31,8 @@ const ModuleBase = (Base) =>
 
             this.featuresPath = path.resolve(this.sourcePath, this.options.featuresPath);
 
-            this.logger = this.host.logger?.child({ module: this.name }, { level: this.options.logLevel });
-            this.log = (level, message, info) => {
-                this.logger ? this.logger[level](info, message) : this.host.log(level, message, info);
-                return this;
-            };
+            this.logger = this.host.logger.child({ module: this.name }, { level: this.options.logLevel });
+            this.log = this._loggerLog;
         }
 
         /**

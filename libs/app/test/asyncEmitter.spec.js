@@ -66,7 +66,7 @@ describe('AsyncEmitter', () => {
             emitter.on('test1', () => {});
             emitter.on('test2', () => {});
             emitter.allOff();
-            emitter._handlers.should.be.empty();
+            emitter._handlers.should.be.empty;
         });
 
         it('should return the emitter instance', () => {
@@ -112,12 +112,12 @@ describe('AsyncEmitter', () => {
         it('should return true if there are handlers for the specified event', async () => {
             emitter.on('test', () => {});
             const result = await emitter.emit_('test');
-            result.should.be.true();
+            result.should.be.true;
         });
 
         it('should return false if there are no handlers for the specified event', async () => {
             const result = await emitter.emit_('test');
-            result.should.be.false();
+            result.should.be.false;
         });
     });
 });

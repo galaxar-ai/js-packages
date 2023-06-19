@@ -1,5 +1,11 @@
 # @galaxar/app
 
+## 1.0.9
+
+### Patch Changes
+
+-   Fix: child logger error.
+
 ## 1.0.8
 
 ### Patch Changes

@@ -22,7 +22,7 @@ describe('startLoopWorker', () => {
     it('should call the worker function repeatedly with the specified interval', async () => {
         const stopPromise = startLoopWorker(worker, { interval: 100, initializer: init });
         await sleep_(50);
-        console.log('feiojfaifefjwfoj');
+        
         counter.should.be.exactly(1);
         await sleep_(110);
         counter.should.be.exactly(2);
@@ -37,7 +37,7 @@ describe('startLoopWorker', () => {
             throw new Error('test error');
         };
 
-        await testShouldThrow_(() => startLoopWorker(worker2, { interval: 100, initializer: init }), '/test error/');
+        await testShouldThrow_(() => startLoopWorker(worker2, { interval: 100, initializer: init }), 'test error');
 
         await app.stop_();
     });

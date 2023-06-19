@@ -9,12 +9,6 @@ function _export(target, all) {
     });
 }
 _export(exports, {
-    getLogLevel: function() {
-        return getLogLevel;
-    },
-    setLogLevel: function() {
-        return setLogLevel;
-    },
     makeLogger: function() {
         return makeLogger;
     },
@@ -35,7 +29,6 @@ const VERBOSE = 2;
 const INFO = 3;
 const WARNING = 4;
 const ERROR = 5;
-let logLevel = INFO;
 const mapLogLevels = {
     trace: TRACE,
     debug: DEBUG,
@@ -55,18 +48,16 @@ const levelText = [
     LOG_ERROR,
     LOG_DISABLE
 ];
-const getLogLevel = ()=>logLevel;
-const setLogLevel = (level)=>logLevel = mapLogLevels[level];
-const makeLogger = (logger)=>(level, ...args)=>{
-        const enabledLogLevel = mapLogLevels[level] >= logLevel ? mapLogLevels[level] : 0;
+const makeLogger = (logger, logLevel, channel)=>(level, ...args)=>{
+        const enabledLogLevel = mapLogLevels[level] >= mapLogLevels[logLevel] ? mapLogLevels[level] : 0;
         if (enabledLogLevel !== 0) {
             let _args = args.length === 1 && typeof args[0] === 'function' ? args[0]() : args;
             Array.isArray(_args) || (_args = [
                 _args
             ]);
-            logger(enabledLogLevel, args);
+            logger(enabledLogLevel, args, channel);
         }
     };
-const consoleLogger = (level, args)=>(level === ERROR ? console.error : level === WARNING ? console.warn : level === TRACE ? console.trace : console.log)(`${levelText[level]}:`, ...args);
+const consoleLogger = (level, args, channel = null)=>(level === ERROR ? console.error : level === WARNING ? console.warn : level === TRACE ? console.trace : console.log)(`${channel ? '[' + channel + '] ' : ''}${levelText[level]}:`, ...args);
 
 //# sourceMappingURL=logger.js.map

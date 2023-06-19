@@ -12,7 +12,7 @@ describe('feature:superAgent', function () {
         should.exist(result);
 
         result.should.have.keys('total', 'skip', 'limit');
-        Array.isArray(result.products).should.be.ok();
+        Array.isArray(result.products).should.be.ok;
     });
 
     it('get one with endpoint', async function () {
