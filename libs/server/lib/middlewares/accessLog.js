@@ -3,12 +3,24 @@
  * @module Middleware_AccessLog
  */
 
-module.exports = (opt, app) => {
+export default (opt, app) => {
+    const { logger } = app.middlewareConfig(
+        opt ?? {},
+        {
+            schema: {
+                logger: { type: 'text', default: 'logger' },
+            },
+        },
+        'accessLog'
+    );
+
     const pinoHttp = app.tryRequire('pino-http');
 
-    app.requireFeatures(['logger'], 'accessLog');
+    app.requireServices([logger], 'accessLog');
 
-    const log = pinoHttp({ quietReqLogger: true, ...opt, logger: app.logger });
+    const pinoLogger = app.getService(logger);
+
+    const log = pinoHttp({ quietReqLogger: true, ...opt, logger: pinoLogger });
 
     return (ctx, next) => {
         log(ctx.req, ctx.res);

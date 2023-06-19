@@ -65,7 +65,7 @@ const _default = {
             }
             let exists = await _sys.fs.pathExists(appPath) && await (0, _sys.isDir_)(appPath);
             if (!exists) {
-                throw new _types.InvalidConfiguration(`App [${config.name}] not found at ${appPath}`, server, `appRouting.${baseRoute}.name`);
+                throw new _types.InvalidConfiguration(`App [${config.name}] not found at ${appPath}`, server, `appRouting[${baseRoute}].name`);
             }
             let app = new _WebModule.default(server, config.name, baseRoute, appPath, options);
             app.now = server.now;

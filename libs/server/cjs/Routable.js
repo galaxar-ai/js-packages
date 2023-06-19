@@ -205,9 +205,15 @@ const Routable = (T)=>{
             return this;
         }
         requireFeatures(features, middleware) {
-            let hasNotEnabled = _utils._.find(_utils._.castArray(features), (feature)=>!this.enabled(feature));
+            const hasNotEnabled = _utils._.find(_utils._.castArray(features), (feature)=>!this.enabled(feature));
             if (hasNotEnabled) {
                 throw new _types.InvalidConfiguration(`Middleware "${middleware}" requires "${hasNotEnabled}" feature to be enabled.`, this, `middlewares.${middleware}`);
+            }
+        }
+        requireServices(services, middleware) {
+            const notRegisterred = _utils._.find(_utils._.castArray(services), (service)=>!this.hasService(service));
+            if (notRegisterred) {
+                throw new _types.InvalidConfiguration(`Middleware "${middleware}" requires "${notRegisterred}" service to be registerred.`, this, `middlewares.${middleware}`);
             }
         }
         /**
@@ -250,6 +256,9 @@ const Routable = (T)=>{
             }
             router.use(this._wrapMiddlewareTracer(middleware, name));
             this.log('verbose', `Attached middleware [${name}].`);
+        }
+        middlewareConfig(config, typeInfo, name) {
+            return this.sanitize(config, typeInfo, name, 'middlewares');
         }
         _wrapMiddlewareTracer(middleware, name) {
             if (this.options.traceMiddlewares) {

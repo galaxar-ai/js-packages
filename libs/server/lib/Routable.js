@@ -279,11 +279,24 @@ const Routable = (T) =>
         }
 
         requireFeatures(features, middleware) {
-            let hasNotEnabled = _.find(_.castArray(features), (feature) => !this.enabled(feature));
+            const hasNotEnabled = _.find(_.castArray(features), (feature) => !this.enabled(feature));
 
             if (hasNotEnabled) {
                 throw new InvalidConfiguration(
                     `Middleware "${middleware}" requires "${hasNotEnabled}" feature to be enabled.`,
+                    this,
+                    `middlewares.${middleware}`
+                );
+            }
+        }
+
+
+        requireServices(services, middleware) {
+            const notRegisterred = _.find(_.castArray(services), (service) => !this.hasService(service));
+
+            if (notRegisterred) {
+                throw new InvalidConfiguration(
+                    `Middleware "${middleware}" requires "${notRegisterred}" service to be registerred.`,
                     this,
                     `middlewares.${middleware}`
                 );
@@ -337,6 +350,10 @@ const Routable = (T) =>
             router.use(this._wrapMiddlewareTracer(middleware, name));
             this.log('verbose', `Attached middleware [${name}].`);
         }
+
+        middlewareConfig(config, typeInfo, name) {
+            return this.sanitize(config, typeInfo, name, 'middlewares'); 
+        }        
 
         _wrapMiddlewareTracer(middleware, name) {
             if (this.options.traceMiddlewares) {
