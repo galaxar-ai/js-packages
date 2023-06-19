@@ -1,5 +1,11 @@
 # @galaxar/app
 
+## 1.0.10
+
+### Patch Changes
+
+-   Fix: feature dependencies checking error.
+
 ## 1.0.9
 
 ### Patch Changes
