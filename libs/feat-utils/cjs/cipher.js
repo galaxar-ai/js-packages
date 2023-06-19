@@ -73,7 +73,6 @@ const _default = {
             schema: {
                 key: {
                     type: 'text',
-                    fixedLength: 32,
                     optional: true
                 },
                 hashAlgorithm: {

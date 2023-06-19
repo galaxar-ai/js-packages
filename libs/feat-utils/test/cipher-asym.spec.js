@@ -7,9 +7,9 @@ describe('cipher-asym', function () {
                 const cipher = app.getService('cipher');
 
                 const result = cipher.generateKeyPair();
-                result.should.have.properties(['publicKey', 'privateKey']);
-                result.publicKey.should.startWith('-----BEGIN PUBLIC KEY-----');
-                result.privateKey.should.startWith('-----BEGIN PRIVATE KEY-----');
+                result.should.have.keys('publicKey', 'privateKey');
+                result.publicKey.startsWith('-----BEGIN PUBLIC KEY-----').should.be.ok;
+                result.privateKey.startsWith('-----BEGIN PRIVATE KEY-----').should.be.ok;
             },
             {
                 workingPath: 'test',
@@ -25,9 +25,9 @@ describe('cipher-asym', function () {
                 const algorithm = 'rsa';
                 const options = { modulusLength: 2048 };
                 const result = cipher.generateKeyPair(algorithm, options);
-                result.should.have.properties(['publicKey', 'privateKey']);
-                result.publicKey.should.startWith('-----BEGIN PUBLIC KEY-----');
-                result.privateKey.should.startWith('-----BEGIN PRIVATE KEY-----');
+                result.should.have.keys('publicKey', 'privateKey');
+                result.publicKey.startsWith('-----BEGIN PUBLIC KEY-----').should.be.ok;
+                result.privateKey.startsWith('-----BEGIN PRIVATE KEY-----').should.be.ok;
             },
             {
                 workingPath: 'test',
@@ -41,9 +41,9 @@ describe('cipher-asym', function () {
             async (app) => {
                 const cipher = app.getService('cipher');
                 const result = await cipher.generateKeyPair_();
-                result.should.have.properties(['publicKey', 'privateKey']);
-                result.publicKey.should.startWith('-----BEGIN PUBLIC KEY-----');
-                result.privateKey.should.startWith('-----BEGIN PRIVATE KEY-----');
+                result.should.have.keys('publicKey', 'privateKey');
+                result.publicKey.startsWith('-----BEGIN PUBLIC KEY-----').should.be.ok;
+                result.privateKey.startsWith('-----BEGIN PRIVATE KEY-----').should.be.ok;
             },
             {
                 workingPath: 'test',
@@ -59,9 +59,9 @@ describe('cipher-asym', function () {
                 const algorithm = 'rsa';
                 const options = { modulusLength: 2048 };
                 const result = await cipher.generateKeyPair_(algorithm, options);
-                result.should.have.properties(['publicKey', 'privateKey']);
-                result.publicKey.should.startWith('-----BEGIN PUBLIC KEY-----');
-                result.privateKey.should.startWith('-----BEGIN PRIVATE KEY-----');
+                result.should.have.keys('publicKey', 'privateKey');
+                result.publicKey.startsWith('-----BEGIN PUBLIC KEY-----').should.be.ok;
+                result.privateKey.startsWith('-----BEGIN PRIVATE KEY-----').should.be.ok;
             },
             {
                 workingPath: 'test',
@@ -101,7 +101,7 @@ describe('cipher-asym', function () {
                 
                 const signature = cipher.privateSign(message, privateKey);
                 const result = cipher.publicVerify(message, signature, publicKey);
-                result.should.be.true();
+                result.should.be.true;
             },
             {
                 workingPath: 'test',

@@ -1,5 +1,11 @@
 # @galaxar/feat-utils
 
+## 1.1.1
+
+### Patch Changes
+
+-   Split hash and crypto functions into utils
+
 ## 1.1.0
 
 ### Minor Changes

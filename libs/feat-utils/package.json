@@ -56,6 +56,9 @@
         "sharp": "^0.32.1",
         "ws": "^8.13.0"
     },
+    "devDependencies": {
+        "@galaxar/sys": "workspace:*"
+    },
     "prettier": {
         "quoteProps": "consistent",
         "printWidth": 120,
@@ -64,8 +67,5 @@
         "tabWidth": 4,
         "useTabs": false
     },
-    "license": "MIT",
-    "devDependencies": {
-        "capture-console": "^1.0.1"
-    }
+    "license": "MIT"
 }

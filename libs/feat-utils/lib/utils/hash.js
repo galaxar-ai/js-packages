@@ -4,7 +4,9 @@ import { createReadStream } from 'node:fs';
 export function hash(hashAlgorithm, message, salt, encoding = 'hex') {
     const hash = crypto.createHash(hashAlgorithm);
     hash.update(message);
-    hash.update(salt);
+    if (salt != null) {
+        hash.update(salt);
+    }
 
     return hash.digest(encoding);
 };

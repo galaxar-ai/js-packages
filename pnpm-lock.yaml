@@ -97,9 +97,6 @@ importers:
         specifier: ^10.0.0
         version: 10.0.0
     devDependencies:
-      '@galaxar/server':
-        specifier: workspace:^
-        version: link:../server
       capture-console:
         specifier: ^1.0.1
         version: 1.0.1
@@ -177,9 +174,9 @@ importers:
         specifier: ^8.13.0
         version: 8.13.0
     devDependencies:
-      capture-console:
-        specifier: ^1.0.1
-        version: 1.0.1
+      '@galaxar/sys':
+        specifier: workspace:*
+        version: link:../sys
 
   libs/jsonc:
     dependencies:

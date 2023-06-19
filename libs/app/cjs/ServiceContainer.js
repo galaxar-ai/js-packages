@@ -233,7 +233,7 @@ const configOverrider = (defConf, envConf)=>{
      * @param {string} feature
      * @returns {bool}
      */ enabled(feature) {
-        return this.features[feature]?.enabled ?? false;
+        return this.features[feature]?.enabled || this.host?.enabled(feature) || false;
     }
     /**
      * Add more or overide current feature registry
@@ -314,7 +314,7 @@ const configOverrider = (defConf, envConf)=>{
             if (feature) {
                 sorted.push(feature);
             } else {
-                if (!this.features[key]?.enabled) {
+                if (!this.enabled(key)) {
                     throw new _types.InvalidConfiguration(`A prerequisite feature "${key}" is not enabled.`, this);
                 }
             }

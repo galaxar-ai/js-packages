@@ -9,10 +9,10 @@ describe('ttlcache', function () {
             const obj = { my: 'Special', variable: 42 };
             const success = cache.set('myKey', obj);
 
-            success.should.be.ok();
+            success.should.be.ok;
 
             const obj2 = cache.get('myKey');
-            (obj === obj2).should.be.ok();
+            (obj === obj2).should.be.ok;
         }, {
             workingPath: "test",
             //logLevel: "debug"
@@ -25,7 +25,7 @@ describe('ttlcache', function () {
             should.exist(cache);
             const obj = { my: 'Special', variable: 42 };
             const success = cache.set('myKey', obj, 1);
-            success.should.be.ok();
+            success.should.be.ok;
 
             await sleep_(3000);
 

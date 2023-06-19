@@ -30,7 +30,7 @@ describe('image', function () {
             await imageProcessor.fromBuffer(input, { width: 2, height: 1, channels: 3 }).toFile(generatedFile);
 
             const flag = await fs.exists(generatedFile);
-            flag.should.be.ok();
+            flag.should.be.ok;
 
             await fs.unlink(generatedFile);
         }, {
@@ -58,7 +58,7 @@ describe('image', function () {
                 .toFile(generatedFile);
 
             const flag = await fs.exists(generatedFile);
-            flag.should.be.ok();
+            flag.should.be.ok;
 
             await fs.unlink(generatedFile);
         }, {

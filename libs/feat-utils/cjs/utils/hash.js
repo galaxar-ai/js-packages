@@ -26,7 +26,9 @@ function _interop_require_default(obj) {
 function hash(hashAlgorithm, message, salt, encoding = 'hex') {
     const hash = _nodecrypto.default.createHash(hashAlgorithm);
     hash.update(message);
-    hash.update(salt);
+    if (salt != null) {
+        hash.update(salt);
+    }
     return hash.digest(encoding);
 }
 ;

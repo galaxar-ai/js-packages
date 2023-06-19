@@ -77,7 +77,7 @@ export default {
                 options,
                 {
                     schema: {
-                        key: { type: 'text', fixedLength: 32, optional: true },
+                        key: { type: 'text', optional: true },
                         hashAlgorithm: { type: 'text', enum: hashes, optional: true, default: 'sha256' },
                         cipherAlgorithm: { type: 'text', optional: true, default: 'aes-256-cbc' },
                         asymmetricAlgorithm: {

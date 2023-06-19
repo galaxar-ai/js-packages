@@ -309,7 +309,7 @@ class ServiceContainer extends AsyncEmitter {
      * @returns {bool}
      */
     enabled(feature) {
-        return this.features[feature]?.enabled ?? false;
+        return this.features[feature]?.enabled || this.host?.enabled(feature) || false;
     }
 
     /**
@@ -393,7 +393,7 @@ class ServiceContainer extends AsyncEmitter {
             if (feature) {
                 sorted.push(feature);
             } else {
-                if (!this.features[key]?.enabled) {
+                if (!this.enabled(key)) {
                     throw new InvalidConfiguration(`A prerequisite feature "${key}" is not enabled.`, this);
                 }
             }
