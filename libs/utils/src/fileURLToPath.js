@@ -33,5 +33,4 @@ function fileURLToPath(url) {
     return path;
 }
 
-
 export default fileURLToPath;

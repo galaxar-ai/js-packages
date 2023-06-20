@@ -1,5 +1,11 @@
 # @galaxar/feat-utils
 
+## 1.2.0
+
+### Minor Changes
+
+-   Add xml paring and building feature
+
 ## 1.1.1
 
 ### Patch Changes

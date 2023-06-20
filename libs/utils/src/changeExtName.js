@@ -1,4 +1,4 @@
-import baseName from "./baseName";
+import baseName from './baseName';
 
 const changeExtName = (str, newExtName, includePath) => {
     return baseName(str, includePath) + '.' + newExtName;

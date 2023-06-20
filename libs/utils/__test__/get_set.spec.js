@@ -1,4 +1,3 @@
-import should from 'should';
 import get from '../src/get';
 import set from '../src/set';
 import cowSet from '../src/cowSet';

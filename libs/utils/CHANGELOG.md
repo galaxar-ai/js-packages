@@ -1,10 +1,17 @@
 # @galaxar/utils
 
+## 1.0.7
+
+### Patch Changes
+
+-   Add testRegister for assertion compatibility with chai
+-   Add unexsitDelegate for internal member delegation
+
 ## 1.0.6
 
 ### Patch Changes
 
--   Fix testShouldThrow_ for compatible with chai
+-   Fix testShouldThrow\_ for compatible with chai
 
 ## 1.0.5
 

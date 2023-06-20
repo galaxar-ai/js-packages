@@ -1,6 +1,6 @@
 {
     "name": "@galaxar/feat-utils",
-    "version": "1.1.1",
+    "version": "1.2.0",
     "description": "Node common application utility features",
     "main": "cjs/index.js",
     "module": "lib/index.js",
@@ -52,6 +52,7 @@
         "@galaxar/types": "workspace:*",
         "@galaxar/utils": "workspace:*",
         "collections": "^5.1.13",
+        "fast-xml-parser": "^4.2.4",
         "node-cache": "^5.1.2",
         "sharp": "^0.32.1",
         "ws": "^8.13.0"

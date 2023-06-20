@@ -36,10 +36,10 @@ describe('pushIntoBucket', () => {
         pushIntoBucket(obj, 'k1', [10]);
 
         let k1 = get(obj, 'k1');
-        Array.isArray(k1).should.be.ok();
+        Array.isArray(k1).should.be.ok;
 
         k1.length.should.be.exactly(2);
-        Array.isArray(k1[1]).should.be.ok();
+        Array.isArray(k1[1]).should.be.ok;
 
         pushIntoBucket(obj, 'k1', [20, 30], true);
         k1 = get(obj, 'k1');

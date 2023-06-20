@@ -26,6 +26,9 @@ _export(exports, {
     },
     webSocketClient: function() {
         return _webSocketClient.default;
+    },
+    xml: function() {
+        return _xml.default;
     }
 });
 const _cipher = /*#__PURE__*/ _interop_require_default(require("./cipher"));
@@ -34,6 +37,7 @@ const _threadPool = /*#__PURE__*/ _interop_require_default(require("./threadPool
 const _threadWorker = /*#__PURE__*/ _interop_require_default(require("./threadWorker"));
 const _ttlMemCache = /*#__PURE__*/ _interop_require_default(require("./ttlMemCache"));
 const _webSocketClient = /*#__PURE__*/ _interop_require_default(require("./webSocketClient"));
+const _xml = /*#__PURE__*/ _interop_require_default(require("./xml"));
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj

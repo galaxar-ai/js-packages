@@ -41,6 +41,9 @@ _export(exports, {
     },
     esmIsMain: function() {
         return _esmIsMain.default;
+    },
+    unexistDelegate: function() {
+        return _unexistDelegate.default;
     }
 });
 const _ifThen = /*#__PURE__*/ _interop_require_default(require("./ifThen"));
@@ -54,6 +57,7 @@ const _toBoolean = /*#__PURE__*/ _interop_require_default(require("./toBoolean")
 const _toFloat = /*#__PURE__*/ _interop_require_default(require("./toFloat"));
 const _esmCheck = /*#__PURE__*/ _interop_require_default(require("./esmCheck"));
 const _esmIsMain = /*#__PURE__*/ _interop_require_default(require("./esmIsMain"));
+const _unexistDelegate = /*#__PURE__*/ _interop_require_default(require("./unexistDelegate"));
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj

@@ -1,0 +1,8 @@
+{
+    "featureRegistry": {
+        "cipher": ["../lib/index", "cipher"],
+        "threadWorker": ["../lib/index", "threadWorker"]
+    },
+    "cipher": { "key": "0m1pZirDCCjLp8s1hlkjnWVDG6tObEqJ" },
+    "threadWorker": { "logMessage": true }    
+}

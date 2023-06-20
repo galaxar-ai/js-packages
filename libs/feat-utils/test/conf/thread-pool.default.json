@@ -1,0 +1,13 @@
+{
+    "featureRegistry": {
+        "threadPool": ["../lib/index", "threadPool"]
+    },
+    "threadPool": {
+        "name": "myThreadPool",
+        "workerFile": "./threadWorker.js",
+        "lowThreadNum": 1,
+        "workerOptions": {
+            "execArgv": ["-r", "@swc-node/register" ]
+        }
+    }
+}

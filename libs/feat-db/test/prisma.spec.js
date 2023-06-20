@@ -115,4 +115,32 @@ describe('prisma', function () {
             }
         );
     });
+
+    it('model', async function () {
+        await startWorker(
+            async (app) => {
+                const prisma = app.getService('prisma');
+                const User = prisma.$model('user');
+
+                await User.upsert({
+                    email: 'test999@email.com',
+                    name: 'test999',                
+                });
+
+                await User.upsert({
+                    email: 'test999@email.com',
+                    name: 'test1000',                
+                });
+
+                const found = await User.findUnique({
+                    where: { email: 'test999@email.com', },
+                });
+
+                found.name.should.be.eql('test1000');
+            },
+            {
+                workingPath: 'test',
+            }
+        );
+    });
 });

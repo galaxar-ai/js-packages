@@ -23,9 +23,9 @@ describe('isplainobject', function () {
         const after_e = isPlainObject(e);
         const after_f = isPlainObject(f);
 
-        isPlainObject(null).should.not.be.ok();
-        isPlainObject(undefined).should.not.be.ok();
-        isPlainObject({}).should.be.ok();
+        isPlainObject(null).should.not.be.ok;
+        isPlainObject(undefined).should.not.be.ok;
+        isPlainObject({}).should.be.ok;
 
         after_a.should.be.eql(false);
         after_b.should.be.eql(false);

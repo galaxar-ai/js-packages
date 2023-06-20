@@ -1,5 +1,6 @@
+import path from 'node:path';
 import { Feature } from '@galaxar/app';
-import { _ } from '@galaxar/utils';
+import { _, esmCheck, pascalCase, unexistDelegate } from '@galaxar/utils';
 import { PrismaClient } from '@prisma/client';
 
 const prismsHelper = {
@@ -53,7 +54,22 @@ export default {
     groupable: true,
 
     load_: async function (app, options, name) {
-        const prisma = new PrismaClient(options);
+        const { modelPath, ...prismaOptions } = app.featureConfig(
+            options,
+            {
+                schema: {
+                    modelPath: { type: 'string', default: 'models' },
+                    datasources: { type: 'object', optional: true },
+                    log: { type: 'array', elementSchema: { type: 'text' }, optional: true },
+                },
+            },
+            name
+        );
+
+        const _modelPath = path.join(app.sourcePath, modelPath);
+        const modelCache = new Map();
+
+        const prisma = new PrismaClient(prismaOptions);
 
         await prisma.$connect();
 
@@ -62,6 +78,21 @@ export default {
         });
 
         Object.assign(prisma, prismsHelper);
+
+        const modelDelegate = (target, prop) => {
+            return target.model[prop];
+        }
+
+        prisma.$model = (name) => {
+            name = name.toLowerCase();
+            let modelObject = modelCache.get(name);
+            if (!modelObject) {                
+                const Model = esmCheck(require(path.join(_modelPath, pascalCase(name))));
+                modelObject = unexistDelegate(new Model(prisma), modelDelegate, true);
+                modelCache.set(name, modelObject);
+            }
+            return modelObject;
+        };
 
         app.registerService(name, prisma);
     },
