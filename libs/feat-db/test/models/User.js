@@ -3,7 +3,7 @@ class User {
         this.model = prisma.user;
     }
 
-    async upsert(input) {
+    async upsert_(input) {
         const { email, ...others } = input;
 
         return this.model.upsert({

@@ -122,12 +122,12 @@ describe('prisma', function () {
                 const prisma = app.getService('prisma');
                 const User = prisma.$model('user');
 
-                await User.upsert({
+                await User.upsert_({
                     email: 'test999@email.com',
                     name: 'test999',                
                 });
 
-                await User.upsert({
+                await User.upsert_({
                     email: 'test999@email.com',
                     name: 'test1000',                
                 });
@@ -137,6 +137,59 @@ describe('prisma', function () {
                 });
 
                 found.name.should.be.eql('test1000');
+            },
+            {
+                workingPath: 'test',
+            }
+        );
+    });
+
+    it('cache', async function () {
+        await startWorker(
+            async (app) => {
+                const prisma = app.getService('prisma');
+                const User = prisma.$model('UserWithCache');
+
+                await User.deleteMany();
+                const map1 = await User.cache_('map');
+                map1.should.be.eql({});
+
+                await User.create({
+                    data: {
+                        email: 'test@email.com',
+                        name: 'test',
+                    },
+                });
+
+                await User.create({
+                    data: {
+                        email: 'test2@email.com',
+                        name: 'test2',
+                    },
+                });
+
+                let list = await User.cache_('list');
+                list.length.should.be.eql(2);
+
+                await User.create({
+                    data: {
+                        email: 'test3@email.com',
+                        name: 'test3',
+                    },
+                });
+
+                list = await User.cache_('list');
+                list.length.should.be.eql(2);
+
+                User.resetCache('list');
+
+                list = await User.cache_('list');
+                list.length.should.be.eql(3);
+
+                User.resetCache('map');
+
+                const map = await User.cache_('map');
+                map.should.have.keys('test@email.com', 'test2@email.com', 'test3@email.com');
             },
             {
                 workingPath: 'test',

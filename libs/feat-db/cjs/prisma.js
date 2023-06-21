@@ -11,6 +11,7 @@ Object.defineProperty(exports, "default", {
 const _nodepath = /*#__PURE__*/ _interop_require_default(require("node:path"));
 const _app = require("@galaxar/app");
 const _utils = require("@galaxar/utils");
+const _types = require("@galaxar/types");
 const _client = require("@prisma/client");
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
@@ -64,6 +65,7 @@ const prismsHelper = {
         return where;
     }
 };
+const symCache = Symbol('cache');
 const _default = {
     stage: _app.Feature.SERVICE,
     groupable: true,
@@ -99,14 +101,48 @@ const _default = {
             return target.model[prop];
         };
         prisma.$model = (name)=>{
-            name = name.toLowerCase();
-            let modelObject = modelCache.get(name);
+            const _name = name.toLowerCase();
+            let modelObject = modelCache.get(_name);
             if (!modelObject) {
                 const Model = (0, _utils.esmCheck)(require(_nodepath.default.join(_modelPath, (0, _utils.pascalCase)(name))));
                 modelObject = (0, _utils.unexistDelegate)(new Model(prisma, app), modelDelegate, true);
-                modelCache.set(name, modelObject);
+                modelCache.set(_name, modelObject);
             }
             return modelObject;
+        };
+        prisma.$setupCache = (modelBox, entries)=>{
+            if (!modelBox.model) {
+                throw new _types.ApplicationError('prisma.$setupCache should be called in the constructor and after model is assigned.');
+            }
+            modelBox[symCache] = new Map();
+            modelBox.cache_ = async (key)=>{
+                let cache = modelBox[symCache].get(key);
+                if (cache) {
+                    return cache;
+                }
+                const meta = entries[key];
+                if (!meta) {
+                    throw new _types.InvalidArgument(`No cache setup for key: ${key}`);
+                }
+                const { where ={} , type ='list' , mapByKey  } = meta;
+                let data = await modelBox.model.findMany({
+                    where
+                });
+                if (type === 'map') {
+                    if (!mapByKey) {
+                        throw new _types.InvalidArgument(`No "mapByKey" set for map type cache: ${key}`);
+                    }
+                    data = data.reduce((result, item)=>{
+                        result[item[mapByKey]] = item;
+                        return result;
+                    }, {});
+                } // else type === 'list'
+                modelBox[symCache].set(key, data);
+                return data;
+            };
+            modelBox.resetCache = (key)=>{
+                modelBox[symCache].delete(key);
+            };
         };
         app.registerService(name, prisma);
     }

@@ -1,5 +1,14 @@
 # @galaxar/feat-db
 
+## 1.2.0
+
+### Minor Changes
+
+-   Add $setupCache helper for adding in-memory cache for list and map
+-   Add async cache_ and resetCache helepr
+-   Fix model naming case
+-   Add README.md
+
 ## 1.1.1
 
 ### Patch Changes
