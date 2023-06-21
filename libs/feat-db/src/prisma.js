@@ -88,7 +88,7 @@ export default {
             let modelObject = modelCache.get(name);
             if (!modelObject) {                
                 const Model = esmCheck(require(path.join(_modelPath, pascalCase(name))));
-                modelObject = unexistDelegate(new Model(prisma), modelDelegate, true);
+                modelObject = unexistDelegate(new Model(prisma, app), modelDelegate, true);
                 modelCache.set(name, modelObject);
             }
             return modelObject;

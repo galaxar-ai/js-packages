@@ -103,7 +103,7 @@ const _default = {
             let modelObject = modelCache.get(name);
             if (!modelObject) {
                 const Model = (0, _utils.esmCheck)(require(_nodepath.default.join(_modelPath, (0, _utils.pascalCase)(name))));
-                modelObject = (0, _utils.unexistDelegate)(new Model(prisma), modelDelegate, true);
+                modelObject = (0, _utils.unexistDelegate)(new Model(prisma, app), modelDelegate, true);
                 modelCache.set(name, modelObject);
             }
             return modelObject;
