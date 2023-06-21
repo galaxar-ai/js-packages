@@ -1,5 +1,12 @@
 # @galaxar/feat-db
 
+## 1.1.1
+
+### Patch Changes
+
+-   Pass app into prisma Model
+
+
 ## 1.1.0
 
 ### Minor Changes
