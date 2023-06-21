@@ -7,7 +7,7 @@ describe('feature:superAgent', function () {
 
         should.exist(httpClient);
 
-        const result = await httpClient.get('products');
+        const result = await httpClient.get('/products');
         //console.log(result);
         should.exist(result);
 
