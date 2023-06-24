@@ -10,7 +10,7 @@
         "lint": "pnpm -r lint",
         "lint-fix": "pnpm -r lint-fix",
         "bump": "changeset version",
-        "release-all": "changeset publish && pnpm -r publish",
+        "release-all": "changeset publish && pnpm -r publish --filer=!@galaxar/create-app",
         "test": "pnpm -r test"
     },
     "keywords": [],
