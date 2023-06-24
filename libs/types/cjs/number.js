@@ -39,7 +39,9 @@ class T_NUMBER {
             throw new _errors.ValidationError('Invalid number value.', {
                 value: null,
                 meta,
-                ...opts
+                rawValue: opts.rawValue,
+                i18n: opts.i18n,
+                path: opts.path
             });
         }
         return value;

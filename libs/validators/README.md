@@ -46,15 +46,21 @@ validator.sanitize(obj, {
     type: 'object',
     schema: {
         // key1 field's value should be an integer within the range from 10 to 30
-        key1: { type: 'integer', mod: [
-                    ['~max', 30],
-                    ['~min', 10],
-                ]  },
+        key1: {
+            type: 'integer',
+            mod: [
+                ['~max', 30],
+                ['~min', 10],
+            ],
+        },
         // key2 field's value should be an integer within the range from 20 to 30
-        key2: { type: 'integer', mod: [
-                    ['~max', 20],
-                    ['~min', 10],
-                ]  },
+        key2: {
+            type: 'integer',
+            mod: [
+                ['~max', 20],
+                ['~min', 10],
+            ],
+        },
     },
     optional: true,
     mod: [
@@ -63,20 +69,21 @@ validator.sanitize(obj, {
             name: '~jsv',
             options: {
                 key1: {
-                    $gt: '$$.key2' // or $$ROOT.key2
-                }
-            }
+                    $gt: '$$.key2', // or $$ROOT.key2
+                },
+            },
         },
         [
             // after passing the validation above, the object will be transformed by the below jsonx expression, |jsx === |jsonx
-            '|jsx', {
+            '|jsx',
+            {
                 // transform from object to an array
-                $toArray: { name: '$$KEY', value: '$$CURRENT' }
-            }
+                $toArray: { name: '$$KEY', value: '$$CURRENT' },
+            },
         ],
         // finally, there is auto activator to ensure the object has an auto value if it is null
-        '=default'
-    ]
+        '=default',
+    ],
 });
 
 // { key1: 20, key2: 15 } => [ { name: 'key1', value: 20 }, { name: 'key2', value: 15 } ]
@@ -108,12 +115,12 @@ Sync mode with all modifiers
 
 ```js
 import validator, { Types } from '@galaxar/validator/allSync';
-validator.sanitize()
+validator.sanitize();
 ```
 
 Async mode with all modifiers
 
 ```js
 import validator, { Types } from '@galaxar/validator/allAsync';
-await validator.sanitize_()
+await validator.sanitize_();
 ```

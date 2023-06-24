@@ -1,6 +1,6 @@
 {
     "name": "@galaxar/jsonc",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "Galaxar JSON config",
     "main": "cjs/index.js",
     "module": "lib/index.js",
@@ -52,5 +52,8 @@
         "tabWidth": 4,
         "useTabs": false
     },
-    "license": "MIT"
+    "license": "MIT",
+    "devDependencies": {
+        "@galaxar/utils": "workspace:^"
+    }
 }

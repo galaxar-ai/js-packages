@@ -35,7 +35,7 @@ describe("text", () => {
 
         it("should return null for empty string input with meta.nonEmpty", () => {
             const value = "";
-            should.throws(() => text.sanitize(value, { nonEmpty: true }, {}, ""), 'Value is required.');
+            should.throws(() => text.sanitize(value, { nonEmpty: true }, {}, ""), 'Missing a required value.');
         });
 
         it("should return string for numbers", () => {

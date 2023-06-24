@@ -27,9 +27,9 @@ const createModifiableSystem = () => {
 
     validator.addModifiers = (type, modifiersSet) => {
         _.each(modifiersSet, (modifier, name) => validator.addModifier(type, name, modifier));
-    }
+    };
 
     return validator;
-}
+};
 
 export default createModifiableSystem;

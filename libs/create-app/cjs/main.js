@@ -20,10 +20,11 @@ function _interop_require_default(obj) {
         default: obj
     };
 }
+const cliName = Object.keys(_packagejson.default.bin)[0];
 function main() {
     return (0, _app.startCommand)(_runner.default, {
         logLevel: process.env.NODE_ENV === 'development' ? "verbose" : "info",
-        commandName: "gx-init",
+        commandName: cliName,
         config: {
             version: _packagejson.default.version,
             commandLine: {
@@ -32,7 +33,7 @@ function main() {
                         horizontalLayout: 'fitted'
                     }) + '\n' + `Galaxar application initiator command line v${_packagejson.default.version}`;
                 },
-                program: "npm init @genx/app",
+                program: cliName,
                 arguments: [
                     {
                         name: "app-directory",

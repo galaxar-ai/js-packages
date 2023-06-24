@@ -12,6 +12,6 @@ describe('jsv:issue-verify', function () {
             }
         });
 
-        result[0].should.be.ok();
+        result[0].should.be.ok;
     });
 });

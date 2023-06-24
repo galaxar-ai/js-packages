@@ -40,8 +40,11 @@ class T_BOOLEAN {
             throw new _errors.ValidationError('Invalid boolean value.', {
                 value,
                 meta,
-                ...opts
-            }, e);
+                rawValue: opts.rawValue,
+                i18n: opts.i18n,
+                path: opts.path,
+                error: e.message
+            });
         }
     }
     constructor(system){

@@ -14,7 +14,7 @@ describe('Jxs:bugs', function () {
             $match: '$$ROOT.maxIndex'
         }]);
 
-        result.should.not.be.ok();
+        result.should.not.be.ok;
 
         const obj2 = {
             maxIndex: 3,
@@ -28,6 +28,6 @@ describe('Jxs:bugs', function () {
             $match: '$$ROOT.maxIndex'
         }]);
 
-        result2.should.be.ok();
+        result2.should.be.ok;
     });
 });

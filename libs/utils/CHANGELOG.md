@@ -1,5 +1,12 @@
 # @galaxar/utils
 
+## 1.0.8
+
+### Patch Changes
+
+-   Add trimLines
+-   Add grepLines
+
 ## 1.0.7
 
 ### Patch Changes

@@ -27,14 +27,14 @@ describe('jsv:message', function () {
             key1: 2001,
         });
 
-        result[0].should.not.be.ok();
-        result[1].should.be.match('"key1" 的值必须为 2001。' );
+        result[0].should.not.be.ok;
+        result[1].match('"key1" 的值必须为 2001。' ).should.be.ok;
 
         result = Jsv.match(obj, {
             key2: 'ng',
         });
-        result[0].should.not.be.ok();
-        result[1].should.be.match('"key2" 的值必须为 "ng"。');
+        result[0].should.not.be.ok;
+        result[1].match('"key2" 的值必须为 "ng"。').should.be.ok;
 
         Jsv.config.setLocale('en-US');
     });

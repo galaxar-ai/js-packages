@@ -37,8 +37,8 @@ export const decrypt = (cipherAlgorithm, key, message) => {
     return decrypted;
 };
 
-export const generateKeyPair = (asymmetricAlgorithm, asymmetricBits, options) => {
-    const keypair = crypto.generateKeyPairSync(asymmetricAlgorithm, {
+export const generateKeyPair = (keyPairType, asymmetricBits, options) => {
+    const keypair = crypto.generateKeyPairSync(keyPairType, {
         modulusLength: asymmetricBits,
         publicKeyEncoding: {
             type: 'spki',
@@ -54,10 +54,10 @@ export const generateKeyPair = (asymmetricAlgorithm, asymmetricBits, options) =>
     return keypair;
 };
 
-export const generateKeyPair_ = async (asymmetricAlgorithm, asymmetricBits, options) => {
+export const generateKeyPair_ = async (keyPairType, asymmetricBits, options) => {
     const keypair = await new Promise((resolve, reject) =>
         crypto.generateKeyPair(
-            asymmetricAlgorithm,
+            keyPairType,
             {
                 modulusLength: asymmetricBits,
                 publicKeyEncoding: {

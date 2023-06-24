@@ -33,8 +33,11 @@ class T_BIGINT {
             throw new _errors.ValidationError('Invalid bigint value.', {
                 value,
                 meta,
-                ...opts
-            }, e);
+                rawValue: opts.rawValue,
+                i18n: opts.i18n,
+                path: opts.path,
+                error: e.message
+            });
         }
         return value;
     }

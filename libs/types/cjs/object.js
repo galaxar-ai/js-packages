@@ -9,10 +9,12 @@ Object.defineProperty(exports, "default", {
     }
 });
 const _each = /*#__PURE__*/ _interop_require_default(require("lodash/each"));
+const _every = /*#__PURE__*/ _interop_require_default(require("lodash/every"));
 const _errors = require("./errors");
 const _objectPathUtils = require("@galaxar/utils/objectPathUtils");
 const _isPlainObject = /*#__PURE__*/ _interop_require_default(require("@galaxar/utils/isPlainObject"));
 const _batchAsync_ = /*#__PURE__*/ _interop_require_default(require("@galaxar/utils/batchAsync_"));
+const _findAsync_ = /*#__PURE__*/ _interop_require_default(require("@galaxar/utils/findAsync_"));
 function _define_property(obj, key, value) {
     if (key in obj) {
         Object.defineProperty(obj, key, {
@@ -57,18 +59,39 @@ class T_OBJECT {
                 throw new _errors.ValidationError('Invalid object value.', {
                     value,
                     meta,
-                    ...opts
+                    rawValue: opts.rawValue,
+                    i18n: opts.i18n,
+                    path: opts.path
                 });
             }
-            const schema = typeof meta.schema === 'function' ? meta.schema() : meta.schema;
-            const newValue = {};
-            (0, _each.default)(schema, (validationObject, fieldName)=>{
-                const fieldValue = value[fieldName];
-                const _fieldValue = this.system.sanitize(fieldValue, validationObject, opts.i18n, (0, _objectPathUtils.makePath)(opts.path, fieldName));
-                if (_fieldValue != null || fieldName in value) {
-                    newValue[fieldName] = _fieldValue;
+            let schema = typeof meta.schema === 'function' ? meta.schema() : meta.schema;
+            let newValue;
+            if (Array.isArray(schema)) {
+                const errors = [];
+                const pass = schema.find((altSchema)=>{
+                    newValue = {};
+                    try {
+                        (0, _each.default)(altSchema, this._sanitizeMember(value, opts, newValue));
+                        return true;
+                    } catch (error) {
+                        errors.push(_errors.ValidationError.extractFromError(error));
+                        return false;
+                    }
+                });
+                if (pass == null) {
+                    throw new _errors.ValidationError('Object schema validation failed.', {
+                        value,
+                        meta,
+                        rawValue: opts.rawValue,
+                        i18n: opts.i18n,
+                        path: opts.path,
+                        errors
+                    });
                 }
-            });
+            } else {
+                newValue = {};
+                (0, _each.default)(schema, this._sanitizeMember(value, opts, newValue));
+            }
             if (meta.keepUnsanitized) {
                 return {
                     ...value,
@@ -91,18 +114,39 @@ class T_OBJECT {
                 throw new _errors.ValidationError('Invalid object value.', {
                     value,
                     meta,
-                    ...opts
+                    rawValue: opts.rawValue,
+                    i18n: opts.i18n,
+                    path: opts.path
                 });
             }
             const schema = typeof meta.schema === 'function' ? meta.schema() : meta.schema;
-            const newValue = {};
-            await (0, _batchAsync_.default)(schema, async (validationObject, fieldName)=>{
-                const fieldValue = value[fieldName];
-                const _fieldValue = await this.system.sanitize_(fieldValue, validationObject, opts.i18n, (0, _objectPathUtils.makePath)(opts.path, fieldName));
-                if (_fieldValue != null || fieldName in value) {
-                    newValue[fieldName] = _fieldValue;
+            let newValue;
+            if (Array.isArray(schema)) {
+                const errors = [];
+                const pass = await (0, _findAsync_.default)(schema, async (altSchema)=>{
+                    newValue = {};
+                    try {
+                        await (0, _batchAsync_.default)(altSchema, this._sanitizeMember_(value, opts, newValue));
+                        return true;
+                    } catch (error) {
+                        errors.push(_errors.ValidationError.extractFromError(error));
+                        return false;
+                    }
+                });
+                if (pass == null) {
+                    throw new _errors.ValidationError('Object schema validation failed.', {
+                        value,
+                        meta,
+                        rawValue: opts.rawValue,
+                        i18n: opts.i18n,
+                        path: opts.path,
+                        errors
+                    });
                 }
-            });
+            } else {
+                newValue = {};
+                await (0, _batchAsync_.default)(schema, this._sanitizeMember_(value, opts, newValue));
+            }
             if (meta.keepUnsanitized) {
                 return {
                     ...value,
@@ -124,6 +168,70 @@ class T_OBJECT {
         ]);
         _define_property(this, "primitive", true);
         _define_property(this, "defaultValue", {});
+        _define_property(this, "_sanitizeMember", (value, opts, newValue)=>(validationObject, fieldName)=>{
+                const fieldValue = value[fieldName];
+                const fieldPath = (0, _objectPathUtils.makePath)(opts.path, fieldName);
+                let _fieldValue;
+                if (Array.isArray(validationObject)) {
+                    const errors = [];
+                    const foudMatched = validationObject.find((_validationObject)=>{
+                        try {
+                            _fieldValue = this.system.sanitize(fieldValue, _validationObject, opts.i18n, fieldPath);
+                            return true;
+                        } catch (error) {
+                            errors.push(_errors.ValidationError.extractFromError(error));
+                            return false;
+                        }
+                    });
+                    if (foudMatched == null) {
+                        throw new _errors.ValidationError('Object member schema validation failed.', {
+                            value: fieldValue,
+                            meta: validationObject,
+                            rawValue: opts.rawValue,
+                            i18n: opts.i18n,
+                            path: fieldPath,
+                            errors
+                        });
+                    }
+                } else {
+                    _fieldValue = this.system.sanitize(fieldValue, validationObject, opts.i18n, fieldPath);
+                }
+                if (_fieldValue != null || fieldName in value) {
+                    newValue[fieldName] = _fieldValue;
+                }
+            });
+        _define_property(this, "_sanitizeMember_", (value, opts, newValue)=>async (validationObject, fieldName)=>{
+                const fieldValue = value[fieldName];
+                const fieldPath = (0, _objectPathUtils.makePath)(opts.path, fieldName);
+                let _fieldValue;
+                if (Array.isArray(validationObject)) {
+                    const errors = [];
+                    const foudMatched = await (0, _findAsync_.default)(validationObject, async (_validationObject)=>{
+                        try {
+                            _fieldValue = await this.system.sanitize_(fieldValue, _validationObject, opts.i18n, fieldPath);
+                            return true;
+                        } catch (error) {
+                            errors.push(_errors.ValidationError.extractFromError(error));
+                            return false;
+                        }
+                    });
+                    if (foudMatched == null) {
+                        throw new _errors.ValidationError('Object member schema validation failed.', {
+                            value: fieldValue,
+                            meta: validationObject,
+                            rawValue: opts.rawValue,
+                            i18n: opts.i18n,
+                            path: fieldPath,
+                            errors
+                        });
+                    }
+                } else {
+                    _fieldValue = await this.system.sanitize_(fieldValue, validationObject, opts.i18n, fieldPath);
+                }
+                if (_fieldValue != null || fieldName in value) {
+                    newValue[fieldName] = _fieldValue;
+                }
+            });
         this.system = system;
     }
 }

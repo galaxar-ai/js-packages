@@ -1,6 +1,6 @@
 {
     "name": "@galaxar/adapters",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "description": "Galaxar common adapter for packages",
     "main": "cjs/index.js",
     "module": "src/index.js",

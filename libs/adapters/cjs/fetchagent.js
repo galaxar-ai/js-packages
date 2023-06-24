@@ -94,17 +94,20 @@ const wretchAdapter = ()=>{
                     return requestWrapper;
                 },
                 then: async (callback)=>{
-                    console.log(_options);
                     if (_options._method === 'download' && !headers.accept) {
                         requestWrapper.accept('octet-stream');
                     }
-                    console.log(query ? (0, _utils.appendQuery)(url, query) : url, method, headers, options);
+                    const __method = method.toUpperCase();
                     const response = await fetch(query ? (0, _utils.appendQuery)(url, query) : url, {
                         ...options,
-                        method: method.toUpperCase(),
+                        method: __method,
                         headers
                     });
-                    return _superagentLike.default.create_(requestWrapper, response).then(callback);
+                    return _superagentLike.default.create_({
+                        headers,
+                        method: __method,
+                        url
+                    }, response).then(callback);
                 }
             };
             return requestWrapper;

@@ -69,7 +69,7 @@ const _default = {
     stage: _app.Feature.SERVICE,
     groupable: true,
     load_: async function(app, options, name) {
-        const { hashAlgorithm , cipherAlgorithm , key , asymmetricAlgorithm , asymmetricBits , signerAlgorithm  } = app.featureConfig(options, {
+        const { hashAlgorithm , cipherAlgorithm , key , keyPairType , asymmetricBits , signerAlgorithm  } = app.featureConfig(options, {
             schema: {
                 key: {
                     type: 'text',
@@ -86,7 +86,7 @@ const _default = {
                     optional: true,
                     default: 'aes-256-cbc'
                 },
-                asymmetricAlgorithm: {
+                keyPairType: {
                     type: 'text',
                     enum: [
                         'rsa',
@@ -120,8 +120,8 @@ const _default = {
             hashFile_: (filePath, encoding = 'hex', _hashAlgorithm)=>(0, _hash.hashFile_)(_hashAlgorithm ?? hashAlgorithm, filePath, encoding),
             encrypt: (message, _key, _cipherAlgorithm)=>(0, _crypto.encrypt)(_cipherAlgorithm ?? cipherAlgorithm, _key ?? key, message),
             decrypt: (message, _key, _cipherAlgorithm)=>(0, _crypto.decrypt)(_cipherAlgorithm ?? cipherAlgorithm, _key ?? key, message),
-            generateKeyPair: (algorithm, _options)=>(0, _crypto.generateKeyPair)(algorithm ?? asymmetricAlgorithm, asymmetricBits, _options),
-            generateKeyPair_: async (algorithm, _options)=>(0, _crypto.generateKeyPair_)(algorithm ?? asymmetricAlgorithm, asymmetricBits, _options),
+            generateKeyPair: (type, _options)=>(0, _crypto.generateKeyPair)(type ?? keyPairType, asymmetricBits, _options),
+            generateKeyPair_: async (type, _options)=>(0, _crypto.generateKeyPair_)(type ?? keyPairType, asymmetricBits, _options),
             publicEncrypt: (message, publicKey, encoding = 'base64')=>(0, _crypto.publicEncrypt)(publicKey, message, encoding),
             privateDecrypt: (message, privateKey, encoding = 'base64')=>(0, _crypto.privateDecrypt)(privateKey, message, encoding),
             privateSign: (message, privateKey, _signerAlgorithm, encoding = 'base64')=>(0, _crypto.privateSign)(_signerAlgorithm ?? signerAlgorithm, privateKey, message, encoding),

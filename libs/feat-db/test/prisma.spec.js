@@ -196,4 +196,43 @@ describe('prisma', function () {
             }
         );
     });
+
+    it('retryCreate_', async function () {
+        await startWorker(
+            async (app) => {
+                const prisma = app.getService('prisma');
+                const User = prisma.$model('User');
+
+                await User.deleteMany();
+            
+                await User.create({
+                    data: {
+                        email: 'test@email.com',
+                        name: 'test',
+                    },
+                });
+
+                await User.retryCreate_({
+                    data: {
+                        email: 'test@email.com',
+                        name: 'test2',
+                    },
+                }, (createOptions) => {
+                    return {
+                        ...createOptions,
+                        data: {
+                            ...createOptions.data,
+                            email: 'test2@email.com',
+                        }
+                    }
+                });
+
+                const found = await User.findMany({});
+                found.length.should.be.eql(2);
+            },
+            {
+                workingPath: 'test',
+            }
+        );
+    });
 });

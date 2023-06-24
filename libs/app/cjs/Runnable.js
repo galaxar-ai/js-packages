@@ -45,7 +45,7 @@ function _define_property(obj, key, value) {
                 await super.start_();
             } catch (error) {
                 if (error.code === 'E_INVALID_CONF') {
-                    throw new Error(`Invalid configuration. Reason: ${error.message} Info: ${JSON.stringify(error.info)}`);
+                    throw new Error(`Invalid configuration. Reason: ${error.message}\nInfo: ${JSON.stringify(error.info)}`);
                 }
                 throw error;
             }

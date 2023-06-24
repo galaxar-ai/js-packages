@@ -58,7 +58,9 @@ class T_ARRAY {
         throw new _errors.ValidationError('Invalid array value.', {
             value,
             meta,
-            ...opts
+            rawValue: opts.rawValue,
+            i18n: opts.i18n,
+            path: opts.path
         });
     }
     async _sanitizeAsync(value, meta, opts) {
@@ -84,7 +86,9 @@ class T_ARRAY {
         throw new _errors.ValidationError('Invalid array value.', {
             value,
             meta,
-            ...opts
+            rawValue: opts.rawValue,
+            i18n: opts.i18n,
+            path: opts.path
         });
     }
     serialize(value, typeInfo) {

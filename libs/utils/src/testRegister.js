@@ -12,6 +12,28 @@ chai.use(function (chai, utils) {
         new Assertion(this._obj === value).to.be.ok;
     });
 
+    Assertion.addProperty('uppercase', function () {
+        var obj = this._obj;
+        new chai.Assertion(obj).to.be.a('string');
+
+        this.assert(
+            obj === obj.toUpperCase(), // adapt as needed
+            'expected #{this} to be all uppercase', // error message when fail for normal
+            'expected #{this} to not be all uppercase' // error message when fail for negated
+        );
+    });
+
+    Assertion.addProperty('lowercase', function () {
+        var obj = this._obj;
+        new chai.Assertion(obj).to.be.a('string');
+
+        this.assert(
+            obj === obj.toLowerCase(), // adapt as needed
+            'expected #{this} to be all lowercase', // error message when fail for normal
+            'expected #{this} to not be all lowercase' // error message when fail for negated
+        );
+    });
+
     Assertion.overwriteMethod('keys', function (_super) {
         return function assertKeys(...args) {
             const obj = this._obj;
@@ -30,3 +52,7 @@ chai.use(function (chai, utils) {
 global.assert = chai.assert;
 global.expect = chai.expect;
 global.should = chai.should();
+
+global.should.throws = (func, errorPattern) => {
+    func.should.throws(errorPattern);
+};

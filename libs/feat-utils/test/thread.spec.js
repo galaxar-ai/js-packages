@@ -3,7 +3,7 @@ import { startWorker } from '@galaxar/app';
 
 const imageFile = path.resolve(__dirname, './files/logo.png');
 
-describe.only('thread', function () {
+describe('thread', function () {
     it('hashFile', async function () {
         await startWorker(async (app) => {
             const threadPool = app.getService('threadPool');      

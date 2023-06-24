@@ -1,5 +1,11 @@
 # @galaxar/jsonc
 
+## 1.0.4
+
+### Patch Changes
+
+-   Add validators package, add minor features and fix bugs
+
 ## 1.0.3
 
 ### Patch Changes

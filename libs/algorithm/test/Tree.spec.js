@@ -22,10 +22,10 @@ describe('unit:tree:tree', function () {
 
     it('find', function () {
         let node = tree.find((n) => n.data === 'level 2 node 2');
-        should.exist(node);
+        (node != null).should.be.ok;
 
         node = tree.find((n) => n.data === 'level 2 node 4');
-        should.not.exist(node);
+        (node != null).should.not.be.ok;
     });
 
     it('cru', function () {
@@ -36,7 +36,7 @@ describe('unit:tree:tree', function () {
         tree.remove(node12);
 
         tree.size.should.be.exactly(1);
-        should.not.exists(node12.parent);
+        (node12.parent == null).should.be.ok;
 
         should.throws(
             () => tree.remove(node12),
@@ -51,6 +51,6 @@ describe('unit:tree:tree', function () {
         tree.children[1].should.be.equal(node11);
 
         tree.removeAtIndex(0);
-        should.not.exists(node12.parent);
+        (node12.parent == null).should.be.ok;
     });
 });

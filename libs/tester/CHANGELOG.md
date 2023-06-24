@@ -1,5 +1,18 @@
 # @galaxar/tester
 
+## 1.0.5
+
+### Patch Changes
+
+-   Add validators package, add minor features and fix bugs
+-   Updated dependencies
+    -   @galaxar/adapters@1.1.1
+    -   @galaxar/jsonv@1.0.6
+    -   @galaxar/types@1.1.2
+    -   @galaxar/utils@1.0.8
+    -   @galaxar/app@1.0.11
+    -   @galaxar/sys@1.0.5
+
 ## 1.0.4
 
 ### Patch Changes

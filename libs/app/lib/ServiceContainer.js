@@ -1,7 +1,8 @@
 import ConfigLoader, { JsonConfigProvider } from '@galaxar/jsonc';
 import { _, pushIntoBucket, eachAsync_, arrayToObject, esmCheck } from '@galaxar/utils';
 import { fs, tryRequire as _tryRequire } from '@galaxar/sys';
-import { InvalidConfiguration, Types } from '@galaxar/types';
+import { InvalidConfiguration, ValidationError } from '@galaxar/types';
+import { Types } from "@galaxar/validators/allSync";
 import { TopoSort } from '@galaxar/algo';
 
 import path from 'node:path';
@@ -270,6 +271,27 @@ class ServiceContainer extends AsyncEmitter {
     }
 
     /**
+     * Try to require a package, if it's an esm module, import it.
+     * @param {*} pkgName 
+     * @param {*} useDefault 
+     * @returns 
+     */
+    async tryRequire_(pkgName, useDefault) {
+        try {
+            return this.tryRequire(pkgName);
+        } catch(error) {
+            if (error.code === 'ERR_REQUIRE_ESM') {
+                const esmModule = await import(pkgName);
+                if (useDefault) {
+                    return esmModule.default;
+                }                
+                return esmModule;
+            }
+            throw error;
+        }
+    }
+
+    /**
      * Register a service
      * @param {string} name
      * @param {object} serviceObject
@@ -346,10 +368,17 @@ class ServiceContainer extends AsyncEmitter {
     }
 
     sanitize(config, typeInfo, name, category) {
-        try {
-            return Types.sanitize(config, { type: 'object', ...typeInfo }, undefined, name);
+        try {            
+            return Types.OBJECT.sanitize(config, { type: 'object', ...typeInfo }, this.i18n, name);
         } catch (err) {
-            throw new InvalidConfiguration(err.message, this, category ? `${category}::${name}` : name);
+            let message;
+
+            if (err instanceof ValidationError) {                
+                message = ValidationError.formatError(err);
+            } else {
+                message = err.message;
+            }
+            throw new InvalidConfiguration(message, this, category ? `${category}::${name}` : name);
         }
     }
 
@@ -427,6 +456,11 @@ class ServiceContainer extends AsyncEmitter {
         _.each(this.config, (featureOptions, name) => {
             if (this.options.allowedFeatures && this.options.allowedFeatures.indexOf(name) === -1) {
                 //skip disabled features
+                return;
+            }
+
+            if (this.options.ignoreFeatures && this.options.ignoreFeatures.indexOf(name) !== -1) {
+                //ignore features, useful for worker to use the same config with server
                 return;
             }
 

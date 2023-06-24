@@ -5,6 +5,8 @@
 
 import { HttpCode } from '@galaxar/types';
 
+const middlewareName = 'passportCheck';
+
 /**
  * Initialize ensureLoggedIn middleware
  * @param {object} options
@@ -13,20 +15,33 @@ import { HttpCode } from '@galaxar/types';
  * @param {Routable} app
  */
 const passportCheck = (options, app) => {
+    const { successReturnToOrRedirect, loginUrl } = app.middlewareConfig(
+        opt,
+        {
+            schema: {
+                successReturnToOrRedirect: { type: 'boolean', default: false },
+                loginUrl: { type: 'type', optional: true },
+            },
+        },
+        middlewareName
+    );
+
+    app.requireServices(['passport'], middlewareName);
+
     return async (ctx, next) => {
         if (ctx.isAuthenticated()) {
             return next();
         }
 
-        if (options.successReturnToOrRedirect && ctx.session) {
+        if (successReturnToOrRedirect && ctx.session) {
             ctx.session.returnTo = ctx.originalUrl || ctx.url;
         }
 
-        if (!options.loginUrl) {
+        if (!loginUrl) {
             ctx.throw(HttpCode.UNAUTHORIZED, 'authentication required');
         }
 
-        return ctx.redirect(options.loginUrl);
+        return ctx.redirect(loginUrl);
     };
 };
 

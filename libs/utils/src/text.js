@@ -20,5 +20,7 @@ export { default as csvLineParse } from './csvLineParse';
 export { default as baseName } from './baseName';
 export { default as countOfChar } from './countOfChar';
 export { default as deleteLines } from './deleteLines';
+export { default as grepLines } from './grepLines';
+export { default as trimLines } from './trimLines';
 export * from './trim';
 export * from './padding';

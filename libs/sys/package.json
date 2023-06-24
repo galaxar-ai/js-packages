@@ -1,6 +1,6 @@
 {
     "name": "@galaxar/sys",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "Galaxar node system utilities",
     "main": "cjs/index.js",
     "module": "src/index.js",
@@ -52,5 +52,8 @@
         "tabWidth": 4,
         "useTabs": false
     },
-    "license": "MIT"
+    "license": "MIT",
+    "devDependencies": {
+        "@galaxar/utils": "workspace:^"
+    }
 }

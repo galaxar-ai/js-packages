@@ -69,8 +69,8 @@ const decrypt = (cipherAlgorithm, key, message)=>{
     decrypted += decipher.final('utf8');
     return decrypted;
 };
-const generateKeyPair = (asymmetricAlgorithm, asymmetricBits, options)=>{
-    const keypair = _nodecrypto.default.generateKeyPairSync(asymmetricAlgorithm, {
+const generateKeyPair = (keyPairType, asymmetricBits, options)=>{
+    const keypair = _nodecrypto.default.generateKeyPairSync(keyPairType, {
         modulusLength: asymmetricBits,
         publicKeyEncoding: {
             type: 'spki',
@@ -84,8 +84,8 @@ const generateKeyPair = (asymmetricAlgorithm, asymmetricBits, options)=>{
     });
     return keypair;
 };
-const generateKeyPair_ = async (asymmetricAlgorithm, asymmetricBits, options)=>{
-    const keypair = await new Promise((resolve, reject)=>_nodecrypto.default.generateKeyPair(asymmetricAlgorithm, {
+const generateKeyPair_ = async (keyPairType, asymmetricBits, options)=>{
+    const keypair = await new Promise((resolve, reject)=>_nodecrypto.default.generateKeyPair(keyPairType, {
             modulusLength: asymmetricBits,
             publicKeyEncoding: {
                 type: 'spki',

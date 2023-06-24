@@ -17,7 +17,7 @@ function _interop_require_default(obj) {
     };
 }
 /**
- * Gaml router.
+ * Galaxar API Modeling Language (GAML) router.
  * @module Router_Gaml
  */ const appendId = (baseEndpoint, idName)=>idName ? `${baseEndpoint}/:${idName}` : baseEndpoint;
 /**

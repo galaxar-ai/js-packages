@@ -14,9 +14,13 @@ _export(exports, {
     },
     identity: function() {
         return identity;
+    },
+    toggle: function() {
+        return toggle;
     }
 });
 const everTrue = ()=>true;
 const identity = (value)=>value;
+const toggle = (value)=>!value;
 
 //# sourceMappingURL=functions.js.map

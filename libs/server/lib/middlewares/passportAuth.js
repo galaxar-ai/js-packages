@@ -1,9 +1,9 @@
-import { InvalidConfiguration } from '@galaxar/types';
-
 /**
  * Passport initialization middleware, required to initialize Passport service.
  * @module Middleware_PassportAuth
  */
+
+const middlewareName = 'passportAuth';
 
 /**
  * Create a passport authentication middleware.
@@ -14,17 +14,22 @@ import { InvalidConfiguration } from '@galaxar/types';
  * @returns {KoaActionFunction}
  */
 const passportAuth = (opt, app) => {
-    if (!opt || !opt.strategy) {
-        throw new InvalidConfiguration('Missing strategy name.', app, 'middlewares.passportAuth.strategy');
-    }
+    const { strategy, options } = app.middlewareConfig(
+        opt,
+        {
+            schema: {
+                strategy: { type: 'text' },
+                options: { type: 'object', optional: true },
+            },
+        },
+        middlewareName
+    );
 
-    let passportService = app.getService('passport');
+    app.requireServices(['passport'], middlewareName);
 
-    if (!passportService) {
-        throw new InvalidConfiguration('Passport feature is not enabled.', app, 'passport');
-    }
+    const passportService = app.getService('passport');
 
-    return passportService.authenticate(opt.strategy, opt.options);
+    return passportService.authenticate(strategy, options);
 };
 
 export default passportAuth;

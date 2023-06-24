@@ -1,6 +1,6 @@
 {
     "name": "@galaxar/utils",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "description": "Galaxar JavaScript Utility Library for both Node.js and browser",
     "main": "cjs/index",
     "module": "src/index.js",

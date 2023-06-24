@@ -1,5 +1,13 @@
 # @galaxar/types
 
+## 1.1.2
+
+### Patch Changes
+
+-   Add commonly used character sets: up_letter_num, low_letter_num, up_letter, low_letter, url_safe_all
+-   Updated dependencies
+    -   @galaxar/utils@1.0.8
+
 ## 1.1.0
 
 ### Patch Changes
@@ -12,7 +20,7 @@
 
 ### Patch Changes
 
--   Fix: sanitize without meta failed   
+-   Fix: sanitize without meta failed
 
 ## 1.0.5
 

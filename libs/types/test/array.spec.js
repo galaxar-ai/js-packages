@@ -10,7 +10,7 @@ describe('array', () => {
         });
 
         it("should return null for null input", () => {
-            should.throws(() => array.sanitize(null, { type: "array" }, {}, "test"), 'Value of "test" is required.');
+            should.throws(() => array.sanitize(null, { type: "array" }, {}, "test"), 'Missing a required value.');
         });
 
         it("should return rawValue", () => {
@@ -23,7 +23,7 @@ describe('array', () => {
         });
 
         it("should not parse a semicolon-separated string into an array without the csv flag", () => {
-            (() => array.sanitize("1;2;3", { type: "array", delimiter: ";" }, {}, "test")).should.throwError("Invalid array value.");
+            (() => array.sanitize("1;2;3", { type: "array", delimiter: ";" }, {}, "test")).should.throws("Invalid array value.");
         });
 
         it("should parse a semicolon-separated string into an array with csv flag", () => {
@@ -35,7 +35,7 @@ describe('array', () => {
         });
 
         it("should throw an error for invalid input", () => {
-            (() => array.sanitize("invalid", { type: "array" }, {}, "test")).should.throwError("Invalid array value.");
+            (() => array.sanitize("invalid", { type: "array" }, {}, "test")).should.throws("Invalid array value.");
         });
 
         it("should sanitize array elements according to the element schema", () => {

@@ -1,13 +1,23 @@
 {
     "logger": {        
     },
+    "serviceGroup": {
+        "logger": {
+            "accessLog": {
+                "transport": {
+                    "target": "pino/file",
+                    "options": { "destination": "./access-log.log" }
+                }
+            }
+        }
+    },
     "koa": {       
         "keys": [ "a", "b" ] 
     },
     "middlewares": {
         "favicon": "public/favicon.ico",
         "ip": {},
-        "accessLog": { "logger": "accessLog" },
+        "accessLog": { "logger": "logger-accessLog" },
         "koa-compress": {},
         "koa-etag": {},        
         "serveStatic": {}

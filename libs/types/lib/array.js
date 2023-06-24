@@ -44,7 +44,9 @@ class T_ARRAY {
         throw new ValidationError('Invalid array value.', {
             value,
             meta,
-            ...opts,
+            rawValue: opts.rawValue,
+            i18n: opts.i18n,
+            path: opts.path,
         });
     }
 
@@ -73,7 +75,9 @@ class T_ARRAY {
         throw new ValidationError('Invalid array value.', {
             value,
             meta,
-            ...opts,
+            rawValue: opts.rawValue,
+            i18n: opts.i18n,
+            path: opts.path,
         });
     }
 

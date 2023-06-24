@@ -26,10 +26,10 @@ describe('unit:tree:key-tree', function () {
         node.data.should.be.exactly('level 2 node 2');
 
         node = tree.find((n) => n.key === 'l2-4');
-        should.not.exist(node);
+        (node == null).should.be.ok;
 
         node = tree.findByKeyPath(['']);
-        should.not.exists(node);
+        (node == null).should.be.ok;
     });
 
     it('cru', function () {
@@ -37,7 +37,7 @@ describe('unit:tree:key-tree', function () {
         node11.children.should.have.keys(node111.key);
         node12.children.should.have.keys(node121.key, node122.key);
 
-        node111.getKeyPath().should.deepEqual(['/', 'l1-1', 'l2-1']);
+        node111.getKeyPath().should.eql(['/', 'l1-1', 'l2-1']);
 
         let node = tree.findByKeyPath(['/', 'l1-2', 'l2-2']);
         node.data.should.be.exactly('level 2 node 2');
@@ -66,8 +66,8 @@ describe('unit:tree:key-tree', function () {
         tree.remove(node12);
 
         node = tree.findByKeyPath(['/', 'l1-2', 'l2-2']);
-        should.not.exists(node);
+        (node == null).should.be.ok;
 
-        should.throws(() => tree.append(node11), '`Duplicate node key: l1-1');
+        should.throws(() => tree.append(node11), 'Duplicate node key: l1-1');
     });
 });

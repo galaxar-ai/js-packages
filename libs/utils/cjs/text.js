@@ -64,6 +64,12 @@ _export(exports, {
     },
     deleteLines: function() {
         return _deleteLines.default;
+    },
+    grepLines: function() {
+        return _grepLines.default;
+    },
+    trimLines: function() {
+        return _trimLines.default;
     }
 });
 const _quote = /*#__PURE__*/ _interop_require_default(require("./quote"));
@@ -84,6 +90,8 @@ const _csvLineParse = /*#__PURE__*/ _interop_require_default(require("./csvLineP
 const _baseName = /*#__PURE__*/ _interop_require_default(require("./baseName"));
 const _countOfChar = /*#__PURE__*/ _interop_require_default(require("./countOfChar"));
 const _deleteLines = /*#__PURE__*/ _interop_require_default(require("./deleteLines"));
+const _grepLines = /*#__PURE__*/ _interop_require_default(require("./grepLines"));
+const _trimLines = /*#__PURE__*/ _interop_require_default(require("./trimLines"));
 _export_star(require("./trim"), exports);
 _export_star(require("./padding"), exports);
 function _export_star(from, to) {

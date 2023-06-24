@@ -1,17 +1,13 @@
 import { ApplicationError } from '@galaxar/types';
 
-class Controller {
+class BasicController {
     constructor(app) {
         this.app = app;
         this.apiWrapper = this.app.getService(this.app.settings?.apiWrapperService || 'apiWrapper');
 
         if (!this.apiWrapper) {
-            throw new ApplicationError('"apiWrapper" service is required when using the Controller helper.');
+            throw new ApplicationError('"apiWrapper" service is required when using the built-in Controller.');
         }
-    }
-
-    db(name) {
-        return this.app.db(name || this.app.settings.db);
     }
 
     /**
@@ -20,7 +16,7 @@ class Controller {
      * @param {*} key
      * @returns {boolean}
      */
-    trySendWithCache(ctx, key) {
+    trySendCache(ctx, key) {
         if (ctx.query['no-cache']) {
             return false;
         }
@@ -28,7 +24,7 @@ class Controller {
         const ttlCache = this.app.getService('ttlMemCache');
         if (!ttlCache) {
             throw new ApplicationError(
-                '"ttlMemCache" service is required. Please check npm module "@genx/app-feat-commons".'
+                '"ttlMemCache" service is required. Please check npm module "@galaxar/feat-utils/ttlMemCache".'
             );
         }
 
@@ -40,7 +36,7 @@ class Controller {
         return false;
     }
 
-    deleteTtlCache(key) {
+    deleteCache(key) {
         const ttlCache = this.app.getService('ttlMemCache');
         ttlCache.del(key);
     }
@@ -53,28 +49,14 @@ class Controller {
             if (payload) {
                 value.push(payload);
             }
-            ttlCache.set(ttlCacheInfo.key, [result, payload], ttlCacheInfo.ttl);
-        }
-    }
 
-    /**
-     * Immutable cache, suitable for long-term unchanged dictionary data
-     * @param {*} key
-     * @param {*} factory
-     * @returns {object}
-     */
-    cache(key, factory) {
-        if (!this._cache) {
-            this._cache = {};
-        }
+            if (!ttlCacheInfo.key)  {
+                throw new ApplicationError('"key" of TTL cache is required.');
+            }
 
-        let value = this._cache[key];
-        if (value == null) {
-            value = this._cache[key] = factory();
+            ttlCache.set(ttlCacheInfo.key, value, ttlCacheInfo.ttl);
         }
-
-        return value;
     }
 }
 
-export default Controller;
+export default BasicController;

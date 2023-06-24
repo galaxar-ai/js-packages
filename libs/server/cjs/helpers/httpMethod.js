@@ -2,13 +2,31 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-Object.defineProperty(exports, "default", {
-    enumerable: true,
-    get: function() {
+function _export(target, all) {
+    for(var name in all)Object.defineProperty(target, name, {
+        enumerable: true,
+        get: all[name]
+    });
+}
+_export(exports, {
+    Get: function() {
+        return Get;
+    },
+    Post: function() {
+        return Post;
+    },
+    Put: function() {
+        return Put;
+    },
+    Delete: function() {
+        return Delete;
+    },
+    default: function() {
         return _default;
     }
 });
-const { _ , isPlainObject  } = require('@galaxar/utils');
+const _utils = require("@galaxar/utils");
+const _types = require("@galaxar/types");
 /**
  * Decorator for http method
  * @param {*} method
@@ -30,7 +48,7 @@ const { _ , isPlainObject  } = require('@galaxar/utils');
             targetFunction = descriptor.value;
             descriptor.enumerable = true;
         } else {
-            throw new Error('Unsupported scenario.');
+            throw new _types.ApplicationError('Invalid usage of httpMethod decorator.');
         }
         if (targetFunction) {
             if (typeof method === 'string') {
@@ -41,27 +59,32 @@ const { _ , isPlainObject  } = require('@galaxar/utils');
                     }
                     // like get:/, or post:/
                     //override actionName as route
-                    targetFunction.__metaRoute = method.substr(pos + 1);
-                    method = method.substr(0, pos).toLocaleLowerCase();
+                    targetFunction.__metaRoute = method.substring(pos + 1);
+                    method = method.substring(0, pos).toLocaleLowerCase();
                 }
             } else {
                 method = 'get';
             }
             targetFunction.__metaHttpMethod = method;
             if (middlewares) {
-                if (isPlainObject(middlewares)) {
-                    targetFunction.__metaMiddlewares = _.map(middlewares, (options, name)=>({
+                if ((0, _utils.isPlainObject)(middlewares)) {
+                    targetFunction.__metaMiddlewares = _utils._.map(middlewares, (options, name)=>({
                             name,
                             options
                         }));
                 } else {
-                    targetFunction.__metaMiddlewares = _.castArray(middlewares);
+                    targetFunction.__metaMiddlewares = _utils._.castArray(middlewares);
                 }
             }
         }
         return isHof ? targetFunction : descriptor;
     };
 }
+const makeShortcut = (method)=>(route, middlewares)=>httpMethod(route ? `${method}:${(0, _utils.ensureStartsWith)(route, '/')}` : method, middlewares);
+const Get = makeShortcut('get');
+const Post = makeShortcut('post');
+const Put = makeShortcut('put');
+const Delete = makeShortcut('del');
 const _default = httpMethod;
 
 //# sourceMappingURL=httpMethod.js.map

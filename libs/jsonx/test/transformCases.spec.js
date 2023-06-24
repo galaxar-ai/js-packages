@@ -140,7 +140,7 @@ describe('Jxs:cases', function () {
             },
         });
 
-        result.value.should.be.ok();
+        result.value.should.be.ok;
     });
 
     it('case 5.2 - check not in array', function () {
@@ -159,7 +159,7 @@ describe('Jxs:cases', function () {
             },
         });
 
-        result.value.should.not.be.ok();
+        result.value.should.not.be.ok;
     });
 
     it('case 6.1 - check complex condition', function () {

@@ -39,7 +39,7 @@ function _interop_require_default(obj) {
  *  /:resource                     post           create
  *  /:resource/:id                 get            detail
  *  /:resource/:id                 put            update
- *  /:resource/:id                 delete         remove
+ *  /:resource/:id                 delete            remove
  */ const restRouter = (app, baseRoute, options)=>{
     const Router = app.tryRequire('@koa/router');
     let resourcePath = _nodepath.default.resolve(app.sourcePath, options.resourcesPath ?? 'resources');

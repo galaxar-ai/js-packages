@@ -12,6 +12,7 @@ const _jsonc = /*#__PURE__*/ _interop_require_wildcard(require("@galaxar/jsonc")
 const _utils = require("@galaxar/utils");
 const _sys = require("@galaxar/sys");
 const _types = require("@galaxar/types");
+const _allSync = require("@galaxar/validators/allSync");
 const _algo = require("@galaxar/algo");
 const _nodepath = /*#__PURE__*/ _interop_require_default(require("node:path"));
 const _Feature = /*#__PURE__*/ _interop_require_default(require("./Feature"));
@@ -202,6 +203,25 @@ const configOverrider = (defConf, envConf)=>{
         return (0, _utils.esmCheck)(obj);
     }
     /**
+     * Try to require a package, if it's an esm module, import it.
+     * @param {*} pkgName 
+     * @param {*} useDefault 
+     * @returns 
+     */ async tryRequire_(pkgName, useDefault) {
+        try {
+            return this.tryRequire(pkgName);
+        } catch (error) {
+            if (error.code === 'ERR_REQUIRE_ESM') {
+                const esmModule = await Promise.resolve(pkgName).then((p)=>/*#__PURE__*/ _interop_require_wildcard(require(p)));
+                if (useDefault) {
+                    return esmModule.default;
+                }
+                return esmModule;
+            }
+            throw error;
+        }
+    }
+    /**
      * Register a service
      * @param {string} name
      * @param {object} serviceObject
@@ -269,12 +289,18 @@ const configOverrider = (defConf, envConf)=>{
     }
     sanitize(config, typeInfo, name, category) {
         try {
-            return _types.Types.sanitize(config, {
+            return _allSync.Types.OBJECT.sanitize(config, {
                 type: 'object',
                 ...typeInfo
-            }, undefined, name);
+            }, this.i18n, name);
         } catch (err) {
-            throw new _types.InvalidConfiguration(err.message, this, category ? `${category}::${name}` : name);
+            let message;
+            if (err instanceof _types.ValidationError) {
+                message = _types.ValidationError.formatError(err);
+            } else {
+                message = err.message;
+            }
+            throw new _types.InvalidConfiguration(message, this, category ? `${category}::${name}` : name);
         }
     }
     _getConfigVariables() {
@@ -344,6 +370,10 @@ const configOverrider = (defConf, envConf)=>{
         _utils._.each(this.config, (featureOptions, name)=>{
             if (this.options.allowedFeatures && this.options.allowedFeatures.indexOf(name) === -1) {
                 //skip disabled features
+                return;
+            }
+            if (this.options.ignoreFeatures && this.options.ignoreFeatures.indexOf(name) !== -1) {
+                //ignore features, useful for worker to use the same config with server
                 return;
             }
             let feature;

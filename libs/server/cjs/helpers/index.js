@@ -23,9 +23,22 @@ _export(exports, {
     }
 });
 const _Controller = /*#__PURE__*/ _interop_require_default(require("./Controller"));
-const _httpMethod = /*#__PURE__*/ _interop_require_default(require("./httpMethod"));
+const _httpMethod = /*#__PURE__*/ _interop_require_default(_export_star(require("./httpMethod"), exports));
 const _middleware = /*#__PURE__*/ _interop_require_default(require("./middleware"));
 const _supportedMethods = /*#__PURE__*/ _interop_require_default(require("./supportedMethods"));
+function _export_star(from, to) {
+    Object.keys(from).forEach(function(k) {
+        if (k !== "default" && !Object.prototype.hasOwnProperty.call(to, k)) {
+            Object.defineProperty(to, k, {
+                enumerable: true,
+                get: function() {
+                    return from[k];
+                }
+            });
+        }
+    });
+    return from;
+}
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj

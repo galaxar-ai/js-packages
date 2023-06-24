@@ -18,13 +18,13 @@ _export(exports, {
 });
 const defaultOpts = {
     configName: 'server',
-    appModulesPath: 'apps',
-    sourcePath: 'server'
+    appModulesPath: 'apps'
 };
 const defaultRoutableOpts = {
     engine: 'koa',
     traceMiddlewares: false,
-    sourcePath: 'server',
+    // for nodemon to use the source files
+    sourcePath: process.env.GX_SOURCE_PATH ?? 'server',
     publicPath: 'public',
     controllersPath: 'actions',
     middlewaresPath: 'middlewares'

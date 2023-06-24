@@ -3,7 +3,7 @@ import { globSync } from 'glob';
 import { _, naming, text, hasMethod, esmCheck } from '@galaxar/utils';
 
 /**
- * Gaml router.
+ * Galaxar API Modeling Language (GAML) router.
  * @module Router_Gaml
  */
 

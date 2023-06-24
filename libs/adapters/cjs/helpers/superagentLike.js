@@ -16,12 +16,6 @@ _export(exports, {
         return _default;
     }
 });
-const _nodestream = /*#__PURE__*/ _interop_require_default(require("node:stream"));
-function _interop_require_default(obj) {
-    return obj && obj.__esModule ? obj : {
-        default: obj
-    };
-}
 function isJSON(mime) {
     // should match /json or +json
     // but not /json-seq
@@ -49,13 +43,18 @@ class ResponseWrapper {
         if (isJSON(this.type)) {
             this.body = await this.res.json();
         } else if (this.type.startsWith('text/')) {
-            this.body = await this.res.text();
+            this.text = await this.res.text();
+            if (this.error) {
+                this.error.text = this.text;
+            }
             console.log(this.body);
         } else {
             this.body = this.res.body;
         }
         if (this.error) {
-            throw this.error;
+            const _error = new Error(this.statusText);
+            _error.response = this;
+            throw _error;
         }
     }
     get(field) {
@@ -99,11 +98,13 @@ class ResponseWrapper {
     }
     toError() {
         const { url , method  } = this.req;
-        const message = `cannot ${method} ${url} (${this.status})`;
+        const _url = new URL(url);
+        const __url = _url.pathname;
+        const message = `cannot ${method} ${__url} (${this.status})`;
         const error = new Error(message);
         error.status = this.status;
         error.method = method;
-        error.url = url;
+        error.url = __url;
         return error;
     }
     constructor(request, response){

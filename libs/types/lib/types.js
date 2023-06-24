@@ -13,6 +13,7 @@ export class TypeSystem {
     sanitize = this.callType('sanitize');
     sanitize_ = this.callType('sanitize_');
     serialize = this.callType('serialize');
+    validate = this.callType('validate');
 
     constructor() {
         this._counter = counter++;
@@ -126,10 +127,12 @@ export class TypeSystem {
                 return [true, null];
             }
 
-            throw new ValidationError('Value ' + (opts.path ? `of "${opts.path}" ` : '') + 'is required.', {
+            throw new ValidationError('Missing a required value.', {
                 value,
                 meta,
-                ...opts,
+                rawValue: opts.rawValue,
+                i18n: opts.i18n,
+                path: opts.path,
             });
         }
 
@@ -160,7 +163,9 @@ export class TypeSystem {
             throw new ValidationError('Invalid enum value.', {
                 value,
                 meta,
-                ...opts,
+                rawValue: opts.rawValue,
+                i18n: opts.i18n,
+                path: opts.path,
             });
         }
     }
@@ -189,5 +194,13 @@ Types.sanitize = defaultTypeSystem.sanitize.bind(defaultTypeSystem);
 Types.sanitize_ = defaultTypeSystem.sanitize_.bind(defaultTypeSystem);
 Types.serialize = defaultTypeSystem.serialize.bind(defaultTypeSystem);
 Types.primitives = defaultTypeSystem.primitives;
+
+export const charsets = {
+    up_letter_num: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    low_letter_num: '0123456789abcdefghijklmnopqrstuvwxyz',
+    up_letter: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    low_letter: 'abcdefghijklmnopqrstuvwxyz',
+    url_safe_all: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_',
+};
 
 export default defaultTypeSystem;

@@ -72,7 +72,7 @@ const Runnable = (T) =>
             } catch (error) {
                 if (error.code === 'E_INVALID_CONF') {
                     throw new Error(
-                        `Invalid configuration. Reason: ${error.message} Info: ${JSON.stringify(error.info)}`
+                        `Invalid configuration. Reason: ${error.message}\nInfo: ${JSON.stringify(error.info)}`
                     );
                 }
 

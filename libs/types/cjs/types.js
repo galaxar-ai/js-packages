@@ -24,6 +24,9 @@ _export(exports, {
     Types: function() {
         return Types;
     },
+    charsets: function() {
+        return charsets;
+    },
     default: function() {
         return _default;
     }
@@ -149,10 +152,12 @@ class TypeSystem {
                     null
                 ];
             }
-            throw new _errors.ValidationError('Value ' + (opts.path ? `of "${opts.path}" ` : '') + 'is required.', {
+            throw new _errors.ValidationError('Missing a required value.', {
                 value,
                 meta,
-                ...opts
+                rawValue: opts.rawValue,
+                i18n: opts.i18n,
+                path: opts.path
             });
         }
         if (meta.rawValue) return [
@@ -181,7 +186,9 @@ class TypeSystem {
             throw new _errors.ValidationError('Invalid enum value.', {
                 value,
                 meta,
-                ...opts
+                rawValue: opts.rawValue,
+                i18n: opts.i18n,
+                path: opts.path
             });
         }
     }
@@ -193,6 +200,7 @@ class TypeSystem {
         _define_property(this, "sanitize", this.callType('sanitize'));
         _define_property(this, "sanitize_", this.callType('sanitize_'));
         _define_property(this, "serialize", this.callType('serialize'));
+        _define_property(this, "validate", this.callType('validate'));
         this._counter = counter++;
     }
 }
@@ -220,6 +228,13 @@ Types.sanitize = defaultTypeSystem.sanitize.bind(defaultTypeSystem);
 Types.sanitize_ = defaultTypeSystem.sanitize_.bind(defaultTypeSystem);
 Types.serialize = defaultTypeSystem.serialize.bind(defaultTypeSystem);
 Types.primitives = defaultTypeSystem.primitives;
+const charsets = {
+    up_letter_num: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    low_letter_num: '0123456789abcdefghijklmnopqrstuvwxyz',
+    up_letter: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    low_letter: 'abcdefghijklmnopqrstuvwxyz',
+    url_safe_all: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_'
+};
 const _default = defaultTypeSystem;
 
 //# sourceMappingURL=types.js.map

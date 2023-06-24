@@ -72,7 +72,7 @@ export default {
     groupable: true,
 
     load_: async function (app, options, name) {
-        const { hashAlgorithm, cipherAlgorithm, key, asymmetricAlgorithm, asymmetricBits, signerAlgorithm } =
+        const { hashAlgorithm, cipherAlgorithm, key, keyPairType, asymmetricBits, signerAlgorithm } =
             app.featureConfig(
                 options,
                 {
@@ -80,7 +80,7 @@ export default {
                         key: { type: 'text', optional: true },
                         hashAlgorithm: { type: 'text', enum: hashes, optional: true, default: 'sha256' },
                         cipherAlgorithm: { type: 'text', optional: true, default: 'aes-256-cbc' },
-                        asymmetricAlgorithm: {
+                        keyPairType: {
                             type: 'text',
                             enum: ['rsa', 'rsa-pss', 'dsa', 'ec', 'ed25519', 'ed448', 'x25519', 'x448', 'dh'],
                             optional: true,
@@ -106,11 +106,11 @@ export default {
             decrypt: (message, _key, _cipherAlgorithm) =>
                 decrypt(_cipherAlgorithm ?? cipherAlgorithm, _key ?? key, message),
 
-            generateKeyPair: (algorithm, _options) =>
-                generateKeyPair(algorithm ?? asymmetricAlgorithm, asymmetricBits, _options),
+            generateKeyPair: (type, _options) =>
+                generateKeyPair(type ?? keyPairType, asymmetricBits, _options),
 
-            generateKeyPair_: async (algorithm, _options) =>
-                generateKeyPair_(algorithm ?? asymmetricAlgorithm, asymmetricBits, _options),
+            generateKeyPair_: async (type, _options) =>
+                generateKeyPair_(type ?? keyPairType, asymmetricBits, _options),
 
             publicEncrypt: (message, publicKey, encoding = 'base64') => publicEncrypt(publicKey, message, encoding),
 

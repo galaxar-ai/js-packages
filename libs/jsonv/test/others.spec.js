@@ -20,6 +20,6 @@ describe('jsv:others', function () {
         Jsv.match(obj, {
             key1: { $sameAs: 'key2' },
             key2: { $sameAs: 'key3.key2' }
-        })[0].should.be.ok();
+        })[0].should.be.ok;
     });
 });

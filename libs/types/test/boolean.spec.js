@@ -12,7 +12,7 @@ describe("boolean", () => {
     });
 
     it("should have the correct default value", () => {
-        boolean.defaultValue.should.be.false();
+        boolean.defaultValue.should.be.false;
     });
 
     describe("sanitize", () => {
@@ -23,29 +23,29 @@ describe("boolean", () => {
 
         it("should return the input value for rawValue input", () => {
             const result = boolean.sanitize(true, { rawValue: true }, {});
-            result.should.be.true();
+            result.should.be.true;
         });
 
         it("should return the boolean value for boolean input", () => {
             const result = boolean.sanitize(true, {}, {});
-            result.should.be.true();
+            result.should.be.true;
         });
 
         it("should return the boolean value for string input", () => {
             const result = boolean.sanitize("true", {}, {});
-            result.should.be.true();
+            result.should.be.true;
         });
 
         it("should return the boolean value for number input", () => {
             const result = boolean.sanitize(1, {}, {});
-            result.should.be.true();
+            result.should.be.true;
         });
     });
 
     describe("serialize", () => {
         it("should return the input value", () => {
             const result = boolean.serialize(true);
-            result.should.be.true();
+            result.should.be.true;
         });
     });
 });

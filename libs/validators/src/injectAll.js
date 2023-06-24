@@ -3,6 +3,7 @@ import text from './validators/text';
 import commonValidators from './validators/common';
 
 import jsx from './processors/jsx';
+import commonProcessors from './processors/common';
 
 import commonActivators from './activators/common';
 
@@ -12,6 +13,7 @@ const injectAll = (validator) => {
     validator.addModifiers('validator', commonValidators);
 
     validator.addModifiers('processor', jsx);
+    validator.addModifiers('processor', commonProcessors);    
 
     validator.addModifiers('activator', commonActivators);
 };

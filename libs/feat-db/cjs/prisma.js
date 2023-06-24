@@ -2,9 +2,17 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-Object.defineProperty(exports, "default", {
-    enumerable: true,
-    get: function() {
+function _export(target, all) {
+    for(var name in all)Object.defineProperty(target, name, {
+        enumerable: true,
+        get: all[name]
+    });
+}
+_export(exports, {
+    DefaultModel: function() {
+        return DefaultModel;
+    },
+    default: function() {
         return _default;
     }
 });
@@ -66,15 +74,26 @@ const prismsHelper = {
     }
 };
 const symCache = Symbol('cache');
+class DefaultModel {
+    constructor(prisma, app, pascalModelName){
+        this.db = prisma;
+        this.model = prisma[(0, _utils.camelCase)(pascalModelName)];
+        this.app = app;
+    }
+}
 const _default = {
     stage: _app.Feature.SERVICE,
     groupable: true,
     load_: async function(app, options, name) {
-        const { modelPath , ...prismaOptions } = app.featureConfig(options, {
+        const { modelPath , ttlCacheService , ...prismaOptions } = app.featureConfig(options, {
             schema: {
                 modelPath: {
                     type: 'string',
                     default: 'models'
+                },
+                ttlCacheService: {
+                    type: 'string',
+                    optional: true
                 },
                 datasources: {
                     type: 'object',
@@ -104,8 +123,49 @@ const _default = {
             const _name = name.toLowerCase();
             let modelObject = modelCache.get(_name);
             if (!modelObject) {
-                const Model = (0, _utils.esmCheck)(require(_nodepath.default.join(_modelPath, (0, _utils.pascalCase)(name))));
-                modelObject = (0, _utils.unexistDelegate)(new Model(prisma, app), modelDelegate, true);
+                const pascalName = (0, _utils.pascalCase)(name);
+                let Model;
+                try {
+                    Model = (0, _utils.esmCheck)(require(_nodepath.default.join(_modelPath, pascalName)));
+                } catch (err) {
+                    if (err.code === 'MODULE_NOT_FOUND') {
+                        Model = DefaultModel;
+                    } else {
+                        throw err;
+                    }
+                }
+                const modelInstance = new Model(prisma, app, pascalName);
+                modelInstance.retryCreate_ = async (createOptions, onDuplicate, maxRetry)=>{
+                    maxRetry || (maxRetry = 99);
+                    let retry = 0;
+                    let error;
+                    while(retry++ < maxRetry){
+                        try {
+                            return await modelInstance.model.create(createOptions);
+                        } catch (err) {
+                            //P2002: Unique constraint failed
+                            if (err.code !== 'P2002') {
+                                throw err;
+                            }
+                            createOptions = await onDuplicate(createOptions);
+                            error = err;
+                        }
+                    }
+                    throw error;
+                };
+                if (ttlCacheService) {
+                    modelInstance.ttlCacheUnique_ = async (key, findUnique, ttl)=>{
+                        const cache = app.getService(ttlCacheService);
+                        const cacheKey = `prisma:${name}:${key}`;
+                        return await cache.get_(cacheKey, ()=>modelInstance.model.findUnique(findUnique), ttl);
+                    };
+                    modelInstance.ttlCacheMany_ = async (key, findMany, ttl)=>{
+                        const cache = app.getService(ttlCacheService);
+                        const cacheKey = `prisma:${name}:${key}`;
+                        return await cache.get_(cacheKey, ()=>modelInstance.model.findMany(findMany), ttl);
+                    };
+                }
+                modelObject = (0, _utils.unexistDelegate)(modelInstance, modelDelegate, true);
                 modelCache.set(_name, modelObject);
             }
             return modelObject;

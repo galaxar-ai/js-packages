@@ -14,7 +14,7 @@ describe('jxs:join', function () {
 
         should.throws(
             () => Jxs.evaluate(array, { $join: '|' }),
-            'The value to take a "Join" operator must be an array.'
+            'The value to take a "join" operator must be an array.'
         );
     });
 });

@@ -1,6 +1,6 @@
 {
     "name": "@galaxar/validators",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Galaxar validators to be used with @galaxar/types based on @galaxar/jsonv and @galaxar/jsonx",
     "main": "cjs/index",
     "module": "src/index.js",
@@ -9,6 +9,10 @@
         ".": {
             "import": "./src/index.js",
             "require": "./cjs/index.js"
+        },
+        "./*": {
+            "import": "./src/*.js",
+            "require": "./cjs/*.js"
         },
         "./**/*": {
             "import": "./src/**/*.js",
@@ -34,7 +38,7 @@
         "lint-fix": "eslint \"./src/**/*.js\" --fix",
         "clean": "shx rm -rf cjs",
         "clean-test": "shx rm -rf .nyc_output coverage",
-        "build": "pnpm clean && swc ./src/*.js -d ./cjs"
+        "build": "pnpm clean && swc ./src/**/*.js -d ./cjs"
     },
     "keywords": [
         "javascript",

@@ -1,4 +1,4 @@
-import { UnexpectedState } from '@galaxar/types';
+import { ApplicationError } from '@galaxar/types';
 
 /**
  * Decorator for adding middlewares to a function.
@@ -17,7 +17,7 @@ function middleware(...middlewares) {
             targetFunction = descriptor.value;
             descriptor.enumerable = true;
         } else {
-            throw new UnexpectedState('Invalid usage of middleware decorator.');
+            throw new ApplicationError('Invalid usage of middleware decorator.');
         }
 
         if (middlewares.length > 0) {

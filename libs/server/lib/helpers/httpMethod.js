@@ -1,4 +1,5 @@
-const { _, isPlainObject } = require('@galaxar/utils');
+import { _, isPlainObject, ensureStartsWith } from "@galaxar/utils";
+import { ApplicationError } from '@galaxar/types';
 
 /**
  * Decorator for http method
@@ -25,7 +26,7 @@ function httpMethod(method, middlewares) {
             targetFunction = descriptor.value;
             descriptor.enumerable = true;
         } else {
-            throw new Error('Unsupported scenario.');
+            throw new ApplicationError('Invalid usage of httpMethod decorator.');
         }
 
         if (targetFunction) {
@@ -40,8 +41,8 @@ function httpMethod(method, middlewares) {
                     // like get:/, or post:/
 
                     //override actionName as route
-                    targetFunction.__metaRoute = method.substr(pos + 1);
-                    method = method.substr(0, pos).toLocaleLowerCase();
+                    targetFunction.__metaRoute = method.substring(pos + 1);
+                    method = method.substring(0, pos).toLocaleLowerCase();
                 }
             } else {
                 method = 'get';
@@ -61,5 +62,13 @@ function httpMethod(method, middlewares) {
         return isHof ? targetFunction : descriptor;
     };
 }
+
+const makeShortcut = (method) => (route, middlewares) => httpMethod(route ? `${method}:${ensureStartsWith(route, '/')}` : method, middlewares);
+
+// nestjs like decorators
+export const Get = makeShortcut('get');
+export const Post = makeShortcut('post');
+export const Put = makeShortcut('put');
+export const Delete = makeShortcut('del');
 
 export default httpMethod;

@@ -1,6 +1,12 @@
 import path from 'node:path';
 import { Feature } from '@galaxar/app';
-import { _, esmCheck, pascalCase, unexistDelegate } from '@galaxar/utils';
+import {
+    _,
+    esmCheck,
+    pascalCase,
+    camelCase,
+    unexistDelegate,
+} from '@galaxar/utils';
 import { InvalidArgument, ApplicationError } from '@galaxar/types';
 import { PrismaClient } from '@prisma/client';
 
@@ -49,7 +55,15 @@ const prismsHelper = {
     },
 };
 
-const symCache = Symbol('cache'); 
+const symCache = Symbol('cache');
+
+export class DefaultModel {
+    constructor(prisma, app, pascalModelName) {
+        this.db = prisma;
+        this.model = prisma[camelCase(pascalModelName)];
+        this.app = app;
+    }
+}
 
 export default {
     stage: Feature.SERVICE,
@@ -57,17 +71,23 @@ export default {
     groupable: true,
 
     load_: async function (app, options, name) {
-        const { modelPath, ...prismaOptions } = app.featureConfig(
-            options,
-            {
-                schema: {
-                    modelPath: { type: 'string', default: 'models' },
-                    datasources: { type: 'object', optional: true },
-                    log: { type: 'array', elementSchema: { type: 'text' }, optional: true },
+        const { modelPath, ttlCacheService, ...prismaOptions } =
+            app.featureConfig(
+                options,
+                {
+                    schema: {
+                        modelPath: { type: 'string', default: 'models' },
+                        ttlCacheService: { type: 'string', optional: true },
+                        datasources: { type: 'object', optional: true },
+                        log: {
+                            type: 'array',
+                            elementSchema: { type: 'text' },
+                            optional: true,
+                        },
+                    },
                 },
-            },
-            name
-        );
+                name
+            );
 
         const _modelPath = path.join(app.sourcePath, modelPath);
         const modelCache = new Map();
@@ -90,8 +110,86 @@ export default {
             const _name = name.toLowerCase();
             let modelObject = modelCache.get(_name);
             if (!modelObject) {
-                const Model = esmCheck(require(path.join(_modelPath, pascalCase(name))));
-                modelObject = unexistDelegate(new Model(prisma, app), modelDelegate, true);
+                const pascalName = pascalCase(name);
+
+                let Model;
+
+                try {
+                    Model = esmCheck(
+                        require(path.join(_modelPath, pascalName))
+                    );
+                } catch (err) {
+                    if (err.code === 'MODULE_NOT_FOUND') {
+                        Model = DefaultModel;
+                    } else {
+                        throw err;
+                    }
+                }
+                const modelInstance = new Model(prisma, app, pascalName);
+
+                modelInstance.retryCreate_ = async (
+                    createOptions,
+                    onDuplicate,
+                    maxRetry
+                ) => {
+                    maxRetry || (maxRetry = 99);
+                    let retry = 0;
+                    let error;
+
+                    while (retry++ < maxRetry) {
+                        try {
+                            return await modelInstance.model.create(
+                                createOptions
+                            );
+                        } catch (err) {
+                            //P2002: Unique constraint failed
+                            if (err.code !== 'P2002') {
+                                throw err;
+                            }
+
+                            createOptions = await onDuplicate(createOptions);
+                            error = err;
+                        }
+                    }
+
+                    throw error;
+                };
+
+                if (ttlCacheService) {
+                    modelInstance.ttlCacheUnique_ = async (
+                        key,
+                        findUnique,
+                        ttl
+                    ) => {
+                        const cache = app.getService(ttlCacheService);
+                        const cacheKey = `prisma:${name}:${key}`;
+                        return await cache.get_(
+                            cacheKey,
+                            () => modelInstance.model.findUnique(findUnique),
+                            ttl
+                        );
+                    };
+
+                    modelInstance.ttlCacheMany_ = async (
+                        key,
+                        findMany,
+                        ttl
+                    ) => {
+                        const cache = app.getService(ttlCacheService);
+                        const cacheKey = `prisma:${name}:${key}`;
+                        return await cache.get_(
+                            cacheKey,
+                            () => modelInstance.model.findMany(findMany),
+                            ttl
+                        );
+                    };
+                }
+
+                modelObject = unexistDelegate(
+                    modelInstance,
+                    modelDelegate,
+                    true
+                );
                 modelCache.set(_name, modelObject);
             }
             return modelObject;
@@ -125,7 +223,9 @@ export default {
 
                 if (type === 'map') {
                     if (!mapByKey) {
-                        throw new InvalidArgument(`No "mapByKey" set for map type cache: ${key}`);
+                        throw new InvalidArgument(
+                            `No "mapByKey" set for map type cache: ${key}`
+                        );
                     }
 
                     data = data.reduce((result, item) => {

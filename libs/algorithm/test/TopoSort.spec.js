@@ -10,28 +10,28 @@ describe('unit:TopoSort', function () {
 
     it('adding', function () {
         let step2Dep = topoSort.hasDependency('step2');
-        step2Dep.should.be.ok();
+        step2Dep.should.be.ok;
 
         step2Dep = topoSort.hasDependent('step2');
-        step2Dep.should.be.ok();
+        step2Dep.should.be.ok;
 
         let step1Dep = topoSort.hasDependent('step1');
-        step1Dep.should.be.ok();
+        step1Dep.should.be.ok;
 
         step1Dep = topoSort.hasDependency('step1');
-        step1Dep.should.not.be.ok();
+        step1Dep.should.not.be.ok;
 
         let step4Dep = topoSort.hasDependency('step4');
-        step4Dep.should.be.ok();
+        step4Dep.should.be.ok;
 
         step4Dep = topoSort.hasDependent('step4');
-        step4Dep.should.not.be.ok();
+        step4Dep.should.not.be.ok;
     });
 
     it('sort', function () {
         let sorted = topoSort.sort();
 
-        sorted.should.be.deepEqual(['step1', 'step2', 'step3', 'step4', 'step5', 'step6']);
+        sorted.should.be.eql(['step1', 'step2', 'step3', 'step4', 'step5', 'step6']);
     });
 
     it('sort 2', function () {
@@ -45,7 +45,7 @@ describe('unit:TopoSort', function () {
 
         let sorted = topoSort2.sort();
 
-        sorted.should.be.deepEqual(['step1', 'step2', 'step3', 'step4', 'step5', 'step6']);
+        sorted.should.be.eql(['step1', 'step2', 'step3', 'step4', 'step5', 'step6']);
     });
 
     it('throw on circular dependence', function () {

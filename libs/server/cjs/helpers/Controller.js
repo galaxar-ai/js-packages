@@ -9,22 +9,19 @@ Object.defineProperty(exports, "default", {
     }
 });
 const _types = require("@galaxar/types");
-class Controller {
-    db(name) {
-        return this.app.db(name || this.app.settings.db);
-    }
+class BasicController {
     /**
      * Try to send back data from time-to-live cache
      * @param {*} ctx
      * @param {*} key
      * @returns {boolean}
-     */ trySendWithCache(ctx, key) {
+     */ trySendCache(ctx, key) {
         if (ctx.query['no-cache']) {
             return false;
         }
         const ttlCache = this.app.getService('ttlMemCache');
         if (!ttlCache) {
-            throw new _types.ApplicationError('"ttlMemCache" service is required. Please check npm module "@genx/app-feat-commons".');
+            throw new _types.ApplicationError('"ttlMemCache" service is required. Please check npm module "@galaxar/feat-utils/ttlMemCache".');
         }
         const _cache = ttlCache.get(key);
         if (_cache) {
@@ -33,7 +30,7 @@ class Controller {
         }
         return false;
     }
-    deleteTtlCache(key) {
+    deleteCache(key) {
         const ttlCache = this.app.getService('ttlMemCache');
         ttlCache.del(key);
     }
@@ -47,35 +44,20 @@ class Controller {
             if (payload) {
                 value.push(payload);
             }
-            ttlCache.set(ttlCacheInfo.key, [
-                result,
-                payload
-            ], ttlCacheInfo.ttl);
+            if (!ttlCacheInfo.key) {
+                throw new _types.ApplicationError('"key" of TTL cache is required.');
+            }
+            ttlCache.set(ttlCacheInfo.key, value, ttlCacheInfo.ttl);
         }
-    }
-    /**
-     * Immutable cache, suitable for long-term unchanged dictionary data
-     * @param {*} key
-     * @param {*} factory
-     * @returns {object}
-     */ cache(key, factory) {
-        if (!this._cache) {
-            this._cache = {};
-        }
-        let value = this._cache[key];
-        if (value == null) {
-            value = this._cache[key] = factory();
-        }
-        return value;
     }
     constructor(app){
         this.app = app;
         this.apiWrapper = this.app.getService(this.app.settings?.apiWrapperService || 'apiWrapper');
         if (!this.apiWrapper) {
-            throw new _types.ApplicationError('"apiWrapper" service is required when using the Controller helper.');
+            throw new _types.ApplicationError('"apiWrapper" service is required when using the built-in Controller.');
         }
     }
 }
-const _default = Controller;
+const _default = BasicController;
 
 //# sourceMappingURL=Controller.js.map

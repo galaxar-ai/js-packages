@@ -1,6 +1,6 @@
 {
     "name": "@galaxar/app",
-    "version": "1.0.10",
+    "version": "1.0.11",
     "description": "Node application framework",
     "main": "cjs/index.js",
     "module": "lib/index.js",
@@ -45,9 +45,12 @@
         "@galaxar/adapters": "workspace:*",
         "@galaxar/algo": "workspace:*",
         "@galaxar/jsonc": "workspace:*",
+        "@galaxar/jsonv": "workspace:^",
+        "@galaxar/jsonx": "workspace:^",
         "@galaxar/sys": "workspace:*",
         "@galaxar/types": "workspace:*",
         "@galaxar/utils": "workspace:*",
+        "@galaxar/validators": "workspace:^",
         "inquirer": "^8.2.4",
         "minimist": "^1.2.8",
         "pino": "^8.14.1",
@@ -63,6 +66,9 @@
     },
     "license": "MIT",
     "devDependencies": {
-        "capture-console": "^1.0.1"
+        "@galaxar/feat-utils": "workspace:^",
+        "capture-console": "^1.0.1",
+        "jsonwebtoken": "^9.0.0",
+        "nanoid": "^4.0.2"
     }
 }

@@ -37,10 +37,12 @@ class T_TEXT {
             if (value === '' && meta.nonEmpty) {
                 value = null;
                 if (!meta.optional) {
-                    throw new _errors.ValidationError('Value ' + (opts.path ? `of "${opts.path}" ` : '') + 'is required.', {
+                    throw new _errors.ValidationError('Missing a required value.', {
                         value,
                         meta,
-                        ...opts
+                        rawValue: opts.rawValue,
+                        i18n: opts.i18n,
+                        path: opts.path
                     });
                 }
             }
@@ -48,10 +50,12 @@ class T_TEXT {
             if (type === 'bigint' || type === 'number') {
                 return value.toString();
             }
-            throw new _errors.ValidationError('Value ' + (opts.path ? `of "${opts.path}" ` : '') + 'is required.', {
+            throw new _errors.ValidationError('Invalid text value.', {
                 value,
                 meta,
-                ...opts
+                rawValue: opts.rawValue,
+                i18n: opts.i18n,
+                path: opts.path
             });
         }
         return value;

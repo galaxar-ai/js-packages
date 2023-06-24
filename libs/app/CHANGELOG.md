@@ -1,5 +1,21 @@
 # @galaxar/app
 
+## 1.0.11
+
+### Patch Changes
+
+-   Add validators package, add minor features and fix bugs
+-   Updated dependencies
+    -   @galaxar/validators@1.0.1
+    -   @galaxar/algo@1.0.6
+    -   @galaxar/adapters@1.1.1
+    -   @galaxar/jsonc@1.0.4
+    -   @galaxar/jsonv@1.0.6
+    -   @galaxar/jsonx@1.0.6
+    -   @galaxar/types@1.1.2
+    -   @galaxar/utils@1.0.8
+    -   @galaxar/sys@1.0.5
+
 ## 1.0.10
 
 ### Patch Changes

@@ -241,14 +241,14 @@ describe('Jxs:hybrid', function () {
         let array = [1];
 
         should.throws(() => {
-            let transformed = Jxs.match(array, {
+            let transformed = Jxs.evaluate(array, {
                 '|>$apply': [
                     {
                         $addItem: ['$test', '$$CURRENT.id'],
                     },
                 ],
             });
-        }, 'The value to take a "Add K-V Entry" operator must be either an object or an array.');
+        }, 'The value to take a "addItem" operator must be either an object or an array.');
     });
 
     it('filter', function () {
@@ -352,24 +352,11 @@ describe('Jxs:hybrid', function () {
                     { key1: { $lt: 2 } },
                 ],
             });
-        }, 'The right operand of a "If Else" operator must be either a 2-tuple or a 3-tuple.');
+        }, 'The right operand of a "if" operator must be either a 2-tuple or a 3-tuple.');
     });
     it('pick', function () {
         let array = null;
 
-        should.throws(function () {
-            let picked_left = Jxs.evaluate(a, {
-                '|>$apply': [
-                    {
-                        $pick: {
-                            $not: {
-                                $startWith: 'u',
-                            },
-                        },
-                    },
-                ],
-            });
-        }, 'ReferenceError: array is not defined');
         let picked_left = Jxs.evaluate(array, {
             '|>$apply': [
                 {

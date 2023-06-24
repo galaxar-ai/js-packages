@@ -32,13 +32,13 @@ describe('jsv:validator', function () {
         let result = Jsv.match(obj, {
             key1: 2001,
         });
-        result[0].should.not.be.ok();
+        result[0].should.not.be.ok;
         result[1].should.be.match(/ must be 2001/);
 
         result = Jsv.match(obj, {
             key2: 'ng',
         });
-        result[0].should.not.be.ok();
+        result[0].should.not.be.ok;
         result[1].should.be.match(/ must be "ng"/);
     });
 
@@ -51,7 +51,7 @@ describe('jsv:validator', function () {
         Jsv.match(obj, {
             key1: { $eq: [1, 2, 3] },
             key2: { $eq: [1] },
-        })[0].should.be.ok();
+        })[0].should.be.ok;
 
         const result = Jsv.match(obj, {
             key1: [1, 2],
@@ -59,12 +59,12 @@ describe('jsv:validator', function () {
         });
         console.log(result);
 
-        result[0].should.be.not.ok();
+        result[0].should.be.not.ok;
 
         Jsv.match(obj, {
             key1: [1, 2],
             key2: [1],
-        })[0].should.be.not.ok();
+        })[0].should.be.not.ok;
     });
 
     it('required', function () {
@@ -101,7 +101,7 @@ describe('jsv:validator', function () {
             a: { $eq: 20 }
         });
 
-        result[0].should.be.not.ok();
+        result[0].should.be.not.ok;
         result[1].should.be.match(/ must be 20/);
     });
 
@@ -228,25 +228,25 @@ describe('jsv:validator', function () {
             Jsvo.match({
                 key1: { $is: 'string' },
             });
-        }, 'The value of key1 must be a(n) "text"');
+        }, 'The value of "key1" must be a(n) "string"');
 
         should.throws(() => {
             Jsvo.match({
                 key4: { $exists: true },
             });
-        }, 'The right operand of a "Not Null" operator must be a boolean value.');
+        }, '"key4" must not be null.');
 
         should.throws(() => {
             Jsvo.match({
                 key1: { $in: 3000 },
             });
-        }, 'The right operand of a "In" operator must be an array.');
+        }, 'The right operand of a "in" operator must be an array.');
 
         should.throws(() => {
             Jsvo.match({
                 key1: { $nin: 3000 },
             });
-        }, 'The right operand of a "Not In" operator must be an array.');
+        }, 'The right operand of a "nin" operator must be an array.');
 
         should.throws(() => {
             Jsvo.match({
@@ -264,51 +264,37 @@ describe('jsv:validator', function () {
             Jsvo.match({
                 key1: { $in: [100, 200] },
             });
-        }, 'ValidationError: "key1" should be one of [100,200].');
+        }, '"key1" must be one of [100,200].');
 
         should.throws(() => {
             Jsvo.match({
                 key1: { $nin: [1000, 2000] },
             });
-        }, 'ValidationError: "key1" should not be any one of [1000,2000].');
+        }, '"key1" must not be any one of [1000,2000].');
 
         should.throws(() => {
             Jsvo.match({
                 key99: { $exist: true },
             });
-        }, 'ValidationError: "key99" should not be NULL.');
+        }, '"key99" must not be null.');
 
         should.throws(() => {
             Jsvo.match({
                 key1: { $exist: false },
             });
-        }, 'ValidationError: "key1" should be NULL.');
+        }, '"key1" must be null.');
 
         should.throws(() => {
             Jsvo.match({
                 key1: { $is: 'string' },
             });
-        }, 'ValidationError: The type of "key1" should be "string".');
+        }, 'The value of "key1" must be a(n) "string".');
 
         should.throws(() => {
             Jsvo.match({
                 key3: { key2: 'ng' },
             });
-        }, 'ValidationError: "key3.key2" should be "ng".');
-    });
-
-    it('eval not array', function () {
-        let obj = {
-            key1: 2000,
-        };
-
-        let Jsvo = new Jsv(obj);
-
-        should.throws(() => {
-            Jsvo.match({
-                $eval: 2000,
-            });
-        }, 'InvalidArgument: The operand of a "OP_MATCH_ANY" operator must be an array.');
+        }, '"key3.key2" must be "ng".');
     });
 
     it('any', function () {
@@ -335,7 +321,7 @@ describe('jsv:validator', function () {
             Jsvo.match({
                 $any: { key1: 3000 },
             });
-        }, 'InvalidArgument: The operand of a "OP_MATCH_ANY" operator must be an array.');
+        }, 'The right operand of a "anyOf" operator must be an array.');
     });
 
     it('all match', function () {

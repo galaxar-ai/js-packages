@@ -49,7 +49,9 @@ class T_DATETIME {
                 throw new ValidationError('Invalid datetime value.', {
                     value: null,
                     meta,
-                    ...opts
+                    rawValue: opts.rawValue,
+                    i18n: opts.i18n,
+                    path: opts.path,
                 });
             }
         }

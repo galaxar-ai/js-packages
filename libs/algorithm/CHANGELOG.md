@@ -1,5 +1,14 @@
 # @galaxar/algo
 
+## 1.0.6
+
+### Patch Changes
+
+-   Add validators package, add minor features and fix bugs
+-   Updated dependencies
+    -   @galaxar/types@1.1.2
+    -   @galaxar/utils@1.0.8
+
 ## 1.0.5
 
 ### Patch Changes

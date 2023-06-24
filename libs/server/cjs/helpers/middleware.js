@@ -23,7 +23,7 @@ const _types = require("@galaxar/types");
             targetFunction = descriptor.value;
             descriptor.enumerable = true;
         } else {
-            throw new _types.UnexpectedState('Invalid usage of middleware decorator.');
+            throw new _types.ApplicationError('Invalid usage of middleware decorator.');
         }
         if (middlewares.length > 0) {
             targetFunction.__metaMiddlewares = middlewares;

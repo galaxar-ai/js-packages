@@ -28,10 +28,12 @@ class T_TEXT {
             if (value === '' && meta.nonEmpty) {
                 value = null;
                 if (!meta.optional) {
-                    throw new ValidationError('Value ' + (opts.path ? `of "${opts.path}" ` : '') + 'is required.', {
+                    throw new ValidationError('Missing a required value.', {
                         value,
                         meta,
-                        ...opts,
+                        rawValue: opts.rawValue,
+                        i18n: opts.i18n,
+                        path: opts.path,
                     });
                 }
             }
@@ -40,10 +42,12 @@ class T_TEXT {
                 return value.toString();
             }
 
-            throw new ValidationError('Value ' + (opts.path ? `of "${opts.path}" ` : '') + 'is required.', {
+            throw new ValidationError('Invalid text value.', {
                 value,
                 meta,
-                ...opts,
+                rawValue: opts.rawValue,
+                i18n: opts.i18n,
+                path: opts.path,
             });
         }
 

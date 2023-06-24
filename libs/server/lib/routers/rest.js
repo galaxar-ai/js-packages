@@ -27,7 +27,7 @@ import { globSync } from 'glob';
  *  /:resource                     post           create
  *  /:resource/:id                 get            detail
  *  /:resource/:id                 put            update
- *  /:resource/:id                 delete         remove
+ *  /:resource/:id                 delete            remove
  */
 const restRouter = (app, baseRoute, options) => {
     const Router = app.tryRequire('@koa/router');

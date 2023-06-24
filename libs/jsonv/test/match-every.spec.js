@@ -15,6 +15,6 @@ describe('jsv:match-every', function () {
             { key2: [{ $size: 1 }, { '|>$match': { $typeOf: 'integer' } }] },
         ]);
 
-        result[0].should.be.ok();
+        result[0].should.be.ok;
     });
 });
