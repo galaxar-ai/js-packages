@@ -1,5 +1,11 @@
 # @galaxar/app
 
+## 1.0.12
+
+### Patch Changes
+
+-   Fix swcrc config to support dynamic import
+
 ## 1.0.11
 
 ### Patch Changes

@@ -9,7 +9,8 @@
         "loose": false
     },
     "module": {
-        "type": "commonjs"
+        "type": "commonjs",
+        "ignoreDynamic": true
     },
     "isModule": true,
     "minify": false,

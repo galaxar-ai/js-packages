@@ -212,7 +212,7 @@ const configOverrider = (defConf, envConf)=>{
             return this.tryRequire(pkgName);
         } catch (error) {
             if (error.code === 'ERR_REQUIRE_ESM') {
-                const esmModule = await Promise.resolve(pkgName).then((p)=>/*#__PURE__*/ _interop_require_wildcard(require(p)));
+                const esmModule = await import(pkgName);
                 if (useDefault) {
                     return esmModule.default;
                 }
