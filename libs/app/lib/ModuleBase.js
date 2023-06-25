@@ -45,6 +45,15 @@ const ModuleBase = (Base) =>
         }
 
         /**
+         * Check whether a service exists
+         * @param {*} name
+         * @returns {boolean}
+         */
+        hasService(name, currentModuleOnly) {
+            return super.hasService(name) || (!currentModuleOnly && this.host.hasService(name));
+        }
+
+        /**
          * Check whether a feature is enabled in the app or its hosting server.
          * @param {string} feature
          * @returns {bool}

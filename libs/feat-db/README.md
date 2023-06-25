@@ -12,7 +12,7 @@ Datasource features set
 
 ```json
 {
-    "prisma": { modelPath, datasources, log }
+    "prisma": { modelPath, ttlCacheService, datasources, log }
 }
 ```
 
@@ -22,7 +22,7 @@ Datasource features set
 const prisma = app.getService('prisma');
 ```
 
-### Helpers
+### Prisma helpers
 
 -   $pushQuery - Returns a new where with specified condition merged into where, will merge same keys into an AND array
 
@@ -88,4 +88,31 @@ const User = prisma.$model('UserWithCache');
 
 const map = await User.cache_('map');
 const list = await User.cache_('list');
+```
+
+### Model helpers
+
+-   `retryCreate_(createOptions /* the same as prisma */, dataFactory /* if duplicate, the factory will be call to generate new creation data */)`
+
+```js
+
+const nanoid = app.getService('nanoid');
+
+const session = await LoginSession.retryCreate_(
+    {
+        data: {
+            id: nanoid.next(),
+            userId: user.id,
+            expiresAt: new Date(expiresAt),
+            lastHeartbeat: nowDate,
+        },
+    },
+    (input) => ({
+        ...input,
+        data: {
+            ...input.data,
+            id: nanoid.next(),
+        },
+    })
+);
 ```
