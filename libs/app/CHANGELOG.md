@@ -1,5 +1,11 @@
 # @galaxar/app
 
+## 1.0.13
+
+### Patch Changes
+
+-   Fix module base check service not fallback to host
+
 ## 1.0.12
 
 ### Patch Changes
