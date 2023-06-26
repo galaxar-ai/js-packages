@@ -1,5 +1,5 @@
 import path from 'node:path';
-import { _, text, hasMethod, esmCheck } from '@galaxar/utils';
+import { _, text, hasMethod, esmCheck, batchAsync_ } from '@galaxar/utils';
 import { globSync } from 'glob';
 
 /**
@@ -29,23 +29,23 @@ import { globSync } from 'glob';
  *  /:resource/:id                 put            update
  *  /:resource/:id                 delete            remove
  */
-const restRouter = (app, baseRoute, options) => {
-    const Router = app.tryRequire('@koa/router');
+const restRouter = async (app, baseRoute, options) => {
+    const Router = await app.tryRequire_('@koa/router');
 
     let resourcePath = path.resolve(app.sourcePath, options.resourcesPath ?? 'resources');
 
     let router = baseRoute === '/' ? new Router() : new Router({ prefix: text.dropIfEndsWith(baseRoute, '/') });
 
-    app.useMiddleware(router, app.getMiddlewareFactory('jsonError')(options.errorOptions, app), 'jsonError');
+    app.useMiddleware(router, await app.getMiddlewareFactory('jsonError')(options.errorOptions, app), 'jsonError');
 
     if (options.middlewares) {
-        app.useMiddlewares(router, options.middlewares);
+        await app.useMiddlewares_(router, options.middlewares);
     }
 
     let resourcesPath = path.join(resourcePath, '**', '*.js');
     let files = globSync(resourcesPath, { nodir: true });
 
-    _.each(files, (file) => {
+    await batchAsync_(files, async (file) => {
         let relPath = path.relative(resourcePath, file);
         let batchUrl = text.ensureStartsWith(
             relPath
@@ -64,23 +64,23 @@ const restRouter = (app, baseRoute, options) => {
         }
 
         if (hasMethod(controller, 'query')) {
-            app.addRoute(router, 'get', batchUrl, (ctx) => controller.query(ctx));
+            await app.addRoute_(router, 'get', batchUrl, (ctx) => controller.query(ctx));
         }
 
         if (hasMethod(controller, 'create')) {
-            app.addRoute(router, 'post', batchUrl, (ctx) => controller.create(ctx));
+            await app.addRoute_(router, 'post', batchUrl, (ctx) => controller.create(ctx));
         }
 
         if (hasMethod(controller, 'detail')) {
-            app.addRoute(router, 'get', singleUrl, (ctx) => controller.detail(ctx));
+            await app.addRoute_(router, 'get', singleUrl, (ctx) => controller.detail(ctx));
         }
 
         if (hasMethod(controller, 'update')) {
-            app.addRoute(router, 'put', singleUrl, (ctx) => controller.update(ctx));
+            await app.addRoute_(router, 'put', singleUrl, (ctx) => controller.update(ctx));
         }
 
         if (hasMethod(controller, 'remove')) {
-            app.addRoute(router, 'del', singleUrl, (ctx) => controller.remove(ctx));
+            await app.addRoute_(router, 'del', singleUrl, (ctx) => controller.remove(ctx));
         }
     });
 

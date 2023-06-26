@@ -40,21 +40,21 @@ function _interop_require_default(obj) {
  *  /:resource/:id                 get            detail
  *  /:resource/:id                 put            update
  *  /:resource/:id                 delete            remove
- */ const restRouter = (app, baseRoute, options)=>{
-    const Router = app.tryRequire('@koa/router');
+ */ const restRouter = async (app, baseRoute, options)=>{
+    const Router = await app.tryRequire_('@koa/router');
     let resourcePath = _nodepath.default.resolve(app.sourcePath, options.resourcesPath ?? 'resources');
     let router = baseRoute === '/' ? new Router() : new Router({
         prefix: _utils.text.dropIfEndsWith(baseRoute, '/')
     });
-    app.useMiddleware(router, app.getMiddlewareFactory('jsonError')(options.errorOptions, app), 'jsonError');
+    app.useMiddleware(router, await app.getMiddlewareFactory('jsonError')(options.errorOptions, app), 'jsonError');
     if (options.middlewares) {
-        app.useMiddlewares(router, options.middlewares);
+        await app.useMiddlewares_(router, options.middlewares);
     }
     let resourcesPath = _nodepath.default.join(resourcePath, '**', '*.js');
     let files = (0, _glob.globSync)(resourcesPath, {
         nodir: true
     });
-    _utils._.each(files, (file)=>{
+    await (0, _utils.batchAsync_)(files, async (file)=>{
         let relPath = _nodepath.default.relative(resourcePath, file);
         let batchUrl = _utils.text.ensureStartsWith(relPath.substring(0, relPath.length - 3).split(_nodepath.default.sep).map((p)=>_utils._.kebabCase(p)).join('/'), '/');
         let singleUrl = batchUrl + '/:id';
@@ -63,19 +63,19 @@ function _interop_require_default(obj) {
             controller = new controller(app);
         }
         if ((0, _utils.hasMethod)(controller, 'query')) {
-            app.addRoute(router, 'get', batchUrl, (ctx)=>controller.query(ctx));
+            await app.addRoute_(router, 'get', batchUrl, (ctx)=>controller.query(ctx));
         }
         if ((0, _utils.hasMethod)(controller, 'create')) {
-            app.addRoute(router, 'post', batchUrl, (ctx)=>controller.create(ctx));
+            await app.addRoute_(router, 'post', batchUrl, (ctx)=>controller.create(ctx));
         }
         if ((0, _utils.hasMethod)(controller, 'detail')) {
-            app.addRoute(router, 'get', singleUrl, (ctx)=>controller.detail(ctx));
+            await app.addRoute_(router, 'get', singleUrl, (ctx)=>controller.detail(ctx));
         }
         if ((0, _utils.hasMethod)(controller, 'update')) {
-            app.addRoute(router, 'put', singleUrl, (ctx)=>controller.update(ctx));
+            await app.addRoute_(router, 'put', singleUrl, (ctx)=>controller.update(ctx));
         }
         if ((0, _utils.hasMethod)(controller, 'remove')) {
-            app.addRoute(router, 'del', singleUrl, (ctx)=>controller.remove(ctx));
+            await app.addRoute_(router, 'del', singleUrl, (ctx)=>controller.remove(ctx));
         }
     });
     app.addRouter(router);

@@ -24,7 +24,7 @@
  *   },
  */
 
-import { _, isPlainObject } from '@galaxar/utils';
+import { _, isPlainObject, eachAsync_ } from '@galaxar/utils';
 import { Feature } from '@galaxar/app';
 import { InvalidConfiguration } from '@galaxar/types';
 
@@ -43,7 +43,7 @@ export default {
      */
     load_: (app, factories) => {
         _.each(factories, (factoryInfo, name) => {
-            app.registerMiddlewareFactory(name, (opt, targetApp) => {
+            app.registerMiddlewareFactory(name, async (opt, targetApp) => {
                 if (!_.isEmpty(opt)) {
                     throw new InvalidConfiguration(
                         'Middleware factory should be used with empty options.',
@@ -57,11 +57,11 @@ export default {
                 if (isPlainObject(factoryInfo)) {
                     chains = [];
 
-                    _.each(factoryInfo, (options, middleware) => {
-                        chains.push(app.getMiddlewareFactory(middleware)(options, targetApp));
+                    await eachAsync_(factoryInfo, async (options, middleware) => {
+                        chains.push(await app.getMiddlewareFactory(middleware)(options, targetApp));
                     });
                 } else if (Array.isArray(factoryInfo)) {
-                    chains = factoryInfo.map((middlewareInfo, i) => {
+                    chains = await eachAsync_(factoryInfo, async (middlewareInfo, i) => {
                         if (isPlainObject(middlewareInfo)) {
                             if (!middlewareInfo.name) {
                                 throw new InvalidConfiguration(

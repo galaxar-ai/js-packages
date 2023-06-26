@@ -1,4 +1,4 @@
-import { _, text } from '@galaxar/utils';
+import { _, text, eachAsync_ } from '@galaxar/utils';
 import { InvalidConfiguration } from '@galaxar/types';
 import { supportedMethods } from '../helpers';
 
@@ -43,16 +43,16 @@ import { supportedMethods } from '../helpers';
  *     }
  * }
  */
-function load_(app, baseRoute, options) {
-    const Router = app.tryRequire('@koa/router');
+async function load_(app, baseRoute, options) {
+    const Router = await app.tryRequire_('@koa/router');
 
     let router = baseRoute === '/' ? new Router() : new Router({ prefix: text.dropIfEndsWith(baseRoute, '/') });
 
     if (options.middlewares) {
-        app.useMiddlewares(router, options.middlewares);
+        await app.useMiddlewares_(router, options.middlewares);
     }
 
-    _.forOwn(options.rules || {}, (methods, subRoute) => {
+    await eachAsync_(options.rules || {}, async (methods, subRoute) => {
         let pos = subRoute.indexOf(':/');
 
         if (pos !== -1) {
@@ -78,7 +78,7 @@ function load_(app, baseRoute, options) {
             methods = { get: methods };
         }
 
-        _.forOwn(methods, (middlewares, method) => {
+        await eachAsync_(methods, async (middlewares, method) => {
             if (!supportedMethods.has(method) && method !== 'all') {
                 throw new InvalidConfiguration(
                     'Unsupported http method: ' + method,
@@ -87,7 +87,7 @@ function load_(app, baseRoute, options) {
                 );
             }
 
-            app.addRoute(router, method, subRoute, middlewares);
+            await app.addRoute_(router, method, subRoute, middlewares);
         });
     });
 

@@ -66,8 +66,8 @@ const _default = {
             initializeMiddleware,
             passport.session()
         ] : initializeMiddleware;
-        app.on('before:' + _app.Feature.FINAL, ()=>{
-            app.useMiddlewares(app.router, passport.middlewares);
+        app.on('before:' + _app.Feature.FINAL, async ()=>{
+            await app.useMiddlewares_(app.router, passport.middlewares);
         });
         passport.hasStrategy = (name)=>{
             return name in passport._strategies;

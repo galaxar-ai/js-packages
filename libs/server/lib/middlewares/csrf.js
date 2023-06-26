@@ -12,8 +12,8 @@ const DEFAULT_OPTS = {
     disableQuery: false,
 };
 
-const csrf = (options, app) => {
-    const CSRF = app.tryRequire('koa-csrf');
+const csrf = async (options, app) => {
+    const CSRF = await app.tryRequire_('koa-csrf');
     const csrf = new CSRF({ ...DEFAULT_OPTS, ...options });
 
     return csrf;

@@ -54,8 +54,8 @@ export default {
             ? [initializeMiddleware, passport.session()]
             : initializeMiddleware;
 
-        app.on('before:' + Feature.FINAL, () => {
-            app.useMiddlewares(app.router, passport.middlewares);
+        app.on('before:' + Feature.FINAL, async () => {
+            await app.useMiddlewares_(app.router, passport.middlewares);
         });
 
         passport.hasStrategy = (name) => {

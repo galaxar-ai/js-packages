@@ -3,7 +3,7 @@
  * @module Middleware_AccessLog
  */
 
-export default (opt, app) => {
+export default async (opt, app) => {
     const { logger } = app.middlewareConfig(
         opt ?? {},
         {
@@ -14,7 +14,7 @@ export default (opt, app) => {
         'accessLog'
     );
 
-    const pinoHttp = app.tryRequire('pino-http');
+    const pinoHttp = await app.tryRequire_('pino-http');
 
     app.requireServices([logger], 'accessLog');
 

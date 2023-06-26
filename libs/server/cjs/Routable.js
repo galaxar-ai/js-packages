@@ -82,13 +82,13 @@ const Routable = (T)=>{
          * @param {Router} router
          * @param {*} middlewares - Can be an array of middleware entries or a key-value list of registerred middlewares
          * @returns {Routable}
-         */ useMiddlewares(router, middlewares) {
+         */ async useMiddlewares_(router, middlewares) {
             let middlewareFactory, middleware;
             let middlewareFunctions = [];
             if ((0, _utils.isPlainObject)(middlewares)) {
-                _utils._.forOwn(middlewares, (options, name)=>{
+                await (0, _utils.eachAsync_)(middlewares, async (options, name)=>{
                     middlewareFactory = this.getMiddlewareFactory(name);
-                    middleware = middlewareFactory(options, this);
+                    middleware = await middlewareFactory(options, this);
                     middlewareFunctions.push({
                         name,
                         middleware
@@ -96,12 +96,12 @@ const Routable = (T)=>{
                 });
             } else {
                 middlewares = _utils._.castArray(middlewares);
-                _utils._.each(middlewares, (middlewareEntry)=>{
+                await (0, _utils.eachAsync_)(middlewares, async (middlewareEntry)=>{
                     let type = typeof middlewareEntry;
                     if (type === 'string') {
                         // [ 'namedMiddleware' ]
                         middlewareFactory = this.getMiddlewareFactory(middlewareEntry);
-                        middleware = middlewareFactory(undefined, this);
+                        middleware = await middlewareFactory(undefined, this);
                         middlewareFunctions.push({
                             name: middlewareEntry,
                             middleware
@@ -117,7 +117,7 @@ const Routable = (T)=>{
                             throw new _types.InvalidConfiguration('Empty array found as middleware entry!', this, 'middlewares');
                         }
                         middlewareFactory = this.getMiddlewareFactory(middlewareEntry[0]);
-                        middleware = middlewareFactory(middlewareEntry.length > 1 ? middlewareEntry[1] : null, this);
+                        middleware = await middlewareFactory(middlewareEntry.length > 1 ? middlewareEntry[1] : null, this);
                         middlewareFunctions.push({
                             name: middlewareEntry[0],
                             middleware
@@ -127,7 +127,7 @@ const Routable = (T)=>{
                             throw new _types.InvalidConfiguration('Invalid middleware entry!', this, 'middlewares');
                         }
                         middlewareFactory = this.getMiddlewareFactory(middlewareEntry.name);
-                        middleware = middlewareFactory(middlewareEntry.options, this);
+                        middleware = await middlewareFactory(middlewareEntry.options, this);
                         middlewareFunctions.push({
                             name: middlewareEntry.name,
                             middleware
@@ -150,17 +150,17 @@ const Routable = (T)=>{
          * @param method
          * @param route
          * @param actions
-         */ addRoute(router, method, route, actions) {
+         */ async addRoute_(router, method, route, actions) {
             let handlers = [], middlewareFactory;
             if ((0, _utils.isPlainObject)(actions)) {
-                _utils._.each(actions, (options, name)=>{
+                await (0, _utils.eachAsync_)(actions, async (options, name)=>{
                     middlewareFactory = this.getMiddlewareFactory(name);
-                    handlers.push(this._wrapMiddlewareTracer(middlewareFactory(options, this), name));
+                    handlers.push(this._wrapMiddlewareTracer(await middlewareFactory(options, this), name));
                 });
             } else {
                 actions = _utils._.castArray(actions);
                 let lastIndex = actions.length - 1;
-                _utils._.each(actions, (action, i)=>{
+                await (0, _utils.eachAsync_)(actions, async (action, i)=>{
                     let type = typeof action;
                     if (i === lastIndex) {
                         // last middleware may be an action
@@ -175,7 +175,7 @@ const Routable = (T)=>{
                     if (type === 'string') {
                         // [ 'namedMiddleware' ]
                         middlewareFactory = this.getMiddlewareFactory(action);
-                        let middleware = middlewareFactory(null, this);
+                        let middleware = await middlewareFactory(null, this);
                         //in case it's register by the middlewareFactory feature
                         if (Array.isArray(middleware)) {
                             middleware.forEach((middlewareItem, i)=>handlers.push(this._wrapMiddlewareTracer(middlewareItem, `${action}-${i}` + (middleware.name ? '-' + middleware.name : ''))));
@@ -189,13 +189,13 @@ const Routable = (T)=>{
                             throw new _types.InvalidConfiguration('Invalid middleware entry!', this, 'middlewares');
                         }
                         middlewareFactory = this.getMiddlewareFactory(action[0]);
-                        handlers.push(this._wrapMiddlewareTracer(middlewareFactory(action.length > 1 ? action[1] : undefined, this)));
+                        handlers.push(this._wrapMiddlewareTracer(await middlewareFactory(action.length > 1 ? action[1] : undefined, this)));
                     } else {
                         if (typeof action !== 'object' || !('name' in action)) {
                             throw new _types.InvalidConfiguration('Invalid middleware entry!', this, 'middlewares');
                         }
                         middlewareFactory = this.getMiddlewareFactory(action.name);
-                        handlers.push(this._wrapMiddlewareTracer(middlewareFactory(action.options, this), action.name));
+                        handlers.push(this._wrapMiddlewareTracer(await middlewareFactory(action.options, this), action.name));
                     }
                 });
             }

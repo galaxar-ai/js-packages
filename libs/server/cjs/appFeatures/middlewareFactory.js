@@ -47,18 +47,18 @@ const _default = {
      * @returns {Promise.<*>}
      */ load_: (app, factories)=>{
         _utils._.each(factories, (factoryInfo, name)=>{
-            app.registerMiddlewareFactory(name, (opt, targetApp)=>{
+            app.registerMiddlewareFactory(name, async (opt, targetApp)=>{
                 if (!_utils._.isEmpty(opt)) {
                     throw new _types.InvalidConfiguration('Middleware factory should be used with empty options.', app, `middlewareFactory.${name}`);
                 }
                 let chains;
                 if ((0, _utils.isPlainObject)(factoryInfo)) {
                     chains = [];
-                    _utils._.each(factoryInfo, (options, middleware)=>{
-                        chains.push(app.getMiddlewareFactory(middleware)(options, targetApp));
+                    await (0, _utils.eachAsync_)(factoryInfo, async (options, middleware)=>{
+                        chains.push(await app.getMiddlewareFactory(middleware)(options, targetApp));
                     });
                 } else if (Array.isArray(factoryInfo)) {
-                    chains = factoryInfo.map((middlewareInfo, i)=>{
+                    chains = await (0, _utils.eachAsync_)(factoryInfo, async (middlewareInfo, i)=>{
                         if ((0, _utils.isPlainObject)(middlewareInfo)) {
                             if (!middlewareInfo.name) {
                                 throw new _types.InvalidConfiguration('Missing referenced middleware name.', app, `middlewareFactory.${name}[${i}].name`);

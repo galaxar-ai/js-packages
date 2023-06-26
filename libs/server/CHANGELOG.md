@@ -1,5 +1,11 @@
 # @galaxar/server
 
+## 1.0.8
+
+### Patch Changes
+
+-   Change middleware initialization to async
+
 ## 1.0.7
 
 ### Patch Changes

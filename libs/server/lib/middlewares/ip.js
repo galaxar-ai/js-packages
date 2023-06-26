@@ -1,8 +1,8 @@
 const IPV4_PREFIX = '::ffff:';
 const IPV4_LOCALHOST = '::1';
 
-const ip = (options, app) => {
-    const requestIp = app.tryRequire('request-ip');
+const ip = async (options, app) => {
+    const requestIp = await app.tryRequire_('request-ip');
 
     return async (ctx, next) => {
         let ip = requestIp.getClientIp(ctx.req);

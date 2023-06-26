@@ -11,7 +11,7 @@ Object.defineProperty(exports, "default", {
         return _default;
     }
 });
-const _default = (opt, app)=>{
+const _default = async (opt, app)=>{
     const { logger  } = app.middlewareConfig(opt ?? {}, {
         schema: {
             logger: {
@@ -20,7 +20,7 @@ const _default = (opt, app)=>{
             }
         }
     }, 'accessLog');
-    const pinoHttp = app.tryRequire('pino-http');
+    const pinoHttp = await app.tryRequire_('pino-http');
     app.requireServices([
         logger
     ], 'accessLog');

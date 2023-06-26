@@ -3,8 +3,8 @@
  * @module Middleware_ServeStatic
  */
 
-const serveStatic = (options, app) => {
-    const koaStatic = app.tryRequire('koa-static');
+const serveStatic = async (options, app) => {
+    const koaStatic = await app.tryRequire_('koa-static');
 
     return koaStatic(app.publicPath, options);
 };

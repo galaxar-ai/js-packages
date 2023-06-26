@@ -36,8 +36,8 @@ function _interop_require_default(obj) {
  *   '<base path>': {
  *       module: "controller"
  *   }
- */ function moduleRouter(app, baseRoute, moduleItem) {
-    const Router = app.tryRequire('@koa/router');
+ */ async function moduleRouter(app, baseRoute, moduleItem) {
+    const Router = await app.tryRequire_('@koa/router');
     let controllerPath = app.controllersPath;
     if (typeof moduleItem === 'string') {
         // [ 'controllerName' ]
@@ -51,7 +51,7 @@ function _interop_require_default(obj) {
     });
     if (moduleItem.middlewares) {
         //module-wide middlewares
-        app.useMiddlewares(router, moduleItem.middlewares);
+        await app.useMiddlewares_(router, moduleItem.middlewares);
     }
     let controllers;
     if (moduleItem.controllers) {
@@ -67,7 +67,7 @@ function _interop_require_default(obj) {
             moduleItem.controller
         ];
     }
-    controllers.forEach((moduleController)=>{
+    await (0, _utils.batchAsync_)(controllers, async (moduleController)=>{
         let controllerFile = _nodepath.default.join(controllerPath, moduleController);
         let controller;
         try {
@@ -97,7 +97,7 @@ function _interop_require_default(obj) {
             if (!_helpers.supportedMethods.has(method)) {
                 throw new _types.InvalidConfiguration('Unsupported http method: ' + method, app, `routing.${baseRoute}.module ${moduleItem.controller}.${actionName}`);
             }
-            app.addRoute(router, method, subRoute, action.__metaMiddlewares ? action.__metaMiddlewares.concat([
+            await app.addRoute_(router, method, subRoute, action.__metaMiddlewares ? action.__metaMiddlewares.concat([
                 bindAction
             ]) : bindAction);
         }

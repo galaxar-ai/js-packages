@@ -1,5 +1,5 @@
 import path from 'node:path';
-import { _, url as urlUtil, text, esmCheck } from '@galaxar/utils';
+import { _, url as urlUtil, text, esmCheck, batchAsync_ } from '@galaxar/utils';
 import { InvalidConfiguration } from '@galaxar/types';
 import { supportedMethods } from '../helpers';
 
@@ -25,8 +25,8 @@ import { supportedMethods } from '../helpers';
  *       module: "controller"
  *   }
  */
-function moduleRouter(app, baseRoute, moduleItem) {
-    const Router = app.tryRequire('@koa/router');
+async function moduleRouter(app, baseRoute, moduleItem) {
+    const Router = await app.tryRequire_('@koa/router');
 
     let controllerPath = app.controllersPath;
 
@@ -42,7 +42,7 @@ function moduleRouter(app, baseRoute, moduleItem) {
 
     if (moduleItem.middlewares) {
         //module-wide middlewares
-        app.useMiddlewares(router, moduleItem.middlewares);
+        await app.useMiddlewares_(router, moduleItem.middlewares);
     }
 
     let controllers;
@@ -68,7 +68,7 @@ function moduleRouter(app, baseRoute, moduleItem) {
         controllers = [moduleItem.controller];
     }
 
-    controllers.forEach((moduleController) => {
+    await batchAsync_(controllers, async (moduleController) => {
         let controllerFile = path.join(controllerPath, moduleController);
         let controller;
 
@@ -116,7 +116,7 @@ function moduleRouter(app, baseRoute, moduleItem) {
                 );
             }
 
-            app.addRoute(
+            await app.addRoute_(
                 router,
                 method,
                 subRoute,

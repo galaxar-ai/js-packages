@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { fs, isDir } from '@galaxar/sys';
 import { globSync } from 'glob';
-import { _, url as urlUtil, text, esmCheck, isPlainObject } from '@galaxar/utils';
+import { _, url as urlUtil, text, esmCheck, isPlainObject, eachAsync_ } from '@galaxar/utils';
 import { ApplicationError, InvalidConfiguration, InvalidArgument } from '@galaxar/types';
 import { defaultRoutableOpts } from './defaultOpts';
 
@@ -127,26 +127,26 @@ const Routable = (T) =>
          * @param {*} middlewares - Can be an array of middleware entries or a key-value list of registerred middlewares
          * @returns {Routable}
          */
-        useMiddlewares(router, middlewares) {
+        async useMiddlewares_(router, middlewares) {
             let middlewareFactory, middleware;
             let middlewareFunctions = [];
 
             if (isPlainObject(middlewares)) {
-                _.forOwn(middlewares, (options, name) => {
+                await eachAsync_(middlewares, async (options, name) => {
                     middlewareFactory = this.getMiddlewareFactory(name);
-                    middleware = middlewareFactory(options, this);
+                    middleware = await middlewareFactory(options, this);
                     middlewareFunctions.push({ name, middleware });
                 });
             } else {
                 middlewares = _.castArray(middlewares);
 
-                _.each(middlewares, (middlewareEntry) => {
+                await eachAsync_(middlewares, async (middlewareEntry) => {
                     let type = typeof middlewareEntry;
 
                     if (type === 'string') {
                         // [ 'namedMiddleware' ]
                         middlewareFactory = this.getMiddlewareFactory(middlewareEntry);
-                        middleware = middlewareFactory(undefined, this);
+                        middleware = await middlewareFactory(undefined, this);
                         middlewareFunctions.push({ name: middlewareEntry, middleware });
                     } else if (type === 'function') {
                         middlewareFunctions.push({
@@ -164,7 +164,7 @@ const Routable = (T) =>
                         }
 
                         middlewareFactory = this.getMiddlewareFactory(middlewareEntry[0]);
-                        middleware = middlewareFactory(middlewareEntry.length > 1 ? middlewareEntry[1] : null, this);
+                        middleware = await middlewareFactory(middlewareEntry.length > 1 ? middlewareEntry[1] : null, this);
                         middlewareFunctions.push({ name: middlewareEntry[0], middleware });
                     } else {
                         if (!isPlainObject(middlewareEntry) || !('name' in middlewareEntry)) {
@@ -172,7 +172,7 @@ const Routable = (T) =>
                         }
 
                         middlewareFactory = this.getMiddlewareFactory(middlewareEntry.name);
-                        middleware = middlewareFactory(middlewareEntry.options, this);
+                        middleware = await middlewareFactory(middlewareEntry.options, this);
                         middlewareFunctions.push({ name: middlewareEntry.name, middleware });
                     }
                 });
@@ -196,20 +196,20 @@ const Routable = (T) =>
          * @param route
          * @param actions
          */
-        addRoute(router, method, route, actions) {
+        async addRoute_(router, method, route, actions) {
             let handlers = [],
                 middlewareFactory;
 
             if (isPlainObject(actions)) {
-                _.each(actions, (options, name) => {
+                await eachAsync_(actions, async (options, name) => {
                     middlewareFactory = this.getMiddlewareFactory(name);
-                    handlers.push(this._wrapMiddlewareTracer(middlewareFactory(options, this), name));
+                    handlers.push(this._wrapMiddlewareTracer(await middlewareFactory(options, this), name));
                 });
             } else {
                 actions = _.castArray(actions);
                 let lastIndex = actions.length - 1;
 
-                _.each(actions, (action, i) => {
+                await eachAsync_(actions, async (action, i) => {
                     let type = typeof action;
 
                     if (i === lastIndex) {
@@ -228,7 +228,7 @@ const Routable = (T) =>
                         // [ 'namedMiddleware' ]
                         middlewareFactory = this.getMiddlewareFactory(action);
 
-                        let middleware = middlewareFactory(null, this);
+                        let middleware = await middlewareFactory(null, this);
 
                         //in case it's register by the middlewareFactory feature
                         if (Array.isArray(middleware)) {
@@ -253,7 +253,7 @@ const Routable = (T) =>
                         middlewareFactory = this.getMiddlewareFactory(action[0]);
                         handlers.push(
                             this._wrapMiddlewareTracer(
-                                middlewareFactory(action.length > 1 ? action[1] : undefined, this)
+                                await middlewareFactory(action.length > 1 ? action[1] : undefined, this)
                             )
                         );
                     } else {
@@ -262,7 +262,7 @@ const Routable = (T) =>
                         }
 
                         middlewareFactory = this.getMiddlewareFactory(action.name);
-                        handlers.push(this._wrapMiddlewareTracer(middlewareFactory(action.options, this), action.name));
+                        handlers.push(this._wrapMiddlewareTracer(await middlewareFactory(action.options, this), action.name));
                     }
                 });
             }

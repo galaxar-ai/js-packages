@@ -18,8 +18,8 @@ export default {
      * @param {*} middlewares - Middlewares and options
      * @returns {Promise.<*>}
      */
-    load_: function (app, middlewares) {
+    load_: async function (app, middlewares) {
         //delay to load middlewares after all plug-ins are ready
-        app.useMiddlewares(app.router, middlewares);
+        await app.useMiddlewares_(app.router, middlewares);
     },
 };

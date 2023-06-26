@@ -12,8 +12,8 @@
  * @property {bool} [options.options.cache] - Flag to enable cache
  * @param {Routable} app - The owner app module
  **/
-function views({ viewPath = 'views', ...options }, app) {
-    const views = app.tryRequire('koa-views');
+async function views({ viewPath = 'views', ...options }, app) {
+    const views = await app.tryRequire_('@ladjs/koa-views');
     return views(app.toAbsolutePath(viewPath), options);
 }
 

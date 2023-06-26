@@ -49,15 +49,15 @@ const _helpers = require("../helpers");
  *         }
  *     }
  * }
- */ function load_(app, baseRoute, options) {
-    const Router = app.tryRequire('@koa/router');
+ */ async function load_(app, baseRoute, options) {
+    const Router = await app.tryRequire_('@koa/router');
     let router = baseRoute === '/' ? new Router() : new Router({
         prefix: _utils.text.dropIfEndsWith(baseRoute, '/')
     });
     if (options.middlewares) {
-        app.useMiddlewares(router, options.middlewares);
+        await app.useMiddlewares_(router, options.middlewares);
     }
-    _utils._.forOwn(options.rules || {}, (methods, subRoute)=>{
+    await (0, _utils.eachAsync_)(options.rules || {}, async (methods, subRoute)=>{
         let pos = subRoute.indexOf(':/');
         if (pos !== -1) {
             if (pos === 0) {
@@ -76,11 +76,11 @@ const _helpers = require("../helpers");
                 get: methods
             };
         }
-        _utils._.forOwn(methods, (middlewares, method)=>{
+        await (0, _utils.eachAsync_)(methods, async (middlewares, method)=>{
             if (!_helpers.supportedMethods.has(method) && method !== 'all') {
                 throw new _types.InvalidConfiguration('Unsupported http method: ' + method, app, `routing[${baseRoute}].rule.rules[${subRoute}]`);
             }
-            app.addRoute(router, method, subRoute, middlewares);
+            await app.addRoute_(router, method, subRoute, middlewares);
         });
     });
     app.addRouter(router);
