@@ -42,23 +42,34 @@ class WorkerPool {
     createWorker(idle) {
         const worker = new _nodeworker_threads.Worker(this.workerFile, this.workerOptions);
         worker.on('message', (message)=>{
-            const task = this.tasks.get(message.id);
-            this.tasks.delete(message.id);
-            const workerContext = this.busyWorkers.get(worker.threadId);
-            workerContext.ongoing--;
-            if (workerContext.ongoing === 0) {
-                worker.unref();
-                this.busyWorkers.delete(worker.threadId);
-                if (this.idleWorkers.length < this.lowThreadNum) {
-                    this.idleWorkers.push(worker);
-                } else {
-                    worker.terminate();
+            if (message.id === '$CALLBACK') {
+                const { task , payload  } = message;
+                const handler = this.handlers?.[task];
+                if (handler == null) {
+                    throw new Error(`Unknown callback task "${task}".`);
                 }
-            }
-            if (message.error == null) {
-                task.resolve(message.value);
+                Promise.resolve(handler(payload)).catch(this.app.logError);
             } else {
-                task.reject(recreateWorkerError(message.error));
+                const task = this.tasks.get(message.id);
+                if (task) {
+                    this.tasks.delete(message.id);
+                    const workerContext = this.busyWorkers.get(worker.threadId);
+                    workerContext.ongoing--;
+                    if (workerContext.ongoing === 0) {
+                        worker.unref();
+                        this.busyWorkers.delete(worker.threadId);
+                        if (this.idleWorkers.length < this.lowThreadNum) {
+                            this.idleWorkers.push(worker);
+                        } else {
+                            worker.terminate();
+                        }
+                    }
+                    if (message.error == null) {
+                        task.resolve(message.value);
+                    } else {
+                        task.reject(recreateWorkerError(message.error));
+                    }
+                }
             }
         });
         worker.on('error', (error)=>{
@@ -111,6 +122,9 @@ class WorkerPool {
                 payload
             }, transferList);
         });
+    }
+    setCallbackHandlers(handlers) {
+        this.handlers = handlers;
     }
     constructor(app, options){
         const { name , workerFile , lowThreadNum , highThreadNum , workerOptions  } = options;

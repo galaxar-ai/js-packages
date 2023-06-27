@@ -1,5 +1,11 @@
 # @galaxar/feat-utils
 
+## 1.2.2
+
+### Patch Changes
+
+-   Add future callback from worker to parent
+
 ## 1.2.1
 
 ### Patch Changes

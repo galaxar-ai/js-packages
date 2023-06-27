@@ -46,6 +46,10 @@ export default {
             },
             start(handlers) {
                 if (parentPort) {
+                    const callback = (task, payload) => {
+                        parentPort.postMessage({ id: '$CALLBACK', task, payload });
+                    };
+
                     parentPort.on('close', async () => {
                         app.log('info', 'Thread worker closed by main thread.');
                         await app.stop_();
@@ -66,7 +70,7 @@ export default {
                                 throw new Error(`Unknown task "${task}".`);
                             }
 
-                            const result = await handler(payload);
+                            const result = await handler(payload, callback);
                             const { value, transferList } = result || {};
                             parentPort.postMessage({ id, value }, transferList);
                             perfCounter.numTasksCompleted++;

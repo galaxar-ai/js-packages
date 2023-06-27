@@ -14,6 +14,18 @@ startWorker(
                 };
             },
 
+            async someTaskWithFutureCb({ name }, cb) {               
+
+                setTimeout(() => {  
+                    cb('futureNotice', 'Hi from future');
+                }, 1000);
+
+                return {
+                    value: `Hello ${name}`,
+                    //transferList: [ value ]
+                };
+            },
+
             probe() {
                 return { value: worker.perfCounter };
             },

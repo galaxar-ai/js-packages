@@ -44,27 +44,40 @@ export class WorkerPool {
         const worker = new Worker(this.workerFile, this.workerOptions);
 
         worker.on('message', (message) => {
-            const task = this.tasks.get(message.id);
-            this.tasks.delete(message.id);
+            if (message.id === '$CALLBACK') {
+                const { task, payload } = message;
+                const handler = this.handlers?.[task];
 
-            const workerContext = this.busyWorkers.get(worker.threadId);
-            workerContext.ongoing--;
-
-            if (workerContext.ongoing === 0) {
-                worker.unref();            
-                this.busyWorkers.delete(worker.threadId);
-
-                if (this.idleWorkers.length < this.lowThreadNum) {
-                    this.idleWorkers.push(worker);
-                } else {
-                    worker.terminate();
+                if (handler == null) {
+                    throw new Error(`Unknown callback task "${task}".`);
                 }
-            }
 
-            if (message.error == null) {
-                task.resolve(message.value);
+                Promise.resolve(handler(payload)).catch(this.app.logError);
             } else {
-                task.reject(recreateWorkerError(message.error));
+                const task = this.tasks.get(message.id);
+                if (task) {
+                    this.tasks.delete(message.id);
+
+                    const workerContext = this.busyWorkers.get(worker.threadId);
+                    workerContext.ongoing--;
+
+                    if (workerContext.ongoing === 0) {
+                        worker.unref();
+                        this.busyWorkers.delete(worker.threadId);
+
+                        if (this.idleWorkers.length < this.lowThreadNum) {
+                            this.idleWorkers.push(worker);
+                        } else {
+                            worker.terminate();
+                        }
+                    }
+
+                    if (message.error == null) {
+                        task.resolve(message.value);
+                    } else {
+                        task.reject(recreateWorkerError(message.error));
+                    }
+                }
             }
         });
 
@@ -96,7 +109,7 @@ export class WorkerPool {
         }
 
         // Otherwise, just use the first worker
-        const [ workerThreadId, workerContext ] = this.busyWorkers.entries().next().value;
+        const [workerThreadId, workerContext] = this.busyWorkers.entries().next().value;
         workerContext.ongoing++;
         this.busyWorkers.delete(workerThreadId);
         this.busyWorkers.set(workerThreadId, workerContext);
@@ -113,6 +126,10 @@ export class WorkerPool {
             worker.ref();
             worker.postMessage({ id: taskId, task, payload }, transferList);
         });
+    }
+
+    setCallbackHandlers(handlers) {
+        this.handlers = handlers;
     }
 }
 

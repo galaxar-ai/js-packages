@@ -54,6 +54,13 @@ const _default = {
             },
             start (handlers) {
                 if (_nodeworker_threads.parentPort) {
+                    const callback = (task, payload)=>{
+                        _nodeworker_threads.parentPort.postMessage({
+                            id: '$CALLBACK',
+                            task,
+                            payload
+                        });
+                    };
                     _nodeworker_threads.parentPort.on('close', async ()=>{
                         app.log('info', 'Thread worker closed by main thread.');
                         await app.stop_();
@@ -70,7 +77,7 @@ const _default = {
                             if (handler == null) {
                                 throw new Error(`Unknown task "${task}".`);
                             }
-                            const result = await handler(payload);
+                            const result = await handler(payload, callback);
                             const { value , transferList  } = result || {};
                             _nodeworker_threads.parentPort.postMessage({
                                 id,
