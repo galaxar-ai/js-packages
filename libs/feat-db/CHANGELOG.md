@@ -1,5 +1,11 @@
 # @galaxar/feat-db
 
+## 1.3.1
+
+### Patch Changes
+
+-   Pass other options to cache api
+
 ## 1.3.0
 
 ### Minor Changes

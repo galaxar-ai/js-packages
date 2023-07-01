@@ -129,7 +129,7 @@ export class WorkerPool {
     }
 
     setCallbackHandlers(handlers) {
-        this.handlers = handlers;
+        this.handlers = { ...this.handlers, ...handlers };
     }
 }
 

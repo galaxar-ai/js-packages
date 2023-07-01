@@ -1,5 +1,6 @@
 import _each from 'lodash/each';
 import _every from 'lodash/every';
+import _mapValues from 'lodash/mapValues';
 import { ValidationError } from './errors';
 import { makePath } from '@galaxar/utils/objectPathUtils';
 import isPlainObject from '@galaxar/utils/isPlainObject';
@@ -23,11 +24,11 @@ class T_OBJECT {
         const fieldValue = value[fieldName];
         const fieldPath = makePath(opts.path, fieldName);
 
-        let _fieldValue;        
+        let _fieldValue;
 
         if (Array.isArray(validationObject)) {
             const errors = [];
-            const foudMatched = validationObject.find(_validationObject => {
+            const foudMatched = validationObject.find((_validationObject) => {
                 try {
                     _fieldValue = this.system.sanitize(fieldValue, _validationObject, opts.i18n, fieldPath);
                     return true;
@@ -42,16 +43,16 @@ class T_OBJECT {
                     value: fieldValue,
                     meta: validationObject,
                     rawValue: opts.rawValue,
-                    i18n: opts.i18n,            
+                    i18n: opts.i18n,
                     path: fieldPath,
-                    errors
+                    errors,
                 });
             }
         } else {
             _fieldValue = this.system.sanitize(fieldValue, validationObject, opts.i18n, fieldPath);
         }
 
-        if (_fieldValue != null || (fieldName in value)) {
+        if (_fieldValue != null || fieldName in value) {
             newValue[fieldName] = _fieldValue;
         }
     };
@@ -60,11 +61,11 @@ class T_OBJECT {
         const fieldValue = value[fieldName];
         const fieldPath = makePath(opts.path, fieldName);
 
-        let _fieldValue;        
+        let _fieldValue;
 
         if (Array.isArray(validationObject)) {
             const errors = [];
-            const foudMatched = await findAsync_(validationObject, async _validationObject => {
+            const foudMatched = await findAsync_(validationObject, async (_validationObject) => {
                 try {
                     _fieldValue = await this.system.sanitize_(fieldValue, _validationObject, opts.i18n, fieldPath);
                     return true;
@@ -79,9 +80,9 @@ class T_OBJECT {
                     value: fieldValue,
                     meta: validationObject,
                     rawValue: opts.rawValue,
-                    i18n: opts.i18n,            
+                    i18n: opts.i18n,
                     path: fieldPath,
-                    errors
+                    errors,
                 });
             }
         } else {
@@ -129,7 +130,7 @@ class T_OBJECT {
                 const pass = schema.find((altSchema) => {
                     newValue = {};
                     try {
-                        _each(altSchema, this._sanitizeMember(value, opts, newValue));                    
+                        _each(altSchema, this._sanitizeMember(value, opts, newValue));
                         return true;
                     } catch (error) {
                         errors.push(ValidationError.extractFromError(error));
@@ -144,7 +145,7 @@ class T_OBJECT {
                         rawValue: opts.rawValue,
                         i18n: opts.i18n,
                         path: opts.path,
-                        errors
+                        errors,
                     });
                 }
             } else {
@@ -157,6 +158,12 @@ class T_OBJECT {
             }
 
             return newValue;
+        }
+
+        const { valueSchema, ..._meta } = meta;
+        if (valueSchema) {
+            const schema = _mapValues(value, () => valueSchema);            
+            return this._sanitize(value, { schema, ..._meta }, opts);
         }
 
         return value;
@@ -190,7 +197,7 @@ class T_OBJECT {
                 const pass = await findAsync_(schema, async (altSchema) => {
                     newValue = {};
                     try {
-                        await batchAsync_(altSchema, this._sanitizeMember_(value, opts, newValue));                    
+                        await batchAsync_(altSchema, this._sanitizeMember_(value, opts, newValue));
                         return true;
                     } catch (error) {
                         errors.push(ValidationError.extractFromError(error));
@@ -205,7 +212,7 @@ class T_OBJECT {
                         rawValue: opts.rawValue,
                         i18n: opts.i18n,
                         path: opts.path,
-                        errors
+                        errors,
                     });
                 }
             } else {
@@ -220,6 +227,12 @@ class T_OBJECT {
             return newValue;
         }
 
+        const { valueSchema, ..._meta } = meta;
+        if (valueSchema) {
+            const schema = _mapValues(value, () => valueSchema);
+            return this._sanitizeAsync(value, { schema, ..._meta }, opts);
+        }
+
         return value;
     }
 
@@ -227,6 +240,6 @@ class T_OBJECT {
         if (value == null) return null;
         return this.system.safeJsonStringify(value);
     }
-};
+}
 
 export default T_OBJECT;

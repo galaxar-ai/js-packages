@@ -10,6 +10,7 @@ Object.defineProperty(exports, "default", {
 });
 const _each = /*#__PURE__*/ _interop_require_default(require("lodash/each"));
 const _every = /*#__PURE__*/ _interop_require_default(require("lodash/every"));
+const _mapValues = /*#__PURE__*/ _interop_require_default(require("lodash/mapValues"));
 const _errors = require("./errors");
 const _objectPathUtils = require("@galaxar/utils/objectPathUtils");
 const _isPlainObject = /*#__PURE__*/ _interop_require_default(require("@galaxar/utils/isPlainObject"));
@@ -100,6 +101,14 @@ class T_OBJECT {
             }
             return newValue;
         }
+        const { valueSchema , ..._meta } = meta;
+        if (valueSchema) {
+            const schema = (0, _mapValues.default)(value, ()=>valueSchema);
+            return this._sanitize(value, {
+                schema,
+                ..._meta
+            }, opts);
+        }
         return value;
     }
     async _sanitizeAsync(value, meta, opts) {
@@ -154,6 +163,14 @@ class T_OBJECT {
                 };
             }
             return newValue;
+        }
+        const { valueSchema , ..._meta } = meta;
+        if (valueSchema) {
+            const schema = (0, _mapValues.default)(value, ()=>valueSchema);
+            return this._sanitizeAsync(value, {
+                schema,
+                ..._meta
+            }, opts);
         }
         return value;
     }
@@ -235,7 +252,6 @@ class T_OBJECT {
         this.system = system;
     }
 }
-;
 const _default = T_OBJECT;
 
 //# sourceMappingURL=object.js.map

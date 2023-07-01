@@ -1,5 +1,11 @@
 # @galaxar/feat-utils
 
+## 1.2.3
+
+### Patch Changes
+
+-   Change threadPool setCallbackHandlers to merge not replace for better sharing among app modules
+
 ## 1.2.2
 
 ### Patch Changes

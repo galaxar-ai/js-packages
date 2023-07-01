@@ -184,9 +184,10 @@ const _default = {
                 if (!meta) {
                     throw new _types.InvalidArgument(`No cache setup for key: ${key}`);
                 }
-                const { where ={} , type ='list' , mapByKey  } = meta;
+                const { where ={} , type ='list' , mapByKey , ...others } = meta;
                 let data = await modelBox.model.findMany({
-                    where
+                    where,
+                    ...others
                 });
                 if (type === 'map') {
                     if (!mapByKey) {

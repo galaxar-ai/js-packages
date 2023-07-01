@@ -1,12 +1,6 @@
 import path from 'node:path';
 import { Feature } from '@galaxar/app';
-import {
-    _,
-    esmCheck,
-    pascalCase,
-    camelCase,
-    unexistDelegate,
-} from '@galaxar/utils';
+import { _, esmCheck, pascalCase, camelCase, unexistDelegate } from '@galaxar/utils';
 import { InvalidArgument, ApplicationError } from '@galaxar/types';
 import { PrismaClient } from '@prisma/client';
 
@@ -71,23 +65,22 @@ export default {
     groupable: true,
 
     load_: async function (app, options, name) {
-        const { modelPath, ttlCacheService, ...prismaOptions } =
-            app.featureConfig(
-                options,
-                {
-                    schema: {
-                        modelPath: { type: 'string', default: 'models' },
-                        ttlCacheService: { type: 'string', optional: true },
-                        datasources: { type: 'object', optional: true },
-                        log: {
-                            type: 'array',
-                            elementSchema: { type: 'text' },
-                            optional: true,
-                        },
+        const { modelPath, ttlCacheService, ...prismaOptions } = app.featureConfig(
+            options,
+            {
+                schema: {
+                    modelPath: { type: 'string', default: 'models' },
+                    ttlCacheService: { type: 'string', optional: true },
+                    datasources: { type: 'object', optional: true },
+                    log: {
+                        type: 'array',
+                        elementSchema: { type: 'text' },
+                        optional: true,
                     },
                 },
-                name
-            );
+            },
+            name
+        );
 
         const _modelPath = path.join(app.sourcePath, modelPath);
         const modelCache = new Map();
@@ -115,9 +108,7 @@ export default {
                 let Model;
 
                 try {
-                    Model = esmCheck(
-                        require(path.join(_modelPath, pascalName))
-                    );
+                    Model = esmCheck(require(path.join(_modelPath, pascalName)));
                 } catch (err) {
                     if (err.code === 'MODULE_NOT_FOUND') {
                         Model = DefaultModel;
@@ -127,20 +118,14 @@ export default {
                 }
                 const modelInstance = new Model(prisma, app, pascalName);
 
-                modelInstance.retryCreate_ = async (
-                    createOptions,
-                    onDuplicate,
-                    maxRetry
-                ) => {
+                modelInstance.retryCreate_ = async (createOptions, onDuplicate, maxRetry) => {
                     maxRetry || (maxRetry = 99);
                     let retry = 0;
                     let error;
 
                     while (retry++ < maxRetry) {
                         try {
-                            return await modelInstance.model.create(
-                                createOptions
-                            );
+                            return await modelInstance.model.create(createOptions);
                         } catch (err) {
                             //P2002: Unique constraint failed
                             if (err.code !== 'P2002') {
@@ -156,40 +141,20 @@ export default {
                 };
 
                 if (ttlCacheService) {
-                    modelInstance.ttlCacheUnique_ = async (
-                        key,
-                        findUnique,
-                        ttl
-                    ) => {
+                    modelInstance.ttlCacheUnique_ = async (key, findUnique, ttl) => {
                         const cache = app.getService(ttlCacheService);
                         const cacheKey = `prisma:${name}:${key}`;
-                        return await cache.get_(
-                            cacheKey,
-                            () => modelInstance.model.findUnique(findUnique),
-                            ttl
-                        );
+                        return await cache.get_(cacheKey, () => modelInstance.model.findUnique(findUnique), ttl);
                     };
 
-                    modelInstance.ttlCacheMany_ = async (
-                        key,
-                        findMany,
-                        ttl
-                    ) => {
+                    modelInstance.ttlCacheMany_ = async (key, findMany, ttl) => {
                         const cache = app.getService(ttlCacheService);
                         const cacheKey = `prisma:${name}:${key}`;
-                        return await cache.get_(
-                            cacheKey,
-                            () => modelInstance.model.findMany(findMany),
-                            ttl
-                        );
+                        return await cache.get_(cacheKey, () => modelInstance.model.findMany(findMany), ttl);
                     };
                 }
 
-                modelObject = unexistDelegate(
-                    modelInstance,
-                    modelDelegate,
-                    true
-                );
+                modelObject = unexistDelegate(modelInstance, modelDelegate, true);
                 modelCache.set(_name, modelObject);
             }
             return modelObject;
@@ -215,17 +180,16 @@ export default {
                     throw new InvalidArgument(`No cache setup for key: ${key}`);
                 }
 
-                const { where = {}, type = 'list', mapByKey } = meta;
+                const { where = {}, type = 'list', mapByKey, ...others } = meta;
 
                 let data = await modelBox.model.findMany({
                     where,
+                    ...others,
                 });
 
                 if (type === 'map') {
                     if (!mapByKey) {
-                        throw new InvalidArgument(
-                            `No "mapByKey" set for map type cache: ${key}`
-                        );
+                        throw new InvalidArgument(`No "mapByKey" set for map type cache: ${key}`);
                     }
 
                     data = data.reduce((result, item) => {

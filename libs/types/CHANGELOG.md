@@ -1,5 +1,11 @@
 # @galaxar/types
 
+## 1.1.3
+
+### Patch Changes
+
+-   Add validation schema key "valueSchema" for object with dynamic keys  
+
 ## 1.1.2
 
 ### Patch Changes

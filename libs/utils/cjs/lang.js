@@ -21,11 +21,17 @@ _export(exports, {
     waitUntil_: function() {
         return _waitUntil_.default;
     },
+    pipeAsync_: function() {
+        return _pipeAsync_.default;
+    },
     isPlainObject: function() {
         return _isPlainObject.default;
     },
     isInteger: function() {
         return _isInteger.default;
+    },
+    isPromise: function() {
+        return _isPromise.default;
     },
     toInteger: function() {
         return _toInteger.default;
@@ -50,8 +56,10 @@ const _ifThen = /*#__PURE__*/ _interop_require_default(require("./ifThen"));
 const _hookInvoke = /*#__PURE__*/ _interop_require_default(require("./hookInvoke"));
 const _sleep_ = /*#__PURE__*/ _interop_require_default(require("./sleep_"));
 const _waitUntil_ = /*#__PURE__*/ _interop_require_default(require("./waitUntil_"));
+const _pipeAsync_ = /*#__PURE__*/ _interop_require_default(require("./pipeAsync_"));
 const _isPlainObject = /*#__PURE__*/ _interop_require_default(require("./isPlainObject"));
 const _isInteger = /*#__PURE__*/ _interop_require_default(require("./isInteger"));
+const _isPromise = /*#__PURE__*/ _interop_require_default(require("./isPromise"));
 const _toInteger = /*#__PURE__*/ _interop_require_default(require("./toInteger"));
 const _toBoolean = /*#__PURE__*/ _interop_require_default(require("./toBoolean"));
 const _toFloat = /*#__PURE__*/ _interop_require_default(require("./toFloat"));

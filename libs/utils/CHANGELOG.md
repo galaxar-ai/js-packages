@@ -1,5 +1,13 @@
 # @galaxar/utils
 
+## 1.0.9
+
+### Patch Changes
+
+-   Add isPromise
+-   Add pipeAsync_
+-   Add testGetCallerFile alias for dbgGetCallerFile
+
 ## 1.0.8
 
 ### Patch Changes

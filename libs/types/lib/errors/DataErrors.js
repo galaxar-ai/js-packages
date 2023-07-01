@@ -13,8 +13,12 @@ import HttpCode from './HttpCode';
 export class ValidationError extends ExposableError {
     static formatError(error) {
         let fullMessage = error.message;
+        if (error.info.path) {
+            fullMessage += ' Key: ' + error.info.path;
+        }
+
         if (error.info.error) {
-            fullMessage += ' ' + error.info.error;
+            fullMessage += '\n' + error.info.error;
         }
 
         if (error.info.errors) {

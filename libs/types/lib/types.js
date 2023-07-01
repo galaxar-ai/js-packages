@@ -90,6 +90,10 @@ export class TypeSystem {
 
     callType(method) {
         return (value, typeInfo, i18n, fieldPath) => {
+            if (typeInfo.type == null) {
+                throw new InvalidArgument(`Missing type info: ${JSON.stringify(typeInfo)}`);
+            }
+
             if (!this.primitives.has(typeInfo.type)) {
                 throw new InvalidArgument(`Unsupported primitive type: "${typeInfo.type}".`);
             }

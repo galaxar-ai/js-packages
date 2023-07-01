@@ -124,7 +124,10 @@ class WorkerPool {
         });
     }
     setCallbackHandlers(handlers) {
-        this.handlers = handlers;
+        this.handlers = {
+            ...this.handlers,
+            ...handlers
+        };
     }
     constructor(app, options){
         const { name , workerFile , lowThreadNum , highThreadNum , workerOptions  } = options;

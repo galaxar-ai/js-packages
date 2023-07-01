@@ -35,8 +35,11 @@ function _interop_require_default(obj) {
 class ValidationError extends _AppErrors.ExposableError {
     static formatError(error) {
         let fullMessage = error.message;
+        if (error.info.path) {
+            fullMessage += ' Key: ' + error.info.path;
+        }
         if (error.info.error) {
-            fullMessage += ' ' + error.info.error;
+            fullMessage += '\n' + error.info.error;
         }
         if (error.info.errors) {
             fullMessage += '\nAll of these alternative validations failed:\n' + error.info.errors.map((_error, i)=>`Option ${i + 1} field "${_error.info.path}": ${_error.message}`).join('\n');

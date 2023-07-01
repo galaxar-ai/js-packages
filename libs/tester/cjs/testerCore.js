@@ -12,6 +12,20 @@ const _utils = require("@galaxar/utils");
 const _app = require("@galaxar/app");
 const _benchmark = /*#__PURE__*/ _interop_require_default(require("benchmark"));
 const _nodepath = /*#__PURE__*/ _interop_require_default(require("node:path"));
+const _loadFixtures = /*#__PURE__*/ _interop_require_default(require("./loadFixtures"));
+function _define_property(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        });
+    } else {
+        obj[key] = value;
+    }
+    return obj;
+}
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
@@ -220,6 +234,7 @@ class GxTester {
         });
     }
     constructor(config){
+        _define_property(this, "loadFixtures", _loadFixtures.default);
         this.config = config;
         this.startedServers = {};
         this.isCoverMode = process.env.COVER && (0, _utils.toBoolean)(process.env.COVER);

@@ -2,6 +2,7 @@ import { _, esmCheck, toBoolean, batchAsync_ } from '@galaxar/utils';
 import { startWorker, HttpClient } from '@galaxar/app';
 import Benchmark from 'benchmark';
 import path from "node:path";
+import loadFixtures from './loadFixtures';
 
 function serialize(obj, replacer, space) {
     let content;
@@ -19,6 +20,8 @@ function serialize(obj, replacer, space) {
 }
 
 class GxTester {
+    loadFixtures = loadFixtures;
+
     constructor(config) {
         this.config = config;
         this.startedServers = {};

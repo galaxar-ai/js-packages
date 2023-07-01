@@ -11,3 +11,19 @@
 * Support profiling and benchmark
 * Support test step and progress record
 * Support job pipeline for long-run test
+
+### Interface
+
+gobal object `gxt`
+
+-   `startWorker_(app => {/* test to run */}, options)`: // start a worker
+
+-   `withHttpClient_(serverName?, [authenticator], app => {/* test to run */}, [options])`: // start a worker and create a http client
+
+-   `benchmark_(mapOfMethods, verifier, payload)`: // run benchmark againest several different implementions of the same purposes
+
+-   `step_(name, fn)`: // test step
+
+-   `param(name, value)`: // record param used in a test into test report
+
+-   `attach(name, value)`: // attach object produced during a test into test report
