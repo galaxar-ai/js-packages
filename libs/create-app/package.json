@@ -46,7 +46,7 @@
         "@galaxar/sys": "workspace:*",
         "@galaxar/utils": "workspace:*",
         "figlet": "^1.6.0",
-        "glob": "10.2.4",
+        "glob": "10.2.7",
         "inquirer": "^8.2.4",
         "minimist": "^1.2.8",
         "shelljs": "0.8.5",
