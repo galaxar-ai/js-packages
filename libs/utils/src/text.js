@@ -18,6 +18,7 @@ export { default as ensureEndsWith } from './ensureEndsWith';
 export { default as ensureStartsWith } from './ensureStartsWith';
 export { default as csvLineParse } from './csvLineParse';
 export { default as baseName } from './baseName';
+export { default as changeExtName } from './changeExtName';
 export { default as countOfChar } from './countOfChar';
 export { default as deleteLines } from './deleteLines';
 export { default as grepLines } from './grepLines';
