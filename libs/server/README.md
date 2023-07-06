@@ -28,8 +28,26 @@ A galaxar server is a @galaxar/app with serveral extensions as below.
 	-	support group several middlewares together to become a new middleware by the `middlewareFactory`` feature
 
 ## App module
-A galaxar app module is also a @galaxar/app hosted by a galaxar server. 
+-	A galaxar app module is also a @galaxar/app hosted by a galaxar server. 
+-	A app module can be mounted under a specified route in a galaxar server through the `appRouting` feature.
 
+## Project structure
+
+-	`<server root>`
+	-	conf			`server.default.json`
+	-	server			transpiled files from `src`
+	-	src
+		-	actions		rule/module router controllers
+		-	features	features/services
+		-	middlewares	middleware factories
+		-	resources	gaml/rest router controllers
+		-	index.js	entry file of the server
+	-	apps			app modules
+		-	conf		`app.default.json`
+		-	server		transpiled files from `src`
+		-	src			similar to the server source folder except the index.js file
+	-	node_modules	packages and packed app modules
+	-	...other server-level folders, e.g. prisma
 
 ## License
 

@@ -1,5 +1,11 @@
 # @galaxar/server
 
+## 1.0.9
+
+### Patch Changes
+
+-   Fix: web module default source path
+
 ## 1.0.8
 
 ### Patch Changes

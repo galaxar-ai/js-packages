@@ -12,22 +12,28 @@ _export(exports, {
     defaultRoutableOpts: function() {
         return defaultRoutableOpts;
     },
+    defaultWebModuleOpts: function() {
+        return defaultWebModuleOpts;
+    },
     default: function() {
         return _default;
     }
 });
 const defaultOpts = {
     configName: 'server',
-    appModulesPath: 'apps'
+    appModulesPath: 'apps',
+    // for nodemon to use the source files
+    sourcePath: process.env.GX_SOURCE_PATH ?? 'server'
 };
 const defaultRoutableOpts = {
     engine: 'koa',
     traceMiddlewares: false,
-    // for nodemon to use the source files
-    sourcePath: process.env.GX_SOURCE_PATH ?? 'server',
     publicPath: 'public',
     controllersPath: 'actions',
     middlewaresPath: 'middlewares'
+};
+const defaultWebModuleOpts = {
+    sourcePath: process.env.GX_SOURCE_PATH ?? 'server'
 };
 const _default = defaultOpts;
 

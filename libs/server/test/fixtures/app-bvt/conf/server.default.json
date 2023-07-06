@@ -26,7 +26,8 @@
         "/test": {
             "name": "test",
             "options": {
-                "publicPath": "www"
+                "publicPath": "www",
+                "sourcePath": "./"
             }
         }
     }

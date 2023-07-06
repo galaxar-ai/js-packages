@@ -11,6 +11,7 @@ Object.defineProperty(exports, "default", {
 const _utils = require("@galaxar/utils");
 const _app = require("@galaxar/app");
 const _Routable = /*#__PURE__*/ _interop_require_default(require("./Routable"));
+const _defaultOpts = require("./defaultOpts");
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
@@ -34,7 +35,10 @@ function _interop_require_default(obj) {
      * @param {string} appPath - The path to load the app's module files
      * @param {object} [options] - The app module's extra options defined in its parent's configuration.
      */ constructor(server, name, route, appPath, options){
-        super(server, name, appPath, options);
+        super(server, name, appPath, {
+            ..._defaultOpts.defaultWebModuleOpts,
+            ...options
+        });
         this.server = this.host;
         /**
          * Mounting route.

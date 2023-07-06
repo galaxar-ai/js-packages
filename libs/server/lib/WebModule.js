@@ -1,6 +1,7 @@
 import { _, text } from '@galaxar/utils';
 import { ServiceContainer, ModuleBase } from '@galaxar/app';
 import Routable from './Routable';
+import { defaultWebModuleOpts } from './defaultOpts';
 
 /**
  * Web application module class.
@@ -16,7 +17,7 @@ class WebModule extends ModuleBase(Routable(ServiceContainer)) {
      * @param {object} [options] - The app module's extra options defined in its parent's configuration.
      */
     constructor(server, name, route, appPath, options) {
-        super(server, name, appPath, options);
+        super(server, name, appPath, { ...defaultWebModuleOpts, ...options });
 
         this.server = this.host;
 
